@@ -4,12 +4,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci",
   "devCommand": "npm run dev",
-  "env": {
-    "VITE_API_KEY": "@vite_api_key",
-    "VITE_SUPABASE_URL": "@vite_supabase_url",
-    "VITE_SUPABASE_ANON_KEY": "@vite_supabase_anon_key",
-    "VITE_BRAVE_API_KEY": "@vite_brave_api_key"
-  },
+
   "headers": [
     {
       "source": "/api/(.*)",
