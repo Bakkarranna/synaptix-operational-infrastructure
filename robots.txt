@@ -1,0 +1,2 @@
+# This file is for reference only and is not used by the Vite build process.
+# The active robots.txt file is located in the /public directory and takes precedence.

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Synaptix Studio | AI Automation</title>
+    <meta name="description" content="Synaptix Studio is an AI automation agency building custom chatbots, voice agents, and smart business solutions to help you reduce costs and drive revenue." />
+    <meta name="keywords" content="AI, Automation, Chatbots, Lead Generation, Sales Funnels, Artificial Intelligence, Business Automation" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://synaptixstudio.com/" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://iili.io/KoFmqJf.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://iili.io/KoFmqJf.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://iili.io/KoFmqJf.png">
+    <link rel="shortcut icon" href="https://iili.io/KoFmqJf.png">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://synaptixstudio.com/" />
+    <meta property="og:title" content="Synaptix Studio | AI Automation Agency" />
+    <meta property="og:description" content="Synaptix Studio is an AI automation agency building custom chatbots, voice agents, and smart business solutions to help you reduce costs and drive revenue." />
+    <meta property="og:image" content="https://iili.io/F6poge9.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://synaptixstudio.com/" />
+    <meta property="twitter:title" content="Synaptix Studio | AI Automation Agency" />
+    <meta property="twitter:description" content="Synaptix Studio is an AI automation agency building custom chatbots, voice agents, and smart business solutions to help you reduce costs and drive revenue." />
+    <meta property="twitter:image" content="https://iili.io/F6poge9.png" />
+    <meta property="twitter:site" content="@synaptixstudio" />
+    
+    <!-- Theme initialization script -->
+    <script>
+      (function() {
+        // Set dark theme only if explicitly saved in localStorage, otherwise default to light.
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HPDY6DZ4R2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HPDY6DZ4R2');
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ['Inter', 'sans-serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
+              pixel: ['"VT323"', 'monospace'],
+            },
+            colors: {
+              primary: '#FF5630',
+              'brand-dark': '#1A1A1A',
+              'brand-accent': '#e0e0e0',
+              'cta-highlight': '#F95C5C',
+            },
+            animation: {
+              'fade-in': 'fadeIn 1s ease-in-out',
+              'slide-in-up': 'slideInUp 0.7s ease-out',
+              'slide-in-left': 'slideInLeft 0.7s ease-out',
+              'slide-in-right': 'slideInRight 0.7s ease-out',
+              'glow': 'glow 2s infinite alternate',
+              'glow-red': 'glow-red 2s infinite alternate',
+              'float': 'float 6s ease-in-out infinite',
+              'scroll-final': 'scroll-final 40s linear infinite',
+              'scroll-services': 'scroll-final 50s linear infinite',
+              'fade-in-fast': 'fadeIn 0.3s ease-in-out',
+              'slide-in-up-fast': 'slideInUp 0.3s ease-out',
+              'shimmer': 'shimmer 4s infinite linear',
+              'blink': 'blink 1s step-end infinite',
+              'fade-out': 'fadeOut 0.3s ease-out',
+              'blob-idle': 'blob-idle 8s ease-in-out infinite',
+              'blob-pulse': 'blob-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'waveform': 'waveform 2.5s ease-in-out infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: 0 },
+                '100%': { opacity: 1 },
+              },
+               fadeOut: {
+                'from': { opacity: 1 },
+                'to': { opacity: 0 },
+              },
+              slideInUp: {
+                '0%': { transform: 'translateY(20px)', opacity: 0 },
+                '100%': { transform: 'translateY(0)', opacity: 1 },
+              },
+              slideInLeft: {
+                '0%': { transform: 'translateX(-20px)', opacity: 0 },
+                '100%': { transform: 'translateX(0)', opacity: 1 },
+              },
+              slideInRight: {
+                '0%': { transform: 'translateX(20px)', opacity: 0 },
+                '100%': { transform: 'translateX(0)', opacity: 1 },
+              },
+              glow: {
+                '0%': {
+                  boxShadow: '0 0 5px rgba(255, 86, 48, 0.5), 0 0 10px rgba(255, 86, 48, 0.3)',
+                },
+                '100%': {
+                  boxShadow: '0 0 10px rgba(255, 86, 48, 0.8), 0 0 20px rgba(255, 86, 48, 0.6)',
+                },
+              },
+              'glow-red': {
+                '0%': {
+                  boxShadow: '0 0 5px rgba(239, 68, 68, 0.6), 0 0 10px rgba(239, 68, 68, 0.4)',
+                },
+                '100%': {
+                  boxShadow: '0 0 10px rgba(239, 68, 68, 0.9), 0 0 20px rgba(239, 68, 68, 0.7)',
+                },
+              },
+              float: {
+                '0%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-20px)' },
+                '100%': { transform: 'translateY(0px)' }
+              },
+              'scroll-final': {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
+              },
+              shimmer: {
+                'from': { 'background-position': '200% 0' },
+                'to': { 'background-position': '-200% 0' },
+              },
+              blink: {
+                'from, to': { opacity: 1 },
+                '50%': { opacity: 0 },
+              },
+              'blob-idle': {
+                '0%, 100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%', transform: 'translate3d(0,0,0) rotate(0deg) scale(1)' },
+                '50%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%', transform: 'translate3d(0, 5px, 0) rotate(5deg) scale(1.02)' },
+              },
+              'blob-pulse': {
+                '0%, 100%': { transform: 'scale3d(1, 1, 1)' },
+                '50%': { transform: 'scale3d(1.05, 1.05, 1.05)' },
+              },
+              'waveform': {
+                '0%, 100%': { borderRadius: '63% 37% 54% 46% / 55% 48% 52% 45%' },
+                '14%': { borderRadius: '40% 60% 54% 46% / 49% 60% 40% 51%' },
+                '28%': { borderRadius: '54% 46% 38% 62% / 49% 45% 55% 51%' },
+                '42%': { borderRadius: '61% 39% 55% 45% / 61% 38% 62% 39%' },
+                '56%': { borderRadius: '61% 39% 67% 33% / 70% 50% 50% 30%' },
+                '70%': { borderRadius: '50% 50% 34% 66% / 56% 68% 32% 44%' },
+                '84%': { borderRadius: '46% 54% 50% 50% / 55% 48% 52% 45%' },
+              },
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      html {
+        font-size: 80%;
+      }
+      body {
+        font-family: 'Inter', 'sans-serif';
+        background-color: #F9FAFB;
+        color: #374151;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* Hide main scrollbar for a cleaner look */
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+      body::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+      .dark body {
+        background-color: #000000;
+        color: #e0e0e0;
+      }
+      .hover\\:pause:hover {
+        animation-play-state: paused;
+      }
+      .prose {
+        --tw-prose-body: theme('colors.gray.700');
+        --tw-prose-headings: theme('colors.gray.900');
+        --tw-prose-lead: theme('colors.gray.600');
+        --tw-prose-links: theme('colors.primary');
+        --tw-prose-bold: theme('colors.gray.900');
+        --tw-prose-counters: theme('colors.gray.500');
+        --tw-prose-bullets: theme('colors.primary');
+        --tw-prose-hr: theme('colors.gray.200');
+        --tw-prose-quotes: theme('colors.gray.900');
+        --tw-prose-quote-borders: theme('colors.primary');
+        --tw-prose-captions: theme('colors.gray.500');
+        --tw-prose-code: theme('colors.gray.900');
+        --tw-prose-pre-code: theme('colors.gray.700');
+        --tw-prose-pre-bg: theme('colors.gray.100');
+        --tw-prose-th-borders: theme('colors.gray.300');
+        --tw-prose-td-borders: theme('colors.gray.200');
+        --tw-prose-invert-body: theme('colors.white/80');
+        --tw-prose-invert-headings: theme('colors.white');
+        --tw-prose-invert-lead: theme('colors.white/90');
+        --tw-prose-invert-links: theme('colors.primary');
+        --tw-prose-invert-bold: theme('colors.white');
+        --tw-prose-invert-counters: theme('colors.white/60');
+        --tw-prose-invert-bullets: theme('colors.primary');
+        --tw-prose-invert-hr: theme('colors.white/10');
+        --tw-prose-invert-quotes: theme('colors.white/90');
+        --tw-prose-invert-quote-borders: theme('colors.primary');
+        --tw-prose-invert-captions: theme('colors.white/70');
+        --tw-prose-invert-code: theme('colors.white');
+        --tw-prose-invert-pre-code: theme('colors.white/80');
+        --tw-prose-invert-pre-bg: theme('colors.black/20');
+        --tw-prose-invert-th-borders: theme('colors.white/20');
+        --tw-prose-invert-td-borders: theme('colors.white/10');
+      }
+      /* Custom Blog Heading Styles */
+      .prose h2, .prose h3, .prose h4 {
+        font-weight: 700; /* bold */
+      }
+      .dark .prose h2, .dark .prose h3, .dark .prose h4 {
+        color: theme('colors.white');
+      }
+      .prose h2 {
+        font-size: 2em;
+      }
+      .prose h3 {
+        font-size: 1.6em;
+      }
+      .prose h4 {
+        font-size: 1.3em;
+      }
+      /* Custom Table Font Size for Blog Articles */
+      .prose table th, .prose table td {
+        font-size: 0.8em; /* Smaller font on mobile */
+        padding: 0.4rem 0.5rem; /* Tighter padding on mobile */
+      }
+      /* Restore original size for desktop */
+      @media (min-width: 768px) {
+        .prose table th, .prose table td {
+          font-size: 0.9em;
+          padding: 0.5rem 0.75rem;
+        }
+      }
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+      }
+      /* Custom, theme-aware scrollbar */
+      .custom-scrollbar {
+        /* For Firefox */
+        scrollbar-width: thin;
+        scrollbar-color: #9CA3AF transparent;
+      }
+      .dark .custom-scrollbar {
+        scrollbar-color: #4B5563 transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #9CA3AF; /* A neutral gray for light mode */
+        border-radius: 10px;
+      }
+      .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #4B5563; /* A darker gray for dark mode */
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: #FF5630; /* Brand primary color on hover */
+      }
+       /* Responsive Tables for Blog Articles */
+      @media (max-width: 768px) {
+        .prose table {
+          border: 0;
+        }
+        .prose table thead {
+          /* Hide thead, but keep for accessibility */
+          border: none;
+          clip: rect(0 0 0 0);
+          height: 1px;
+          margin: -1px;
+          overflow: hidden;
+          padding: 0;
+          position: absolute;
+          width: 1px;
+        }
+        .prose table tr {
+          display: block;
+          margin-bottom: 1rem;
+          border-radius: 0.5rem;
+          border: 1px solid theme('colors.white/10');
+          background-color: theme('colors.white/5');
+          box-shadow: none;
+        }
+        .prose table td {
+          display: block;
+          text-align: right; /* Align content to the right */
+          position: relative;
+          padding-left: 50% !important; /* Make space for the label */
+          border-bottom: 1px solid theme('colors.white/10');
+        }
+        .prose table td:last-child {
+          border-bottom: 0;
+        }
+        .prose table td::before {
+          content: attr(data-label);
+          position: absolute;
+          left: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 45%;
+          padding-right: 0.5rem;
+          white-space: nowrap;
+          text-align: left;
+          font-weight: 700;
+          color: theme('colors.primary');
+        }
+      }
+      /* --- Autofill Styles --- */
+      /* Light mode autofill override */
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active,
+      textarea:-webkit-autofill,
+      textarea:-webkit-autofill:hover,
+      textarea:-webkit-autofill:focus,
+      textarea:-webkit-autofill:active {
+          transition: background-color 5000s ease-in-out 0s;
+          -webkit-text-fill-color: #1f2937 !important;
+          -webkit-box-shadow: 0 0 0 30px #ffffff4d inset !important;
+      }
+
+      /* Dark mode autofill override */
+      .dark input:-webkit-autofill,
+      .dark input:-webkit-autofill:hover,
+      .dark input:-webkit-autofill:focus,
+      .dark input:-webkit-autofill:active,
+      .dark textarea:-webkit-autofill,
+      .dark textarea:-webkit-autofill:hover,
+      .dark textarea:-webkit-autofill:focus,
+      .dark textarea:-webkit-autofill:active {
+          -webkit-text-fill-color: #FFF !important;
+          -webkit-box-shadow: 0 0 0 30px #0000004d inset !important;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^18.3.1/",
+    "react": "https://esm.sh/react@^18.3.1",
+    "vite": "https://esm.sh/vite@^7.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^18.3.1/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.13.0",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.0.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.45.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <noscript>
+      <h1>Synaptix Studio | AI Automation</h1>
+      <p>Synaptix Studio is an AI automation agency building custom chatbots, voice agents, and smart business solutions to help you reduce costs and drive revenue. Please enable JavaScript to view the full interactive site.</p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

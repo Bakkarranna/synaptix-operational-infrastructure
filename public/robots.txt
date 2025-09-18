@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://synaptixstudio.com/sitemap.xml
