@@ -69,8 +69,8 @@ const AIEmailSubjectLineTesterSection: React.FC = () => {
         setResult(null);
 
         try {
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an expert email marketing analyst with a deep understanding of what drives high open rates and avoids spam filters. Your task is to analyze a user's email subject line and provide a detailed breakdown and suggestions for improvement. If the user provides context about the audience or topic, you MUST use it to make your analysis and suggestions far more specific and relevant.
 
             You MUST return a single, valid JSON object and nothing else.

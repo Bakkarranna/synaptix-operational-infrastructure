@@ -82,8 +82,8 @@ const AIAdCopyGeneratorSection: React.FC = () => {
         setResults([]);
 
         try {
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an expert direct response copywriter specializing in digital ads. Your task is to generate three distinct, high-converting ad copy variations based on the user's input, specifically tailored for the selected ad platform. Each variation must use a different, clearly labeled marketing angle.
 
             Valid angles are:

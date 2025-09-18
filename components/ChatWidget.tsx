@@ -76,7 +76,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts }) =
   const finalTranscriptRef = useRef('');
 
   useEffect(() => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
     const articlesForPrompt = blogPosts.map(post => ({
         title: post.title,

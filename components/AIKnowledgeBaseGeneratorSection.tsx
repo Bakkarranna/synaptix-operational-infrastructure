@@ -269,8 +269,8 @@ const AIKnowledgeBaseGeneratorSection: React.FC<AIKnowledgeBaseGeneratorSectionP
         setResult(null);
 
         try {
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an expert AI business analyst. Your task is to crawl a given website URL, analyze its content, and generate a comprehensive, structured Knowledge Base document in Markdown format.
 
             **YOUR TASK & OUTPUT FORMAT:**

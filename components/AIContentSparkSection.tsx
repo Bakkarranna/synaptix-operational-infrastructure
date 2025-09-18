@@ -60,8 +60,8 @@ const AIContentSparkSection: React.FC = () => {
         setCopied(false);
 
         try {
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             
             const systemInstruction = `You are a world-class Viral Content Strategist and Growth Hacker. Your task is to generate exceptionally high-quality, engaging content based on user inputs, designed for maximum social media impact.
 
@@ -116,7 +116,13 @@ Your JSON output must contain:
     };
     
     const handleCopy = () => {
-        const fullContent = `${editableHook}\n\n${editableBody}\n\n${editableCta}\n\n${generatedContent?.hashtags.map(h => `#${h}`).join(' ')}`;
+        const fullContent = `${editableHook}
+
+${editableBody}
+
+${editableCta}
+
+${generatedContent?.hashtags.map(h => `#${h}`).join(' ')}`;
         navigator.clipboard.writeText(fullContent.trim());
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);

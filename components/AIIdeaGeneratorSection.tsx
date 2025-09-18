@@ -108,8 +108,8 @@ const AIIdeaGeneratorSection: React.FC<{ navigate: (path: string) => void }> = (
         setIdeas([]);
 
         try {
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const availableIcons: IconName[] = ['zap', 'chat', 'users', 'cart', 'chart-bar', 'phone', 'search', 'rocket', 'lightbulb', 'bolt', 'target'];
             
             const systemPrompt = `You are an expert AI business strategist from Synaptix Studio. Your goal is to provide three distinct, actionable, and high-impact AI automation ideas based on the user's business context.

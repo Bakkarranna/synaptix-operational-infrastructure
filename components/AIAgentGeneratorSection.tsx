@@ -42,8 +42,8 @@ const ChatbotDemo: React.FC<{ result: AgentResult }> = ({ result }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
         const chatInstance = ai.chats.create({
             model: 'gemini-2.5-flash',
             config: {
@@ -162,8 +162,8 @@ const VoiceAgentDemo: React.FC<{ result: AgentResult }> = ({ result }) => {
             recognitionRef.current.stop();
             setIsListening(false);
             
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const chat = ai.chats.create({
                 model: 'gemini-2.5-flash',
                 config: { systemInstruction: result.systemPrompt }
@@ -212,8 +212,8 @@ const VoiceAgentSimulation: React.FC<{ result: AgentResult }> = ({ result }) => 
         setIsLoading(true);
 
         try {
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const chat = ai.chats.create({
                 model: 'gemini-2.5-flash',
                 config: { systemInstruction: result.systemPrompt }
@@ -371,8 +371,8 @@ const AIAgentGeneratorSection: React.FC = () => {
         setResult(null);
 
         try {
-            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
              const systemInstruction = `You are an AI Agent Architect at Synaptix Studio. Your task is to design a complete personality and operational blueprint for a bespoke AI agent (voice or chatbot) based on client specifications. Your output MUST be a single, valid JSON object, and nothing else.
 
             The JSON object must contain:

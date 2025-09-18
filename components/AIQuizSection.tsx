@@ -69,7 +69,7 @@ const AIQuizSection: React.FC<AIQuizSectionProps> = ({ navigate }) => {
 
     const generateReport = async (finalAnswers: string[]) => {
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are a professional business automation consultant. Your task is to analyze a user's answers to a business health quiz and provide a detailed, actionable report.
 
             You MUST return a single, valid JSON object and nothing else.

@@ -47,7 +47,7 @@ const ContactSection: React.FC = () => {
 
     try {
       // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
       const prompt = `Act as an expert AI automation consultant from Synaptix Studio. The user, **${formData.name}**, has provided their email "${formData.email}", their website URL: "${formData.websiteUrl}", and described their needs as: "${formData.businessNeeds}".
 
       Your task is to generate a detailed, high-level AI strategy document for them. Your analysis MUST be laser-focused on ROI. Use Google Search to analyze their website URL (if provided) and their business description to understand their industry, services, and current state.

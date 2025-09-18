@@ -116,7 +116,7 @@ const ROICalculatorSection: React.FC<ROICalculatorSectionProps> = ({ navigate })
     
     try {
         // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `process.env.API_KEY` to align with coding guidelines and fix environment variable access errors.
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
         const systemInstruction = `You are a sophisticated AI Financial Analyst for Synaptix Studio. Your task is to analyze a potential client's business metrics and generate a compelling, data-driven ROI projection. You MUST return a single, valid JSON object and nothing else.
 
         Your calculations should be based on these assumptions unless specified otherwise:

@@ -310,7 +310,7 @@ const AIWebsiteAuditorSection: React.FC<AIWebsiteAuditorSectionProps> = ({ navig
         setResult(null);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are a world-class SEO, Conversion Rate Optimization (CRO), and UX specialist. Your task is to conduct a professional audit of a given website URL and provide a structured report in Markdown format. Use Google Search extensively to analyze the website.
 
 **YOUR TASK & OUTPUT FORMAT:**

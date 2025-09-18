@@ -127,7 +127,7 @@ const AIPublishingPipeline: React.FC<AIPipelineProps> = ({ onDraftGenerated, onC
     setIsSuggestingSeo(true);
     setError(null);
     try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
         const systemInstruction = `You are an expert SEO and marketing strategist for Synaptix Studio, an AI Automation Agency. For the given article topic, your task is to generate a target audience persona and a strategic list of keywords.
 
         **CRITICAL REQUIREMENTS:**
@@ -235,7 +235,7 @@ const cleanupAiContent = (markdown: string): string => {
     setIsLoading(true);
     setError(null);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
       const systemInstruction = `You are an elite AI Content Strategy team for Synaptix Studio. Your primary objective is to take a brief and autonomously execute a complete content creation pipeline, resulting in a professional-grade, SEO-optimized article that adheres to the strict "Synaptix Studio Blog Blueprint".
 
 **THE AI PUBLISHING PIPELINE (Your Automated Workflow):**
@@ -458,7 +458,7 @@ const ContentStrategistView: React.FC<ContentStrategistViewProps> = ({ allPosts,
         setError(null);
         setSuggestions([]);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are a world-class SEO and Content Strategist for Synaptix Studio. Your task is to analyze our existing blog content, identify content gaps, and propose three new, high-potential article ideas that will attract our target audience (SMBs, entrepreneurs, tech adopters) and rank on Google.
 
             **Your Workflow:**
@@ -558,7 +558,7 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
         setGeneratedMeta([]);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an expert SEO Performance Analyst. Your task is to analyze a blog post's performance (simulated) and provide a concise, actionable optimization report.
 
             **Your Workflow:**
@@ -595,7 +595,7 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
     const handleGenerateMeta = async () => {
         if (!selectedPost) return;
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an SEO copywriter. Based on the article content, generate 3 new, compelling meta descriptions (under 160 characters) designed to improve click-through rate. Return a JSON object with a single key "descriptions" which is an array of strings.`;
             const userPrompt = `Article Title: ${selectedPost.title}\nContent: ${selectedPost.content.substring(0, 500)}`;
             const response = await ai.models.generateContent({
