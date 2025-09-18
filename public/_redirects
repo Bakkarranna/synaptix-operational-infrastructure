@@ -1,0 +1,20 @@
+# Vercel-compatible redirects file
+# This file will be copied to the dist folder during build
+
+# Handle client-side routing for React Router
+/*    /index.html   200
+
+# Redirect old URLs (if you have any legacy URLs)
+# /old-page    /new-page    301
+
+# Force www subdomain
+# synaptixstudio.com/*    https://www.synaptixstudio.com/:splat    301!
+
+# API proxy redirects (if needed)
+# /api/*    https://your-api-domain.com/api/:splat    200
+
+# Blog redirects (if you migrated from another platform)
+# /blog/old-slug    /blog/new-slug    301
+
+# Remove trailing slashes
+/*/    /:splat    301
