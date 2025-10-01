@@ -1,12 +1,15 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { CORE_SERVICES, ADD_ONS, TRUST_POINTS, YEARLY_DISCOUNT_PERCENTAGE, CALENDLY_LINK, ROI_HIGHLIGHTS, CURRENCIES } from '../constants';
 import { useOnScreen } from '../hooks/useOnScreen';
 import { Icon, IconName, CheckIcon } from './Icon';
 import StyledText from './StyledText';
 import { checkReferralCode } from '../services/supabase';
+import TrustedBySection from './TrustedBySection';
 
 interface PricingSectionProps {
   navigate: (path: string) => void;
+  openCalendlyModal: () => void;
 }
 type FeeRange = { min: number; max: number };
 type PricingPlan = 'monthly' | 'yearly';
@@ -38,7 +41,7 @@ const AnimatedNumber: React.FC<{ value: number }> = ({ value }) => {
   return <span>{value === 0 ? '0' : currentValue.toLocaleString()}</span>;
 };
 
-const PricingSection: React.FC<PricingSectionProps> = ({ navigate }) => {
+const PricingSection: React.FC<PricingSectionProps> = ({ navigate, openCalendlyModal }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isSectionVisible = useOnScreen(sectionRef);
 
@@ -128,11 +131,6 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate }) => {
       }
   }
   
-  const handleCTAClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    navigate('/#lets-talk');
-  };
-
   const yearlyDiscountMultiplier = (100 - YEARLY_DISCOUNT_PERCENTAGE) / 100;
 
   return (
@@ -375,9 +373,9 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate }) => {
                          {referralError && <p className="text-red-500 dark:text-red-400 text-xs text-center animate-fade-in-fast">{referralError}</p>}
                      </div>
 
-                    <a href="#lets-talk" onClick={handleCTAClick} className="mt-4 sm:mt-6 w-full inline-block text-center bg-primary text-white font-bold py-2.5 sm:py-3 px-6 text-sm sm:text-base rounded-full hover:bg-opacity-90 transition-all transform hover:scale-105 animate-glow">
+                    <button onClick={openCalendlyModal} className="mt-4 sm:mt-6 w-full inline-block text-center bg-primary text-white font-bold py-2.5 sm:py-3 px-6 text-sm sm:text-base rounded-full hover:bg-opacity-90 transition-all transform hover:scale-105 animate-glow">
                       Book a Free Discovery Call
-                    </a>
+                    </button>
                     <p className="text-center text-xs text-gray-500 dark:text-white/60 mt-3">Final quote confirmed after discovery call.</p>
                  </div>
                  
@@ -431,6 +429,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate }) => {
                 ))}
             </div>
         </div>
+        <TrustedBySection />
       </div>
     </section>
   );

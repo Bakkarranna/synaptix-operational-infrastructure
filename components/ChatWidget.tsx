@@ -27,6 +27,7 @@ interface ChatWidgetProps {
   navigate: (path: string) => void;
   theme: string;
   blogPosts: BlogPost[];
+  openCalendlyModal: () => void;
 }
 
 const UserVoiceMessage: React.FC<{ message: Message; messageRef: React.RefObject<HTMLDivElement> | null }> = ({ message, messageRef }) => {
@@ -52,7 +53,7 @@ const UserVoiceMessage: React.FC<{ message: Message; messageRef: React.RefObject
   )
 };
 
-const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts }) => {
+const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, openCalendlyModal }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { sender: 'ai', text: "Hello! I'm the Synaptix AI assistant. My goal is to show you how AI can help your business make more money or cut costs. How can I help you today?" }
@@ -130,7 +131,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts }) =
 
     **4. Contact & Next Steps:**
     - The best way to get a custom plan is to use the "Free AI Strategy" generator on the '/#ai-strategy' section of the homepage.
-    - For a detailed discussion, users can book a free demo call via the Calendly link or use the "Let's Talk" contact form ('/#lets-talk').
+    - For a detailed discussion, users can book a free demo call. If they ask to do this, use the navigateTo field with the value "${CALENDLY_LINK}".
 
     **5. Social Media:**
     - We are active on X (formerly Twitter), LinkedIn, and Instagram.
@@ -211,17 +212,9 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts }) =
     if ('speechSynthesis' in window) {
         speechSynthesis.cancel();
     }
-    if (action === '#book-demo') {
-        window.open(CALENDLY_LINK, '_blank');
-        trackEvent('book_demo_chat', {});
-        const confirmationMessage: Message = { sender: 'ai', text: `Great! I've opened the booking page for you. Is there anything else I can help with?` };
-        setMessages(prev => [...prev, confirmationMessage]);
-        speak(confirmationMessage.text);
-        setCurrentSuggestions([
-            "What services do you offer?",
-            "How does your pricing work?",
-            "Tell me about your partners."
-        ]);
+    if (action === CALENDLY_LINK) {
+        openCalendlyModal();
+        setIsOpen(false);
     } else if (action) {
         navigate(action);
         setIsOpen(false);

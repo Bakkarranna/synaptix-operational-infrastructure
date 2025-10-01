@@ -152,7 +152,7 @@ const cleanupAiContent = (markdown: string): string => {
         setIsLoading(true);
         setError(null);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an elite AI Content Strategy team for Synaptix Studio. Your task is to write or regenerate a blog post based on a provided brief, adhering to the "Synaptix Studio Blog Blueprint".
 
 **THE BLUEPRINT (Your Core Directives):**
@@ -350,7 +350,7 @@ const AIToolkit = forwardRef<AIToolkitHandles, AIToolkitProps>(({ postData, onOp
         setIsCheckingQa(true);
         setQaReport(null);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are a meticulous AI Quality Assurance Co-Pilot for a blog. Your task is to analyze a provided article draft against the "Synaptix Studio Blog Blueprint" and return a structured QA report.
 
 **BLUEPRINT RULES FOR ANALYSIS:**
@@ -392,9 +392,15 @@ You MUST return a single, valid JSON object with the following structure:
         if (!qaReport || qaReport.actionableFeedback.length === 0) return;
         setIsImprovingContent(true);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an expert content editor. Your task is to rewrite the provided blog article to incorporate the specified actionable feedback. Preserve the original markdown formatting. Return ONLY the full, rewritten article text.`;
-            const userPrompt = `**Actionable Feedback to Implement:**\n- ${qaReport.actionableFeedback.join('\n- ')}\n\n**Original Article:**\n---\n${postData.content}\n---`;
+            const userPrompt = `**Actionable Feedback to Implement:**
+- ${qaReport.actionableFeedback.join('\n- ')}
+
+**Original Article:**
+---
+${postData.content}
+---`;
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
                 contents: userPrompt,
@@ -412,7 +418,7 @@ You MUST return a single, valid JSON object with the following structure:
         setIsAnalyzingHeadline(true);
         setHeadlineReport(null);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are a world-class viral marketing expert from platforms like BuzzFeed and Upworthy, now working as an SEO copywriter for Synaptix Studio, an AI Automation Agency. Your task is to analyze a blog post headline, provide a professional-grade score, and suggest superior, SEO-optimized alternatives based on proven virality formulas.
 
 **MANDATORY BRAND KEYWORDS:**
@@ -481,7 +487,7 @@ You MUST return a single, valid JSON object with the following structure:
         setIsSuggestingAudience(true);
         setSuggestedAudience(null);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are a marketing strategist. Based on the article title and content, create a detailed target audience persona. Describe their role, goals, and pain points in a concise paragraph. Return ONLY the descriptive paragraph as a string.`;
             const userPrompt = `Article Title: ${postData.title}\nContent Snippet: ${postData.content.substring(0, 500)}`;
             const response = await ai.models.generateContent({
@@ -501,7 +507,7 @@ You MUST return a single, valid JSON object with the following structure:
         setIsGeneratingKeywords(true);
         setSuggestedKeywords(null);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const systemInstruction = `You are an expert SEO analyst for Synaptix Studio, an AI Automation Agency. Your task is to generate a strategic list of keywords for a blog article.
 
 **MANDATORY BRAND KEYWORDS:**
@@ -535,7 +541,7 @@ You MUST return a single, valid JSON object with two keys: "short_tail" (an arra
         if (!suggestedKeywords) return;
         setIsInsertingKeywords(true);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
             const allKeywords = [...suggestedKeywords.short_tail, ...suggestedKeywords.long_tail];
             const systemInstruction = `You are an expert SEO copywriter. Your task is to rewrite the provided article to naturally and seamlessly integrate the given list of keywords.
 
@@ -545,7 +551,13 @@ You MUST return a single, valid JSON object with two keys: "short_tail" (an arra
 3.  **Preserve Markdown:** The original markdown formatting (headings, lists, bold text) must be preserved.
 4.  **Return ONLY the Article:** Your response must be ONLY the full, rewritten article text. Do not include any preambles, apologies, or postscripts.`;
             
-            const userPrompt = `**Keywords to integrate:**\n${allKeywords.join(', ')}\n\n**Original Article:**\n---\n${postData.content}\n---`;
+            const userPrompt = `**Keywords to integrate:**
+${allKeywords.join(', ')}
+
+**Original Article:**
+---
+${postData.content}
+---`;
 
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',

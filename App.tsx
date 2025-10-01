@@ -8,11 +8,14 @@ import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import Background from './components/Background';
 import AboutSection from './components/AboutSection';
+import MeetTheFounderSection from './components/MeetTheFounderSection';
 import LegalPage from './components/LegalPage';
 import ChatWidget from './components/ChatWidget';
 import LetsTalkSection from './components/LetsTalkSection';
 import ResourceCenterSection from './components/ResourceCenterSection';
 import TestimonialsSection from './components/TestimonialsSection';
+import PartnersSection from './components/PartnersSection';
+import TrustedBySection from './components/TrustedBySection';
 import { PRIVACY_POLICY_CONTENT, TERMS_OF_SERVICE_CONTENT, TESTIMONIALS, AI_STRATEGY_ARTICLES, PRICING_FAQS } from './constants';
 import Preloader from './components/Preloader';
 import CookieConsentBanner from './components/CookieConsentBanner';
@@ -30,6 +33,7 @@ import { getBlogPosts, BlogPost } from './services/supabase';
 import { trackPageView } from './services/analytics';
 import CustomSolutionsSection from './components/CustomSolutionsSection';
 import { useOnScreen } from './hooks/useOnScreen';
+import CalendlyModal from './components/CalendlyModal';
 
 const AccordionItem: React.FC<{ faq: { question: string; answer: string; } }> = ({ faq }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -76,22 +80,25 @@ interface MainContentProps {
   blogPosts: BlogPost[];
   currentTestimonialIndex: number;
   onTestimonialDotClick: (index: number) => void;
+  openCalendlyModal: () => void;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ navigate, blogPosts, currentTestimonialIndex, onTestimonialDotClick }) => (
+const MainContent: React.FC<MainContentProps> = ({ navigate, blogPosts, currentTestimonialIndex, onTestimonialDotClick, openCalendlyModal }) => (
   <main>
-    <HeroSection navigate={navigate} />
+    <HeroSection navigate={navigate} openCalendlyModal={openCalendlyModal} />
     <ServicesSection />
     <CustomSolutionsSection navigate={navigate} />
     <HowItWorksSection />
+    <PartnersSection />
     <TestimonialsSection currentIndex={currentTestimonialIndex} onDotClick={onTestimonialDotClick} />
     <ContactSection />
     <AILaunchpadSection navigate={navigate} />
-    <PricingSection navigate={navigate} />
+    <PricingSection navigate={navigate} openCalendlyModal={openCalendlyModal} />
     <AboutSection navigate={navigate} />
+    <MeetTheFounderSection />
     <ResourceCenterSection navigate={navigate} blogPosts={blogPosts} />
     <FAQSection />
-    <LetsTalkSection />
+    <LetsTalkSection openCalendlyModal={openCalendlyModal} />
   </main>
 );
 
@@ -211,6 +218,9 @@ const App: React.FC = () => {
   // Testimonial State (lifted up)
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
 
+  // Calendly Modal State
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false);
+
   // Theme state is initialized robustly to prevent component flicker.
   const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme());
 
@@ -227,6 +237,16 @@ const App: React.FC = () => {
   // Memoized function to toggle the theme state.
   const toggleTheme = useCallback(() => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  }, []);
+
+  // Memoized function to open the Calendly modal.
+  const openCalendlyModal = useCallback(() => {
+    setShowCalendlyModal(true);
+  }, []);
+
+  // Memoized function to close the Calendly modal.
+  const closeCalendlyModal = useCallback(() => {
+    setShowCalendlyModal(false);
   }, []);
 
   useEffect(() => {
@@ -406,7 +426,7 @@ const App: React.FC = () => {
 
     const defaultMeta = {
       title: 'Synaptix Studio | AI Automation Agency',
-      description: "Synaptix Studio is an AI automation agency that builds AI chatbots, voice agents, web apps, automation tools, and smart business solutions. Your business should be smarter — let's automate that."
+      description: "Transform your business with AI automation solutions that reduce costs and drive revenue. Expert AI development, chatbots, and smart business systems."
     };
 
     const routeMeta: { [key: string]: { title: string, description: string } } = {
@@ -531,7 +551,7 @@ const App: React.FC = () => {
     }
 
     switch (path) {
-      case '/': return <MainContent navigate={navigate} blogPosts={blogPosts} currentTestimonialIndex={currentTestimonialIndex} onTestimonialDotClick={handleTestimonialDotClick} />;
+      case '/': return <MainContent navigate={navigate} blogPosts={blogPosts} currentTestimonialIndex={currentTestimonialIndex} onTestimonialDotClick={handleTestimonialDotClick} openCalendlyModal={openCalendlyModal} />;
       case '/privacy': return <LegalPage title="Privacy Policy" content={PRIVACY_POLICY_CONTENT} navigate={navigate} />;
       case '/terms': return <LegalPage title="Terms of Service" content={TERMS_OF_SERVICE_CONTENT} navigate={navigate} />;
       case '/ai-tools': return <AIToolsPage navigate={navigate} />;
@@ -552,8 +572,13 @@ const App: React.FC = () => {
         {renderContent()}
         <Footer navigate={navigate} theme={theme} />
       </div>
-      <ChatWidget navigate={navigate} theme={theme} blogPosts={blogPosts} />
+      <ChatWidget navigate={navigate} theme={theme} blogPosts={blogPosts} openCalendlyModal={openCalendlyModal} />
       <CookieConsentBanner navigate={navigate} />
+      <CalendlyModal
+        isOpen={showCalendlyModal}
+        onClose={closeCalendlyModal}
+        theme={theme}
+      />
       <PasswordModal 
         isOpen={showAdminLogin}
         onClose={() => setShowAdminLogin(false)}

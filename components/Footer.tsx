@@ -55,7 +55,8 @@ const Footer: React.FC<FooterProps> = ({ navigate, theme }) => {
             <p className="mt-4 text-gray-600 dark:text-white/60 text-sm max-w-xs">Your business could be smarter. Let's automate that!</p>
             
             <div className="mt-8">
-              <h4 className="font-bold text-sm font-montserrat text-gray-800 dark:text-white mb-3">Subscribe to our Newsletter</h4>
+              <h4 className="font-bold text-sm font-montserrat text-gray-800 dark:text-white mb-1">Join Our Newsletter</h4>
+              <p className="text-sm text-gray-600 dark:text-white/70 mb-3">Join 1,000+ founders getting weekly AI growth hacks.</p>
               <form onSubmit={handleSubscribe} className="max-w-sm">
                 <div className="flex gap-2">
                     <input

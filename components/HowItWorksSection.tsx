@@ -51,9 +51,7 @@ const HowItWorksSection: React.FC = () => {
           <h2 className="text-xl md:text-2xl font-bold font-montserrat bg-gradient-to-r from-gray-800 to-black bg-clip-text text-transparent dark:text-transparent dark:bg-gradient-to-r dark:from-brand-accent dark:via-white dark:to-brand-accent dark:animate-shimmer [background-size:200%_auto]">Our Approach</h2>
         </div>
         <div className="relative">
-          {/* Vertical line - Now visible on all screens for timeline effect */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-1 bg-gray-200 dark:bg-white/10 rounded-full"></div>
-
+          {/* Vertical line removed */}
           {HOW_IT_WORKS_STEPS.map((step, index) => (
             <Step key={index} step={step} index={index} />
           ))}

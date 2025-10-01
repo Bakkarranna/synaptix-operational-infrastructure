@@ -2,11 +2,14 @@ import React, { useState, useRef } from 'react';
 import { useOnScreen } from '../hooks/useOnScreen';
 import { UserIcon, EmailIcon, PhoneIcon, PencilIcon, CheckCircleIcon } from './Icon';
 import StyledText from './StyledText';
-import { CALENDLY_LINK } from '../constants';
 import { saveContactLead } from '../services/supabase';
 import { trackEvent } from '../services/analytics';
 
-const LetsTalkSection: React.FC = () => {
+interface LetsTalkSectionProps {
+    openCalendlyModal: () => void;
+}
+
+const LetsTalkSection: React.FC<LetsTalkSectionProps> = ({ openCalendlyModal }) => {
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -69,6 +72,7 @@ const LetsTalkSection: React.FC = () => {
 
     const handleBookDemoClick = () => {
       trackEvent('click_book_demo', { section: 'lets_talk' });
+      openCalendlyModal();
     };
 
     if (submitted && !loading) {
@@ -146,15 +150,13 @@ const LetsTalkSection: React.FC = () => {
                                     </div>
                                 </div>
                                 
-                                <a
-                                    href={CALENDLY_LINK}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <button
+                                    type="button"
                                     onClick={handleBookDemoClick}
                                     className="w-full max-w-sm bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/20 text-gray-800 dark:text-white font-bold py-2.5 text-sm px-12 rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all transform hover:scale-105"
                                 >
                                     Book a 15-Min Demo Call
-                                </a>
+                                </button>
                             </div>
                         </form>
                     )}

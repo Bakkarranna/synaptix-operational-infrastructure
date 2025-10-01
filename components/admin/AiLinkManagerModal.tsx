@@ -39,31 +39,20 @@ interface AiLinkManagerModalProps {
   onSave: () => void;
 }
 
-const BRAVE_API_KEY = import.meta.env.VITE_BRAVE_API_KEY;
+// Note: Brave API is now handled server-side through /api/brave endpoint
 
 const searchWithBrave = async (query: string): Promise<string | null> => {
-    const gogglesUrl = 'https://raw.githubusercontent.com/brave/goggles-quickstart/main/goggles/tech_blogs.goggle';
-    const searchParams = new URLSearchParams({
-        q: query,
-        goggles_url: gogglesUrl,
-    });
-
-    const braveApiUrl = `https://api.search.brave.com/res/v1/web/search?${searchParams.toString()}`;
-    const proxyUrl = new URL(`https://corsproxy.io/?${encodeURIComponent(braveApiUrl)}`);
-    
     try {
-        const response = await fetch(proxyUrl, {
-            headers: {
-                'Accept': 'application/json',
-                'X-Subscription-Token': BRAVE_API_KEY,
-            }
-        });
+        const response = await fetch(`/api/brave?q=${encodeURIComponent(query)}`);
+        
         if (!response.ok) {
             const errorBody = await response.text();
-            console.error(`Brave API (via proxy) error for query "${query}": ${response.status} ${response.statusText}`, errorBody);
+            console.error(`Brave API error for query "${query}": ${response.status} ${response.statusText}`, errorBody);
             throw new Error(`Brave API request failed with status ${response.status}`);
         }
+        
         const data = await response.json();
+        
         if (data.web && data.web.results && data.web.results.length > 0) {
             const preferredResult = data.web.results.find((r: any) => 
                 r.url && !r.url.includes('youtube.com') && !r.url.includes('twitter.com') && !r.url.includes('linkedin.com')
@@ -421,7 +410,7 @@ const AiLinkManagerModal: React.FC<AiLinkManagerModalProps> = ({ isOpen, onClose
             { title: "AI Automation Agency", url: "https://www.synaptixstudio.com/#services"}
         ];
         
-        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
         const [internalRes, externalRes] = await Promise.all([
             Promise.resolve(findInternalLinkOpportunities(content, sitemap)),
             fetchExternalSuggestions(ai)

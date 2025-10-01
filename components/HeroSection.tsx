@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import StyledText from './StyledText';
 import { trackEvent } from '../services/analytics';
@@ -9,13 +10,15 @@ import PartnerLogo from './PartnerLogo';
 
 interface HeroSectionProps {
   navigate: (path: string) => void;
+  openCalendlyModal: () => void;
 }
 
 interface RightColumnContentProps {
   navigate: (path: string) => void;
+  openCalendlyModal: () => void;
 }
 
-const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate }) => {
+const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate, openCalendlyModal }) => {
     const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
     const [exiting, setExiting] = useState(false);
     const [clientLogoPage, setClientLogoPage] = useState(0);
@@ -128,10 +131,8 @@ const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate }) => 
 
             {/* 3. Offer/Value Proposition */}
             <div className="w-full grid grid-cols-2 gap-3">
-                <a 
-                    href={CALENDLY_LINK} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                <button
+                    onClick={openCalendlyModal}
                     className="group bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-primary/30 rounded-2xl p-4 shadow-xl text-center transition-all duration-300 transform hover:-translate-y-1 animate-glow flex flex-col items-center justify-center"
                 >
                     <LightbulbIcon className="h-6 w-6 text-primary mx-auto mb-2 transition-transform duration-300 group-hover:scale-110" />
@@ -140,7 +141,7 @@ const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate }) => 
                         Book Now
                         <svg className="w-3 h-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
-                </a>
+                </button>
                 <div className="bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-gray-200 dark:border-white/10 rounded-2xl p-3 shadow-xl group hover:border-primary/30 transition-all duration-300 hover:animate-glow flex flex-col h-full justify-center">
                     <div className="space-y-1.5">
                         <p className="text-xs font-semibold text-gray-800 dark:text-white/90 flex items-center gap-1.5"><CheckCircleIcon className="h-4 w-4 text-primary"/> One-Time Setup Fee</p>
@@ -162,7 +163,7 @@ const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate }) => 
 };
 
 
-const HeroSection: React.FC<HeroSectionProps> = ({ navigate }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -331,13 +332,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate }) => {
                     {submitted && <p className="text-green-500 dark:text-green-300 text-xs mt-2">Success! Thanks for subscribing.</p>}
                      {/* NEW CTA Buttons */}
                     <div className="mt-6 flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
-                      <a
-                          href="/#ai-strategy"
-                          onClick={(e) => { e.preventDefault(); navigate('/#ai-strategy'); }}
+                      <button
+                          onClick={openCalendlyModal}
                           className="text-center bg-primary text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full hover:bg-opacity-90 transition-all transform hover:scale-105 animate-glow"
                       >
                           Get Your Free AI Strategy
-                      </a>
+                      </button>
                       {/* Explore AI Tools - Desktop Only */}
                       <a
                           href="/ai-tools"
@@ -347,14 +347,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate }) => {
                           Explore AI Tools
                       </a>
                       {/* Book a Demo - Mobile/Tablet Only */}
-                      <a
-                          href={CALENDLY_LINK}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      <button
+                          onClick={openCalendlyModal}
                           className="lg:hidden text-center bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full transition-all transform hover:scale-105 hover:bg-primary/30"
                       >
                           Book a Free Demo
-                      </a>
+                      </button>
                   </div>
                 </div>
 
@@ -365,7 +363,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate }) => {
 
                 {/* Right Column: Cards */}
                 <div className="md:col-span-1 lg:col-span-2">
-                    <RightColumnContent navigate={navigate} />
+                    <RightColumnContent navigate={navigate} openCalendlyModal={openCalendlyModal} />
                 </div>
             </div>
       </div>

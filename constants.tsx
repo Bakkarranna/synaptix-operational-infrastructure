@@ -3,7 +3,7 @@
 import { IconName } from './components/Icon';
 import { BlogPost } from './services/supabase';
 
-export const CALENDLY_LINK = 'https://calendly.com/synaptix-studio';
+export const CALENDLY_LINK = '/#book-demo';
 
 export const NAV_LINKS = [
   { href: '/#services', label: 'Services', icon: 'gear' as IconName },
@@ -736,6 +736,20 @@ export const TESTIMONIALS = [
     quote: "The AI Outreach System follows up with every single lead from our website instantly. **We're now converting leads that used to go cold, and our agents are closing more deals.** It's an essential part of our sales process."
   }
 ];
+
+export const FOUNDER_STORY = {
+  name: 'Muhammad Abubakar Siddique',
+  title: 'Founder & CEO',
+  imageUrl: 'https://iili.io/KMA9J94.png',
+  story: [
+    'Every idea starts with a question: **"What if business could be smarter?"**',
+    'For me, that question became a journey. From my early days experimenting with design, marketing, and e-commerce to diving deep into **AI automation**, I\'ve always been driven by one thing — learning fast and turning ideas into impact.',
+    'Over the years, I explored countless skills and industries, but when the AI boom began, I saw something most people missed: the real power wasn\'t just in AI itself, but in how **automation could save time, cut costs, and unlock growth** for businesses everywhere.',
+    'That vision became Synaptix Studio.',
+    'I didn\'t just want to build another agency. I wanted to create a place where businesses could find **clarity, innovation, and results** without the guesswork. Today, with a growing team beside me, we\'re helping small and medium businesses **work smarter, not harder**.'
+  ],
+  quote: 'This is more than a company — it\'s a commitment to **simpler systems, stronger businesses, and smarter futures**.'
+};
 
 export const PARTNERS = [
   { name: 'Microsoft', domain: 'microsoft.com' },
