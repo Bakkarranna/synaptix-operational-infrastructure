@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon } from '../Icon';
 
 interface PasswordModalProps {
@@ -17,10 +17,17 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ isOpen, onClose, onSucces
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  // Reset state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setPassword('');
+      setError('');
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const verifyAndSubmit = () => {
     if (password === CORRECT_PASSWORD) {
       onSuccess();
       setPassword('');
@@ -28,6 +35,11 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ isOpen, onClose, onSucces
     } else {
       setError('Incorrect password. Please try again.');
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    verifyAndSubmit();
   };
 
   return (
@@ -52,6 +64,12 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ isOpen, onClose, onSucces
             onChange={(e) => {
               setPassword(e.target.value);
               setError('');
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                verifyAndSubmit();
+              }
             }}
             placeholder="Password"
             className="w-full text-center px-4 py-3 rounded-lg border border-white/20 bg-white/10 text-white placeholder-white/60 focus:ring-2 focus:ring-primary focus:border-transparent transition"

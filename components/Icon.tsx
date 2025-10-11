@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { iconCacheService } from '../services/iconCache';
 
 // FIX: Changed IconProps to use SVGProps to match SVG elements, resolving prop type conflicts.
 interface IconProps extends React.SVGProps<SVGSVGElement> {}
@@ -130,8 +131,6 @@ const icons: { [key in IconName]: React.FC<IconProps> } = {
   'key': KeyIcon,
 };
 
-const BRANDFETCH_CLIENT_ID = '1idyMWHGpXUFWWxXx_q';
-
 const socialIconDomains: Partial<Record<IconName, string>> = {
     'x': 'x.com',
     'linkedin': 'linkedin.com',
@@ -145,12 +144,29 @@ export const Icon: React.FC<{ name: IconName } & IconProps> = ({ name, ...props 
     
   if (domain) {
       const [hasError, setHasError] = useState(false);
+      const [iconUrl, setIconUrl] = useState<string>('');
+      // Removed isLoading state for preloader elimination
       
-      // Special case for 'x' which uses /logo instead of /symbol on Brandfetch for the correct icon
-      const endpoint = name === 'x' ? 'logo' : 'symbol';
-      const iconUrl = `https://cdn.brandfetch.io/${domain}/${endpoint}?c=${BRANDFETCH_CLIENT_ID}`;
+      // Load icon URL with caching
+      const loadIconUrl = useCallback(async () => {
+        setHasError(false);
+        
+        try {
+          // Special case for 'x' which uses /logo instead of /symbol on Brandfetch for the correct icon
+          const endpoint = name === 'x' ? 'logo' : 'symbol';
+          const url = await iconCacheService.getIconUrl(domain, endpoint);
+          setIconUrl(url);
+        } catch (error) {
+          setHasError(true);
+          setIconUrl('');
+        }
+      }, [domain, name]);
       
-      if (hasError) {
+      useEffect(() => {
+        loadIconUrl();
+      }, [loadIconUrl]);
+      
+      if (hasError || !iconUrl) {
           const IconComponent = icons[name];
           return <IconComponent {...props} />;
       }

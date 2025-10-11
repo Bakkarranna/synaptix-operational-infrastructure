@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Loading Performance Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+        .icon-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+        .icon-item .name {
+            font-size: 10px;
+            text-align: center;
+            color: #666;
+        }
+        .loading {
+            background: #e0e0e0;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .stats {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brandfetch Icon Loading Performance Test</h1>
+    
+    <div class="stats" id="stats">
+        <h3>Performance Metrics</h3>
+        <div id="metrics">Preparing test...</div>
+    </div>
+
+    <div class="test-container">
+        <h2>Partners (42 logos)</h2>
+        <div class="icon-grid" id="partners-grid"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Trusted Clients (20 logos)</h2>
+        <div class="icon-grid" id="clients-grid"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Social Icons (5 icons)</h2>
+        <div class="icon-grid" id="social-grid"></div>
+    </div>
+
+    <script>
+        // Test data from your constants
+        const PARTNERS = [
+            { name: 'Microsoft', domain: 'microsoft.com' },
+            { name: 'Google', domain: 'google.com' },
+            { name: 'OpenAI', domain: 'openai.com' },
+            { name: 'HubSpot', domain: 'hubspot.com' },
+            { name: 'Zapier', domain: 'zapier.com' },
+            { name: 'Make.com', domain: 'make.com' },
+            { name: 'NVIDIA', domain: 'nvidia.com' },
+            { name: 'AWS', domain: 'aws.amazon.com' },
+            { name: 'Stripe', domain: 'stripe.com' },
+            { name: 'Twilio', domain: 'twilio.com' },
+            { name: 'Slack', domain: 'slack.com' },
+            { name: 'Notion', domain: 'notion.so' },
+            { name: 'Airtable', domain: 'airtable.com' },
+            { name: 'Shopify', domain: 'shopify.com' },
+            { name: 'Salesforce', domain: 'salesforce.com' },
+            { name: 'Intercom', domain: 'intercom.com' },
+            { name: 'Zendesk', domain: 'zendesk.com' },
+            { name: 'Asana', domain: 'asana.com' },
+            { name: 'Trello', domain: 'trello.com' },
+            { name: 'Dropbox', domain: 'dropbox.com' },
+            { name: 'Canva', domain: 'canva.com' },
+            { name: 'Figma', domain: 'figma.com' },
+            { name: 'Webflow', domain: 'webflow.com' },
+            { name: 'Bubble', domain: 'bubble.io' },
+            { name: 'Retool', domain: 'retool.com' },
+            { name: 'Plaid', domain: 'plaid.com' },
+            { name: 'Vercel', domain: 'vercel.com' },
+            { name: 'Netlify', domain: 'netlify.com' },
+            { name: 'GitHub', domain: 'github.com' },
+            { name: 'GitLab', domain: 'gitlab.com' },
+            { name: 'Datadog', domain: 'datadoghq.com' },
+            { name: 'Sentry', domain: 'sentry.io' },
+            { name: 'Mixpanel', domain: 'mixpanel.com' },
+            { name: 'Amplitude', domain: 'amplitude.com' },
+            { name: 'Segment', domain: 'segment.com' },
+            { name: 'Looker', domain: 'looker.com' },
+            { name: 'Tableau', domain: 'tableau.com' },
+            { name: 'Snowflake', domain: 'snowflake.com' },
+            { name: 'Databricks', domain: 'databricks.com' },
+            { name: 'Algolia', domain: 'algolia.com' },
+            { name: 'Auth0', domain: 'auth0.com' },
+            { name: 'Scale AI', domain: 'scale.com' }
+        ];
+
+        const TRUSTED_BY_CLIENTS = [
+            { name: 'Mercury', domain: 'mercury.com' },
+            { name: 'Brex', domain: 'brex.com' },
+            { name: 'Ramp', domain: 'ramp.com' },
+            { name: 'Deel', domain: 'deel.com' },
+            { name: 'Gusto', domain: 'gusto.com' },
+            { name: 'Rippling', domain: 'rippling.com' },
+            { name: 'Vanta', domain: 'vanta.com' },
+            { name: 'Carta', domain: 'carta.com' },
+            { name: 'Pipe', domain: 'pipe.com' },
+            { name: 'Navan', domain: 'navan.com' },
+            { name: 'Pento', domain: 'pento.io' },
+            { name: 'Linear', domain: 'linear.app' },
+            { name: 'Pitch', domain: 'pitch.com' },
+            { name: 'Raycast', domain: 'raycast.com' },
+            { name: 'Clerk', domain: 'clerk.com' },
+            { name: 'Replit', domain: 'replit.com' },
+            { name: 'Loom', domain: 'loom.com' },
+            { name: 'Retool', domain: 'retool.com' },
+            { name: 'Plaid', domain: 'plaid.com' },
+            { name: 'Arc', domain: 'arc.tech' }
+        ];
+
+        const SOCIAL_ICONS = [
+            { name: 'X', domain: 'x.com', type: 'logo' },
+            { name: 'LinkedIn', domain: 'linkedin.com', type: 'symbol' },
+            { name: 'Instagram', domain: 'instagram.com', type: 'symbol' },
+            { name: 'YouTube', domain: 'youtube.com', type: 'symbol' },
+            { name: 'Medium', domain: 'medium.com', type: 'symbol' }
+        ];
+
+        const BRANDFETCH_CLIENT_ID = '1idyMWHGpXUFWWxXx_q';
+        const theme = 'light';
+
+        // Performance tracking
+        let stats = {
+            totalRequests: 0,
+            successfulLoads: 0,
+            failedLoads: 0,
+            startTime: 0,
+            endTime: 0,
+            loadTimes: []
+        };
+
+        function createIconElement(item, type = 'logo') {
+            const iconItem = document.createElement('div');
+            iconItem.className = 'icon-item loading';
+            
+            const img = document.createElement('img');
+            const name = document.createElement('div');
+            name.className = 'name';
+            name.textContent = item.name;
+            
+            iconItem.appendChild(img);
+            iconItem.appendChild(name);
+            
+            const startTime = performance.now();
+            const iconUrl = `https://cdn.brandfetch.io/${item.domain}/${type}/${theme}?c=${BRANDFETCH_CLIENT_ID}`;
+            
+            img.onload = () => {
+                const loadTime = performance.now() - startTime;
+                stats.loadTimes.push(loadTime);
+                stats.successfulLoads++;
+                iconItem.classList.remove('loading');
+                updateStats();
+            };
+            
+            img.onerror = () => {
+                stats.failedLoads++;
+                iconItem.classList.remove('loading');
+                iconItem.classList.add('error');
+                name.textContent = `${item.name} (Failed)`;
+                updateStats();
+            };
+            
+            img.src = iconUrl;
+            stats.totalRequests++;
+            
+            return iconItem;
+        }
+
+        function updateStats() {
+            const completed = stats.successfulLoads + stats.failedLoads;
+            const progress = ((completed / stats.totalRequests) * 100).toFixed(1);
+            
+            let avgLoadTime = 0;
+            if (stats.loadTimes.length > 0) {
+                avgLoadTime = (stats.loadTimes.reduce((a, b) => a + b, 0) / stats.loadTimes.length).toFixed(0);
+            }
+
+            const elapsedTime = stats.endTime > 0 ? 
+                ((stats.endTime - stats.startTime) / 1000).toFixed(2) : 
+                ((performance.now() - stats.startTime) / 1000).toFixed(2);
+
+            const metricsEl = document.getElementById('metrics');
+            metricsEl.innerHTML = `
+                <div><strong>Progress:</strong> ${completed}/${stats.totalRequests} (${progress}%)</div>
+                <div><strong>Successful Loads:</strong> <span class="success">${stats.successfulLoads}</span></div>
+                <div><strong>Failed Loads:</strong> <span class="error">${stats.failedLoads}</span></div>
+                <div><strong>Average Load Time:</strong> ${avgLoadTime}ms</div>
+                <div><strong>Total Time:</strong> ${elapsedTime}s</div>
+                ${completed === stats.totalRequests ? '<div class="success"><strong>✅ All requests completed!</strong></div>' : ''}
+            `;
+
+            if (completed === stats.totalRequests && stats.endTime === 0) {
+                stats.endTime = performance.now();
+                updateStats(); // Update one more time with final elapsed time
+            }
+        }
+
+        function runTest() {
+            stats.startTime = performance.now();
+            
+            // Load partners
+            const partnersGrid = document.getElementById('partners-grid');
+            PARTNERS.forEach(partner => {
+                partnersGrid.appendChild(createIconElement(partner, 'logo'));
+            });
+            
+            // Load clients
+            const clientsGrid = document.getElementById('clients-grid');
+            TRUSTED_BY_CLIENTS.forEach(client => {
+                clientsGrid.appendChild(createIconElement(client, 'logo'));
+            });
+            
+            // Load social icons
+            const socialGrid = document.getElementById('social-grid');
+            SOCIAL_ICONS.forEach(social => {
+                socialGrid.appendChild(createIconElement(social, social.type));
+            });
+            
+            updateStats();
+        }
+
+        // Start the test when page loads
+        window.addEventListener('load', () => {
+            setTimeout(runTest, 500); // Small delay to ensure everything is ready
+        });
+    </script>
+</body>
+</html>

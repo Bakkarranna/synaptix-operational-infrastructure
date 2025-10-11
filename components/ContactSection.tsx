@@ -275,24 +275,70 @@ const ContactSection: React.FC = () => {
                 </p>
               </div>
             
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6" role="form" aria-label="AI Strategy Generation Form">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="group flex items-center gap-4 px-4 rounded-lg border border-black/10 bg-white/80 dark:bg-black/20 backdrop-blur-sm dark:border-white/10 transition-all group-focus-within:ring-2 group-focus-within:ring-primary/50 dark:group-focus-within:ring-white">
-                        <UserIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0" />
-                        <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleInputChange} className="w-full bg-transparent py-3 border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60" required/>
+                        <UserIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0" aria-hidden="true" />
+                        <label htmlFor="contact-name" className="sr-only">Your Full Name</label>
+                        <input 
+                            id="contact-name"
+                            type="text" 
+                            name="name" 
+                            placeholder="Your Name" 
+                            value={formData.name} 
+                            onChange={handleInputChange} 
+                            className="w-full bg-transparent py-3 border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60" 
+                            required
+                            aria-label="Enter your full name"
+                            aria-required="true"
+                        />
                     </div>
                     <div className="group flex items-center gap-4 px-4 rounded-lg border border-black/10 bg-white/80 dark:bg-black/20 backdrop-blur-sm dark:border-white/10 transition-all group-focus-within:ring-2 group-focus-within:ring-primary/50 dark:group-focus-within:ring-white">
-                        <EmailIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0" />
-                        <input type="email" name="email" placeholder="Your Business Email" value={formData.email} onChange={handleInputChange} className="w-full bg-transparent py-3 border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60" required/>
+                        <EmailIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0" aria-hidden="true" />
+                        <label htmlFor="contact-email" className="sr-only">Your Business Email Address</label>
+                        <input 
+                            id="contact-email"
+                            type="email" 
+                            name="email" 
+                            placeholder="Your Business Email" 
+                            value={formData.email} 
+                            onChange={handleInputChange} 
+                            className="w-full bg-transparent py-3 border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60" 
+                            required
+                            aria-label="Enter your business email address"
+                            aria-required="true"
+                        />
                     </div>
                 </div>
                  <div className="group flex items-center gap-4 px-4 rounded-lg border border-black/10 bg-white/80 dark:bg-black/20 backdrop-blur-sm dark:border-white/10 transition-all group-focus-within:ring-2 group-focus-within:ring-primary/50 dark:group-focus-within:ring-white">
-                      <WebIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0" />
-                      <input type="text" name="websiteUrl" placeholder="Your Website URL (Optional)" value={formData.websiteUrl} onChange={handleInputChange} className="w-full bg-transparent py-3 border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60"/>
+                      <WebIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0" aria-hidden="true" />
+                      <label htmlFor="contact-website" className="sr-only">Your Website URL (Optional)</label>
+                      <input 
+                          id="contact-website"
+                          type="text" 
+                          name="websiteUrl" 
+                          placeholder="Your Website URL (Optional)" 
+                          value={formData.websiteUrl} 
+                          onChange={handleInputChange} 
+                          className="w-full bg-transparent py-3 border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60"
+                          aria-label="Enter your website URL (optional)"
+                      />
                 </div>
                 <div className="group flex items-start gap-4 px-4 py-3 rounded-lg border border-black/10 bg-white/80 dark:bg-black/20 backdrop-blur-sm dark:border-white/10 transition-all group-focus-within:ring-2 group-focus-within:ring-primary/50 dark:group-focus-within:ring-white">
-                  <TargetIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0 mt-1" />
-                  <textarea name="businessNeeds" placeholder="Describe your business, goals, and challenges..." rows={5} value={formData.businessNeeds} onChange={handleInputChange} className="w-full bg-transparent border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60 resize-none" required></textarea>
+                  <TargetIcon className="h-5 w-5 text-gray-600 dark:text-white/70 flex-shrink-0 mt-1" aria-hidden="true" />
+                  <label htmlFor="contact-business-needs" className="sr-only">Describe your business, goals, and challenges</label>
+                  <textarea 
+                      id="contact-business-needs"
+                      name="businessNeeds" 
+                      placeholder="Describe your business, goals, and challenges..." 
+                      rows={5} 
+                      value={formData.businessNeeds} 
+                      onChange={handleInputChange} 
+                      className="w-full bg-transparent border-none focus:ring-0 text-gray-800 placeholder-gray-500 dark:text-white dark:placeholder-white/60 resize-none" 
+                      required
+                      aria-label="Describe your business needs, goals, and challenges"
+                      aria-required="true"
+                  ></textarea>
                 </div>
                 
                 {error && <p className="text-center text-red-400 text-sm" role="alert" aria-live="polite">{error}</p>}
@@ -301,6 +347,7 @@ const ContactSection: React.FC = () => {
                   <button
                     type="submit"
                     disabled={loading}
+                    aria-label={loading ? "Generating your AI strategy plan" : "Generate your custom AI strategy plan"}
                     className="bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2.5 px-8 text-xs sm:py-2.5 sm:px-10 sm:text-sm rounded-full hover:bg-primary/30 transition-all transform hover:scale-105 animate-glow disabled:bg-primary/10 disabled:border-primary/20 disabled:text-gray-500 dark:disabled:text-white/50 disabled:cursor-not-allowed disabled:animate-none flex items-center justify-center mx-auto"
                   >
                     {loading ? 'Generating Plan...' : 'Generate My AI Plan'}
@@ -315,15 +362,29 @@ const ContactSection: React.FC = () => {
             <div ref={resultsRef} className="text-left animate-fade-in mt-12 pt-8 border-t border-gray-200 dark:border-white/20" aria-live="polite">
               <MarkdownRenderer content={aiResponse} />
               <div className="text-center mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 flex-wrap">
-                  <button onClick={handleDownload} className="w-full sm:w-auto bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/20 text-gray-800 dark:text-white font-bold py-2.5 px-6 text-sm rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
-                      <DownloadIcon className="h-5 w-5" />
+                  <button 
+                      onClick={handleDownload} 
+                      aria-label="Download your AI strategy report as PDF"
+                      className="w-full sm:w-auto bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/20 text-gray-800 dark:text-white font-bold py-2.5 px-6 text-sm rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                  >
+                      <DownloadIcon className="h-5 w-5" aria-hidden="true" />
                       Download PDF
                   </button>
-                  <button onClick={handleCopy} className="w-full sm:w-auto bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/20 text-gray-800 dark:text-white font-bold py-2.5 px-6 text-sm rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
-                      {copied ? <CheckIcon className="h-5 w-5 text-green-400"/> : <ClipboardIcon className="h-5 w-5" />}
+                  <button 
+                      onClick={handleCopy} 
+                      aria-label={copied ? "Report copied to clipboard" : "Copy AI strategy report to clipboard"}
+                      className="w-full sm:w-auto bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/20 text-gray-800 dark:text-white font-bold py-2.5 px-6 text-sm rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                  >
+                      {copied ? <CheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" /> : <ClipboardIcon className="h-5 w-5" aria-hidden="true" />}
                       {copied ? 'Copied!' : 'Copy Report'}
                   </button>
-                  <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-primary text-white font-bold py-2.5 px-6 text-sm rounded-full transition-all transform hover:scale-105 hover:bg-opacity-90 animate-glow inline-block">
+                  <a 
+                      href={CALENDLY_LINK} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      aria-label="Book a free demo call with Synaptix Studio"
+                      className="w-full sm:w-auto bg-primary text-white font-bold py-2.5 px-6 text-sm rounded-full transition-all transform hover:scale-105 hover:bg-opacity-90 animate-glow inline-block"
+                  >
                     Book a Free Demo Call
                   </a>
               </div>

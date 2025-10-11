@@ -103,22 +103,31 @@ const Header: React.FC<HeaderProps> = ({ navigate, theme, toggleTheme }) => {
             ))}
              <div className="relative" ref={resourcesMenuRef}>
                 <button
+                  type="button"
                   onClick={() => setIsResourcesMenuOpen(!isResourcesMenuOpen)}
+                  aria-label="Toggle resources menu"
+                  aria-expanded={isResourcesMenuOpen}
+                  aria-haspopup="menu"
                   className="text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white transition-colors font-medium text-xs flex items-center gap-1"
                 >
                   Resources
-                  <svg className={`w-3 h-3 transition-transform text-gray-700 dark:text-white/80 ${isResourcesMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                  <svg className={`w-3 h-3 transition-transform text-gray-700 dark:text-white/80 ${isResourcesMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                  {isResourcesMenuOpen && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-white/90 dark:bg-black/50 backdrop-blur-md rounded-xl border border-gray-200 dark:border-white/10 shadow-lg p-2 animate-fade-in-fast z-10">
+                    <div 
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-white/90 dark:bg-black/50 backdrop-blur-md rounded-xl border border-gray-200 dark:border-white/10 shadow-lg p-2 animate-fade-in-fast z-10"
+                        role="menu"
+                        aria-label="Resources menu"
+                    >
                     {RESOURCES_LINKS.map(link => (
                         <a
                         key={link.href}
                         href={link.href}
                         onClick={(e) => handleLinkClick(e, link.href)}
                         className="flex items-center gap-3 p-2 rounded-lg text-gray-800 dark:text-white/90 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-sm"
+                        role="menuitem"
                         >
-                        <Icon name={link.icon} className="h-5 w-5 text-primary" />
+                        <Icon name={link.icon} className="h-5 w-5 text-primary" aria-hidden="true" />
                         <span>{link.label}</span>
                         </a>
                     ))}
@@ -140,23 +149,31 @@ const Header: React.FC<HeaderProps> = ({ navigate, theme, toggleTheme }) => {
                 </a>
                 <div className="w-px h-4 bg-primary/30 dark:bg-cta-highlight/50" />
                 <button
+                  type="button"
                   onClick={() => setIsToolsMenuOpen(!isToolsMenuOpen)}
                   className="py-1 px-2 sm:px-2.5 hover:bg-primary/20 dark:hover:bg-cta-highlight/30 rounded-r-full transition-colors duration-200"
                   aria-label="Toggle business tools menu"
+                  aria-expanded={isToolsMenuOpen}
+                  aria-haspopup="menu"
                 >
-                  <svg className={`w-3 h-3 transition-transform text-primary dark:text-white ${isToolsMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                  <svg className={`w-3 h-3 transition-transform text-primary dark:text-white ${isToolsMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
               </div>
               {isToolsMenuOpen && (
-                <div className="absolute top-full right-0 mt-2 w-64 bg-white/90 dark:bg-black/50 backdrop-blur-md rounded-xl border border-gray-200 dark:border-white/10 shadow-lg p-2 animate-fade-in-fast z-10">
+                <div 
+                    className="absolute top-full right-0 mt-2 w-64 bg-white/90 dark:bg-black/50 backdrop-blur-md rounded-xl border border-gray-200 dark:border-white/10 shadow-lg p-2 animate-fade-in-fast z-10"
+                    role="menu"
+                    aria-label="Business tools menu"
+                >
                   {AI_TOOLS_NAV_LINKS.map(tool => (
                     <a
                       key={tool.href}
                       href={`/ai-tools${tool.href}`}
                       onClick={(e) => handleToolLinkClick(e, tool.href)}
                       className="flex items-center gap-3 p-2 rounded-lg text-gray-800 dark:text-white/90 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-sm"
+                      role="menuitem"
                     >
-                      <Icon name={tool.icon} className="h-5 w-5 text-primary" />
+                      <Icon name={tool.icon} className="h-5 w-5 text-primary" aria-hidden="true" />
                       <span>{tool.label}</span>
                     </a>
                   ))}
@@ -164,28 +181,32 @@ const Header: React.FC<HeaderProps> = ({ navigate, theme, toggleTheme }) => {
               )}
             </div>
             <button
+              type="button"
               onClick={toggleTheme}
               className="p-2 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-xl text-gray-600 dark:text-white/80 hover:bg-gray-200/50 dark:hover:bg-white/10 border border-gray-900/10 dark:border-white/10 transition-colors"
-              aria-label="Toggle theme"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {theme === 'dark' ? (
-                <SunIcon className="h-5 w-5" />
+                <SunIcon className="h-5 w-5" aria-hidden="true" />
               ) : (
-                <MoonIcon className="h-5 w-5" />
+                <MoonIcon className="h-5 w-5" aria-hidden="true" />
               )}
             </button>
             <button
               ref={mobileMenuButtonRef}
+              type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-xl text-gray-600 dark:text-white/80 hover:bg-gray-200/50 dark:hover:bg-white/10 border border-gray-900/10 dark:border-white/10 transition-colors"
-              aria-label="Toggle navigation menu"
+              aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isMenuOpen}
+              aria-haspopup="menu"
             >
               {isMenuOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
@@ -198,6 +219,8 @@ const Header: React.FC<HeaderProps> = ({ navigate, theme, toggleTheme }) => {
           <div
             ref={mobileMenuRef}
             className="md:hidden absolute top-full w-auto right-0 mt-2 bg-white/90 dark:bg-black/50 backdrop-blur-md rounded-xl border border-gray-200 dark:border-white/10 shadow-lg p-2 z-40 animate-fade-in-fast"
+            role="menu"
+            aria-label="Mobile navigation menu"
           >
             <div className="flex flex-col space-y-1">
               {[...NAV_LINKS, ...RESOURCES_LINKS].map((link) => (
@@ -206,8 +229,9 @@ const Header: React.FC<HeaderProps> = ({ navigate, theme, toggleTheme }) => {
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
                   className="flex items-center gap-3 text-sm font-medium text-gray-800 dark:text-white/90 hover:text-gray-900 dark:hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10"
+                  role="menuitem"
                 >
-                  <Icon name={link.icon} className="h-5 w-5 text-primary" />
+                  <Icon name={link.icon} className="h-5 w-5 text-primary" aria-hidden="true" />
                   <span>{link.label}</span>
                 </a>
               ))}

@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { PARTNERS } from '../constants';
 import PartnerLogo from './PartnerLogo';
+import { iconPreloadService } from '../services/iconPreload';
+import { useLazyLoad } from '../hooks/useLazyLoad';
 
 const PartnersSection: React.FC = () => {
     // Duplicate the list *once* for a seamless animation loop
     const partnerList = [...PARTNERS, ...PARTNERS];
+    const [sectionRef, isVisible] = useLazyLoad({ threshold: 0.2, rootMargin: '200px' });
+    const preloadInitiated = useRef(false);
+
+    // Preload partner icons when section becomes visible
+    useEffect(() => {
+        if (isVisible && !preloadInitiated.current) {
+            preloadInitiated.current = true;
+            const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            iconPreloadService.preloadSectionIcons('partners', currentTheme);
+        }
+    }, [isVisible]);
 
     return (
-        <section id="partners" className="py-12">
+        <section 
+            ref={sectionRef as React.RefObject<HTMLElement>}
+            id="partners" 
+            className="py-12"
+        >
             <div className="container mx-auto px-6">
                 <h2 className="text-center text-sm font-semibold text-gray-500 dark:text-white/60 uppercase tracking-widest mb-8">
                     Powering Our Solutions with Industry-Leading Technologies

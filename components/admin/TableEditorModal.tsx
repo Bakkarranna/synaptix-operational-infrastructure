@@ -99,7 +99,7 @@ const TableEditorModal: React.FC<TableEditorModalProps> = ({ isOpen, onClose, on
       <div className="bg-white dark:bg-brand-dark border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl w-full max-w-4xl m-4 relative flex flex-col h-[90vh]" onClick={(e) => e.stopPropagation()}>
         <header className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-between items-center text-gray-900 dark:text-white flex-shrink-0">
           <h2 className="text-xl font-bold">Visual Table Editor</h2>
-          <button onClick={onClose}><Icon name="close" className="h-6 w-6" /></button>
+          <button onClick={onClose} aria-label="Close table editor"><Icon name="close" className="h-6 w-6" /></button>
         </header>
         <main className="flex-grow p-4 overflow-auto custom-scrollbar">
           <div className="space-y-4">

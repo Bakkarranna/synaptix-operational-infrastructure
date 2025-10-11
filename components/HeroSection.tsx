@@ -132,14 +132,16 @@ const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate, openC
             {/* 3. Offer/Value Proposition */}
             <div className="w-full grid grid-cols-2 gap-3">
                 <button
+                    type="button"
                     onClick={openCalendlyModal}
+                    aria-label="Book a free AI strategy session"
                     className="group bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-primary/30 rounded-2xl p-4 shadow-xl text-center transition-all duration-300 transform hover:-translate-y-1 animate-glow flex flex-col items-center justify-center"
                 >
-                    <LightbulbIcon className="h-6 w-6 text-primary mx-auto mb-2 transition-transform duration-300 group-hover:scale-110" />
+                    <LightbulbIcon className="h-6 w-6 text-primary mx-auto mb-2 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
                     <p className="text-sm font-bold text-gray-900 dark:text-white">Free AI Strategy Session</p>
                     <div className="mt-2 text-xs font-bold text-primary group-hover:underline flex items-center gap-1">
                         Book Now
-                        <svg className="w-3 h-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                        <svg className="w-3 h-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                 </button>
                 <div className="bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-gray-200 dark:border-white/10 rounded-2xl p-3 shadow-xl group hover:border-primary/30 transition-all duration-300 hover:animate-glow flex flex-col h-full justify-center">
@@ -304,17 +306,24 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                         <span className="inline-block w-[3px] h-5 bg-primary ml-1 align-bottom animate-blink"></span>
                     </p>
                     
-                    <form onSubmit={handleSubscribe} className="mt-8 relative max-w-lg mx-auto lg:mx-0">
+                    <form onSubmit={handleSubscribe} className="mt-8 relative max-w-lg mx-auto lg:mx-0" role="form" aria-label="Newsletter subscription">
+                        <label htmlFor="hero-email" className="sr-only">Email address for newsletter subscription</label>
                         <input 
+                            id="hero-email"
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="your.email@company.com"
+                            aria-label="Enter your email address"
+                            aria-required="true"
+                            aria-invalid={!!error}
+                            aria-describedby={error ? "hero-email-error" : undefined}
                             className="w-full pl-5 pr-28 sm:pr-40 py-2 sm:py-3 text-sm rounded-full border border-black/10 bg-white/80 dark:bg-black/20 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-white/60 focus:ring-2 focus:ring-primary/50 focus:border-transparent transition dark:border-white/10 dark:focus:ring-white"
                         />
                         <button 
                             type="submit" 
-                            disabled={loading || submitted} 
+                            disabled={loading || submitted}
+                            aria-label={loading ? "Subscribing to newsletter" : submitted ? "Successfully subscribed" : `${currentButtonText} to newsletter`}
                             className="absolute top-1/2 right-1.5 -translate-y-1/2 bg-primary/90 text-white font-bold py-1.5 px-3 sm:py-2 sm:px-4 rounded-full hover:bg-primary transition-all transform hover:scale-105 disabled:bg-primary/50 disabled:scale-100 flex items-center justify-center min-w-[100px] sm:min-w-[145px] h-[80%] animate-glow overflow-hidden text-xs sm:text-sm"
                         >
                             {loading ? (
@@ -328,12 +337,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                             )}
                         </button>
                     </form>
-                    {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
-                    {submitted && <p className="text-green-500 dark:text-green-300 text-xs mt-2">Success! Thanks for subscribing.</p>}
+                    {error && <p id="hero-email-error" className="text-red-400 text-xs mt-2" role="alert" aria-live="polite">{error}</p>}
+                    {submitted && <p className="text-green-500 dark:text-green-300 text-xs mt-2" role="status" aria-live="polite">Success! Thanks for subscribing.</p>}
                      {/* NEW CTA Buttons */}
                     <div className="mt-6 flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
                       <button
+                          type="button"
                           onClick={openCalendlyModal}
+                          aria-label="Get your free AI strategy consultation"
                           className="text-center bg-primary text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full hover:bg-opacity-90 transition-all transform hover:scale-105 animate-glow"
                       >
                           Get Your Free AI Strategy
@@ -348,7 +359,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                       </a>
                       {/* Book a Demo - Mobile/Tablet Only */}
                       <button
+                          type="button"
                           onClick={openCalendlyModal}
+                          aria-label="Book a free demo session"
                           className="lg:hidden text-center bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full transition-all transform hover:scale-105 hover:bg-primary/30"
                       >
                           Book a Free Demo
