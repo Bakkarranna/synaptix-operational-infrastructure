@@ -72,7 +72,7 @@ export type IconName =
   'chat' | 'users' | 'code' | 'cart' | 'building' | 'zap' | 'layout' | 'phone' |
   'pencil' | 'chart-bar' | 'target' | 'search' | 'rocket' | 'gear' | 'lightbulb' | 'check' | 'bolt' | 'cube' | 'upload' | 'x-circle' | 'book-open' | 'microphone' |
   'x' | 'linkedin' | 'instagram' | 'youtube' | 'send' | 'check-circle' | 'close' | 'chat-bubble' | 'arrow-right' | 'user' | 'email' | 'web' | 'calculator' |
-  'sparkles' | 'megaphone' | 'inbox' | 'file-search' | 'file-text' | 'clipboard' | 'edit' | 'trophy' | 'clipboard-list' | 'download' | 'volume-up' | 'volume-off' | 'medium' | 'link' |
+  'sparkles' | 'megaphone' | 'inbox' | 'file-search' | 'file-text' | 'clipboard' | 'edit' | 'trophy' | 'clipboard-list' | 'download' | 'volume-up' | 'volume-off' | 'link' |
   'sun' | 'moon' | 'gift' | 'key';
 
 const icons: { [key in IconName]: React.FC<IconProps> } = {
@@ -123,7 +123,6 @@ const icons: { [key in IconName]: React.FC<IconProps> } = {
   'clipboard-list': ClipboardListIcon,
   'volume-up': VolumeUpIcon,
   'volume-off': VolumeOffIcon,
-  'medium': MediumIcon,
   'link': LinkIcon,
   'sun': SunIcon,
   'moon': MoonIcon,

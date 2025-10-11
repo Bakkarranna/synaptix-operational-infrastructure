@@ -25,7 +25,6 @@ export const SOCIAL_LINKS = [
   { name: 'LinkedIn', href: 'https://www.linkedin.com/company/synaptix-studio', icon: 'linkedin' as IconName },
   { name: 'Instagram', href: 'https://www.instagram.com/synaptixstudios/', icon: 'instagram' as IconName },
   { name: 'YouTube', href: 'https://www.youtube.com/@Synaptix-Studio', icon: 'youtube' as IconName },
-  { name: 'Medium', href: 'https://synaptixstudio.medium.com', icon: 'medium' as IconName },
 ];
 
 export const CTA_BUTTONS = [

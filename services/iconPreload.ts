@@ -66,8 +66,7 @@ class IconPreloadService {
       'x': 'x.com',
       'linkedin': 'linkedin.com', 
       'instagram': 'instagram.com',
-      'youtube': 'youtube.com',
-      'medium': 'medium.com'
+      'youtube': 'youtube.com'
     };
 
     SOCIAL_LINKS.forEach(social => {
@@ -75,7 +74,7 @@ class IconPreloadService {
       if (domain) {
         criticalIcons.push({
           domain,
-          type: (social.icon === 'x' || social.icon === 'medium') ? 'logo' : 'symbol',
+          type: social.icon === 'x' ? 'logo' : 'symbol',
           theme
         });
       }
