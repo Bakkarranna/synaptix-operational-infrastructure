@@ -73,7 +73,7 @@ export type IconName =
   'pencil' | 'chart-bar' | 'target' | 'search' | 'rocket' | 'gear' | 'lightbulb' | 'check' | 'bolt' | 'cube' | 'upload' | 'x-circle' | 'book-open' | 'microphone' |
   'x' | 'linkedin' | 'instagram' | 'youtube' | 'send' | 'check-circle' | 'close' | 'chat-bubble' | 'arrow-right' | 'user' | 'email' | 'web' | 'calculator' |
   'sparkles' | 'megaphone' | 'inbox' | 'file-search' | 'file-text' | 'clipboard' | 'edit' | 'trophy' | 'clipboard-list' | 'download' | 'volume-up' | 'volume-off' | 'link' |
-  'sun' | 'moon' | 'gift' | 'key';
+  'sun' | 'moon' | 'gift' | 'key' | 'medium';
 
 const icons: { [key in IconName]: React.FC<IconProps> } = {
   'chat': ChatIcon,
@@ -128,6 +128,7 @@ const icons: { [key in IconName]: React.FC<IconProps> } = {
   'moon': MoonIcon,
   'gift': GiftIcon,
   'key': KeyIcon,
+  'medium': MediumIcon,
 };
 
 const socialIconDomains: Partial<Record<IconName, string>> = {
