@@ -1,7 +1,6 @@
 
-
 import { IconName } from './components/Icon';
-import { BlogPost } from './services/supabase';
+import { BlogPost } from './src/types';
 
 export const CALENDLY_LINK = '/#book-demo';
 
@@ -9,7 +8,6 @@ export const NAV_LINKS = [
   { href: '/#services', label: 'Services', icon: 'gear' as IconName },
   { href: '/#custom-solutions', label: 'Industries', icon: 'building' as IconName },
   { href: '/#about', label: 'About', icon: 'users' as IconName },
-  { href: '/#launchpad', label: 'Launchpad', icon: 'rocket' as IconName },
   { href: '/#pricing', label: 'Pricing', icon: 'calculator' as IconName },
   { href: '/#lets-talk', label: 'Contact', icon: 'email' as IconName },
 ];
@@ -29,8 +27,7 @@ export const SOCIAL_LINKS = [
 
 export const CTA_BUTTONS = [
   { text: 'Book a Free Discovery Call', href: CALENDLY_LINK, external: true },
-  { text: 'Explore Our Free AI Tools', href: '/ai-tools', external: false },
-  { text: 'Get Your Free AI Strategy', href: '/#ai-strategy', external: false },
+  { text: 'Get Your Process Mining Audit', href: '/#process-mining', external: false },
 ];
 
 export const FLOATING_SERVICES = [
@@ -58,26 +55,26 @@ export const FLOATING_SERVICES = [
 ];
 
 export const TRUSTED_BY_CLIENTS = [
-    { name: 'Mercury', domain: 'mercury.com' },
-    { name: 'Brex', domain: 'brex.com' },
-    { name: 'Ramp', domain: 'ramp.com' },
-    { name: 'Deel', domain: 'deel.com' },
-    { name: 'Gusto', domain: 'gusto.com' },
-    { name: 'Rippling', domain: 'rippling.com' },
-    { name: 'Vanta', domain: 'vanta.com' },
-    { name: 'Carta', domain: 'carta.com' },
-    { name: 'Pipe', domain: 'pipe.com' },
-    { name: 'Navan', domain: 'navan.com' },
-    { name: 'Pento', domain: 'pento.io' },
-    { name: 'Linear', domain: 'linear.app' },
-    { name: 'Pitch', domain: 'pitch.com' },
-    { name: 'Raycast', domain: 'raycast.com' },
-    { name: 'Clerk', domain: 'clerk.com' },
-    { name: 'Replit', domain: 'replit.com' },
-    { name: 'Loom', domain: 'loom.com' },
-    { name: 'Retool', domain: 'retool.com' },
-    { name: 'Plaid', domain: 'plaid.com' },
-    { name: 'Arc', domain: 'arc.tech' },
+  { name: 'Mercury', domain: 'mercury.com' },
+  { name: 'Brex', domain: 'brex.com' },
+  { name: 'Ramp', domain: 'ramp.com' },
+  { name: 'Deel', domain: 'deel.com' },
+  { name: 'Gusto', domain: 'gusto.com' },
+  { name: 'Rippling', domain: 'rippling.com' },
+  { name: 'Vanta', domain: 'vanta.com' },
+  { name: 'Carta', domain: 'carta.com' },
+  { name: 'Pipe', domain: 'pipe.com' },
+  { name: 'Navan', domain: 'navan.com' },
+  { name: 'Pento', domain: 'pento.io' },
+  { name: 'Linear', domain: 'linear.app' },
+  { name: 'Pitch', domain: 'pitch.com' },
+  { name: 'Raycast', domain: 'raycast.com' },
+  { name: 'Clerk', domain: 'clerk.com' },
+  { name: 'Replit', domain: 'replit.com' },
+  { name: 'Loom', domain: 'loom.com' },
+  { name: 'Retool', domain: 'retool.com' },
+  { name: 'Plaid', domain: 'plaid.com' },
+  { name: 'Arc', domain: 'arc.tech' },
 ];
 
 export const LAUNCHPAD_PERSONAS: { [key: string]: { title: string; icon: IconName; description: string; challenges: { title: string; description: string }[]; solutions: { title: string; description: string }[] } } = {
@@ -149,15 +146,15 @@ export const LAUNCHPAD_PERSONAS: { [key: string]: { title: string; icon: IconNam
 
 
 export const AI_TOOLS_NAV_LINKS: { href: string; label: string; icon: IconName }[] = [
-    { href: '#ai-agent-generator', label: 'Agent Generator', icon: 'users' },
-    { href: '#viral-content-strategist', label: 'Content Strategist', icon: 'sparkles' },
-    { href: '#ai-idea-generator', label: 'Business Strategist', icon: 'lightbulb' },
-    { href: '#custom-solutions', label: 'Custom Solutions', icon: 'cube' },
-    { href: '#roi-calculator', label: 'Financial Analyst', icon: 'calculator' },
-    { href: '#ai-ad-copy-generator', label: 'Ad Copy Generator', icon: 'megaphone' },
-    { href: '#ai-subject-line-tester', label: 'Subject Line Tester', icon: 'inbox' },
-    { href: '#ai-website-auditor', label: 'Website Auditor', icon: 'file-search' },
-    { href: '#ai-knowledge-base-generator', label: 'Knowledge Base Gen', icon: 'book-open' },
+  { href: '#ai-agent-generator', label: 'Agent Architect', icon: 'users' },
+  { href: '#viral-content-strategist', label: 'Systems Docs', icon: 'sparkles' },
+  { href: '#ai-idea-generator', label: 'Automation Strategy', icon: 'lightbulb' },
+  { href: '#custom-solutions', label: 'Custom Systems', icon: 'cube' },
+  { href: '#roi-calculator', label: 'ROI Simulator', icon: 'calculator' },
+  { href: '#ai-ad-copy-generator', label: 'Intake Logic', icon: 'megaphone' },
+  { href: '#ai-subject-line-tester', label: 'Workflow Auditor', icon: 'inbox' },
+  { href: '#ai-website-auditor', label: 'Operational Audit', icon: 'file-search' },
+  { href: '#ai-knowledge-base-generator', label: 'Knowledge Base', icon: 'book-open' },
 ];
 
 export const AGENT_TONES = ['Friendly', 'Professional', 'Empathetic', 'Sales-Driven', 'Concise', 'Witty', 'Calm'];
@@ -169,8 +166,8 @@ export const QUIZ_QUESTIONS = [
     question: 'How do you currently generate most of your new leads?',
     answers: [
       'Primarily through referrals and word-of-mouth.',
-      'Inbound marketing like SEO and content.',
-      'Paid advertising (Google, Social Media).',
+      'Inbound marketing (Direct traffic, organic).',
+      'Paid advertising (Google, Meta).',
       'Manual outbound prospecting (cold calls, emails).',
     ],
   },
@@ -195,13 +192,13 @@ export const QUIZ_QUESTIONS = [
     ],
   },
   {
-    category: 'Marketing',
-    question: 'How do you manage your social media presence?',
+    category: 'Operations',
+    question: 'How do you handle your data reporting and analytics?',
     answers: [
-      'We post sporadically when we have an idea.',
-      'We use a scheduling tool to plan posts in advance.',
-      'We have a content calendar and a clear strategy.',
-      'Our social media is fully integrated with our sales funnel.',
+      'We manually track everything in spreadsheets.',
+      'We have some basic dashboards, but they are often out of date.',
+      'We have a dedicated analyst who builds custom reports.',
+      'Our systems are fully automated with real-time ROI visibility.',
     ],
   },
   {
@@ -228,12 +225,12 @@ export const QUIZ_QUESTIONS = [
 
 
 export const CONTENT_TYPES: { name: string; icon: IconName }[] = [
-    { name: 'Tweet Thread', icon: 'x' },
-    { name: 'LinkedIn Post', icon: 'linkedin' },
-    { name: 'Instagram Caption', icon: 'instagram' },
-    { name: 'YouTube Description', icon: 'youtube' },
-    { name: 'Sales Email', icon: 'email' },
-    { name: 'Ad Copy', icon: 'file-text' },
+  { name: 'Tweet Thread', icon: 'x' },
+  { name: 'LinkedIn Post', icon: 'linkedin' },
+  { name: 'Instagram Caption', icon: 'instagram' },
+  { name: 'YouTube Description', icon: 'youtube' },
+  { name: 'Sales Email', icon: 'email' },
+  { name: 'Ad Copy', icon: 'file-text' },
 ];
 
 export const AD_PLATFORMS = ['Facebook / Instagram', 'Google Ads', 'LinkedIn Ads'];
@@ -242,21 +239,21 @@ export const TONES_OF_VOICE = ['Professional', 'Witty', 'Casual', 'Urgent', 'Ins
 export const HOOK_STYLES = ['Engaging', 'Controversial', 'Negative', 'Informative', 'Question-Based', 'Attention Grabbing'];
 
 export const CONTENT_WRITER_TYPES = [
-    'How-To Guide',
-    'Listicle',
-    'Case Study',
-    'Opinion Piece',
-    'Review',
-    'Comparison',
+  'How-To Guide',
+  'Listicle',
+  'Case Study',
+  'Opinion Piece',
+  'Review',
+  'Comparison',
 ];
 
 export const CONTENT_WRITER_TONES = [
-    'Informative',
-    'Conversational',
-    'Formal',
-    'Humorous',
-    'Persuasive',
-    'Authoritative',
+  'Informative',
+  'Conversational',
+  'Formal',
+  'Humorous',
+  'Persuasive',
+  'Authoritative',
 ];
 
 export const INDUSTRIES = ['E-commerce', 'Healthcare', 'Real Estate', 'SaaS', 'Education', 'Marketing Agency', 'Local Service'];
@@ -375,12 +372,12 @@ export const ROI_HIGHLIGHTS: { [key: string]: { icon: IconName; title: string; d
   outreach_systems: {
     icon: 'megaphone',
     title: 'Scale Your Sales Outreach',
-    description: 'Automate personalized follow-ups across email and social media to nurture more leads with less effort.',
+    description: 'Automate personalized follow-ups across email and messaging channels to nurture more leads with zero manual effort.',
   },
   content_generators: {
     icon: 'pencil',
     title: 'Boost Content Velocity',
-    description: 'Generate high-quality blog posts, social media updates, and ad copy in minutes, not hours.',
+    description: 'Generate high-quality operational manuals, documentation, and system reports in minutes, not hours.',
   },
   funnels: {
     icon: 'target',
@@ -432,11 +429,6 @@ export const ROI_HIGHLIGHTS: { [key: string]: { icon: IconName; title: string; d
     icon: 'link',
     title: 'Seamless Data Flow',
     description: 'Enable deep, bi-directional syncs with platforms like Salesforce, ensuring data consistency across your entire stack.'
-  },
-  seo_module: {
-    icon: 'search',
-    title: 'Rank Higher',
-    description: 'Enhance your AI content generator with real-time SEO suggestions and keyword tracking to improve search rankings.'
   },
   custom_branding: {
     icon: 'layout',
@@ -495,12 +487,6 @@ export const ADD_ONS = [
     monthlyFee: 50,
   },
   {
-    id: 'seo_module',
-    title: 'AI-Powered SEO Module',
-    setupFee: 200,
-    monthlyFee: 75,
-  },
-  {
     id: 'custom_branding',
     title: 'Custom Branding (White-Label)',
     setupFee: 150,
@@ -509,10 +495,10 @@ export const ADD_ONS = [
 ];
 
 export const TRUST_POINTS = [
-    { text: 'Transparent, Modular Pricing', icon: 'check' as IconName },
-    { text: 'No Bloated Retainers or Hidden Fees', icon: 'check' as IconName },
-    { text: 'You Own Your IP and Automations', icon: 'check' as IconName },
-    { text: 'Dedicated Project Manager', icon: 'check' as IconName },
+  { text: 'Transparent, Modular Pricing', icon: 'check' as IconName },
+  { text: 'No Bloated Retainers or Hidden Fees', icon: 'check' as IconName },
+  { text: 'You Own Your IP and Automations', icon: 'check' as IconName },
+  { text: 'Dedicated Project Manager', icon: 'check' as IconName },
 ];
 
 export const PRICING_FAQS = [
@@ -558,181 +544,114 @@ export const PRICING_FAQS = [
   }
 ];
 
+// The Synaptix Loop: High-Ticket Operational Infrastructure Modules
 export const SERVICES = [
   {
-    title: 'AI Chatbots & Assistants',
-    icon: 'chat' as IconName,
-    specialties: [
-      '**Website Chatbots:** 24/7 lead capture, support, & sales.',
-      '**WhatsApp & Messenger Bots:** Engage customers on their favorite platforms.',
-      '**Internal Support Bots:** Train employees & answer internal questions instantly.',
-    ],
-  },
-  {
-    title: 'AI Voice Agents',
+    id: 'capture',
+    title: 'Module 1: Capture',
     icon: 'phone' as IconName,
     specialties: [
-      '**24/7 AI Receptionist:** Answer calls, book appointments, and route inquiries.',
-      '**Outbound Calling Agents:** Handle lead follow-ups & customer surveys.',
-      '**Smart IVR Systems:** Replace frustrating phone menus with natural conversation.',
-    ],
+      '**AI Voice Agents** qualify leads 24/7, no missed calls',
+      '**Intelligent Chatbots** across Web, WhatsApp & Instagram',
+      '**Lead Qualification Workflows** filter high-intent prospects',
+      '**Real-time CRM Updates** sync captured data instantly'
+    ]
   },
   {
-    title: 'Automation & Workflows',
+    id: 'process',
+    title: 'Module 2: Process',
     icon: 'zap' as IconName,
     specialties: [
-      '**Sales Automation:** Auto-qualify leads, send follow-ups, & update your CRM.',
-      '**Client Onboarding:** Automate welcome emails, contract sending, & task creation.',
-      '**Operational Efficiency:** Automate data entry, report generation, & internal alerts.',
-    ],
+      '**Onboarding Automation:** Streamline team and client intake workflows',
+      '**Automated Billing & Support:** Eliminate manual back-office tasks',
+      '**Intelligent Document Processing:** Auto-generate contracts and reports',
+      '**System Integration:** Connect disparate tools into a unified ecosystem'
+    ]
   },
   {
-    title: 'AI-Powered Web Apps',
-    icon: 'layout' as IconName,
+    id: 'intelligence',
+    title: 'Module 3: Intelligence',
+    icon: 'chart-bar' as IconName,
     specialties: [
-      '**Custom Internal Tools:** Build AI-powered dashboards for your team.',
-      '**Client Portals:** Create secure, self-serve portals for your customers.',
-      '**SaaS & MVP Development:** Launch your AI-powered software idea with us.',
-    ],
-  },
-  {
-    title: 'AI Content Systems',
-    icon: 'pencil' as IconName,
-    specialties: [
-      '**Content Generation Engines:** Auto-create blog posts & social media content.',
-      '**AI Copywriting Tools:** Generate high-converting ad & website copy.',
-      '**Knowledge Base Automation:** Turn your documents into an intelligent, searchable AI.',
-    ],
-  },
-  {
-    title: 'AI CRM & Client Portals',
-    icon: 'users' as IconName,
-    specialties: [
-      '**Intelligent Lead Management:** Automatically score and assign leads in your CRM.',
-      '**Self-Serve Client Hubs:** Allow clients to track projects, view reports, and communicate.',
-      '**Data Sync Automation:** Keep all your client data consistent across platforms.',
-    ],
-  },
-  {
-    title: 'AI Outreach Systems',
-    icon: 'megaphone' as IconName,
-    specialties: [
-      '**Personalized Email Campaigns:** Send thousands of tailored emails with AI.',
-      '**Automated Social Follow-ups:** Engage with prospects on LinkedIn and other platforms.',
-      '**Smart Calling Lists:** Let AI prioritize your outbound call schedule for maximum impact.',
-    ],
-  },
-  {
-    title: 'AI Landing Pages & Funnels',
-    icon: 'target' as IconName,
-    specialties: [
-      '**Conversion-Optimized Pages:** AI-driven design and copy for maximum lead capture.',
-      '**Dynamic Content:** Personalize landing pages for different visitor segments.',
-      '**A/B Testing Automation:** Let AI continuously test and optimize your funnels.',
-    ],
-  },
-  {
-    title: 'AI Training & Knowledge Bots',
-    icon: 'book-open' as IconName,
-    specialties: [
-      '**Internal SOP Bots:** Turn your company handbooks into an interactive AI trainer.',
-      '**Customer Self-Service:** Create AI agents trained on your documentation for support.',
-      '**Onboarding Automation:** Guide new hires through their training process with an AI mentor.',
-    ],
-  },
+      '**Operational Dashboards:** Real-time visibility into process efficiency',
+      '**Predictive ROI Models:** Forecast savings and revenue growth',
+      '**Performance Analytics:** Data-driven insights for strategic scaling',
+      '**Autonomous Optimization:** Systems that learn and improve over time'
+    ]
+  }
 ];
 
 export const CUSTOM_SOLUTIONS = {
   ecommerce: {
-    title: 'E-commerce Automation',
+    title: 'Retail & E-commerce',
     icon: 'cart' as IconName,
-    description: "Automate everything from **product recommendations** to **post-purchase support**, and turn your store into a 24/7 sales machine.",
+    description: "Build an **automation layer** that handles everything from inventory alerts to post-purchase support, allowing you to scale without adding headcount.",
   },
   saas: {
     title: 'SaaS & Tech',
     icon: 'code' as IconName,
-    description: "Build intelligent **user onboarding flows**, automate **feature announcements**, and provide instant, in-app AI support to reduce churn.",
+    description: "Deploy autonomous **user activation loops**, automate technical support, and build custom systems that reduce churn through pro-active AI engagement.",
   },
   agencies: {
-    title: 'Agencies & Consultants',
+    title: 'Professional Services',
     icon: 'users' as IconName,
-    description: "Automate **client reporting**, streamline **lead qualification**, and build custom **AI-powered portals** to deliver more value with less manual work.",
+    description: "Transform your service delivery into a **productized engine**. Automate intake, reporting, and delivery workflows to maximize profit margins per client.",
   },
   real_estate: {
-    title: 'Real Estate',
+    title: 'Property & Finance',
     icon: 'building' as IconName,
-    description: "Deploy AI agents to **qualify leads 24/7**, automate **property viewing schedules**, and send instant follow-ups to potential buyers or renters.",
+    description: "Deploy infrastructure that **qualifies lead portfolios 24/7**, automates transaction processing, and provides instant data at the point of decision.",
   },
 };
 
 export const HOW_IT_WORKS_STEPS = [
   {
-    title: '1. Discovery & Strategy',
+    title: '1. Process Mining & Audit',
     icon: 'search' as IconName,
-    description: "We start with a deep dive into your business. We identify your **biggest bottlenecks** and **highest-impact opportunities** to map out a clear automation strategy tied to your ROI.",
+    description: "We dive deep into your existing operations to identify **redundant workflows** and high-friction bottlenecks where automation will deliver the highest ROI.",
   },
   {
-    title: '2. Custom Build & Integration',
+    title: '2. Infrastructure Architecture',
     icon: 'gear' as IconName,
-    description: "Our team designs and builds your custom AI solution. We handle all the complex integrations, ensuring your new system **seamlessly connects** with your existing tools like your CRM and marketing platforms.",
+    description: "Our engineers design a custom **operational blueprint**. We build and integrate the systems into your current tech stack for a seamless, enterprise-grade deployment.",
   },
   {
-    title: '3. Launch & Optimization',
+    title: '3. Scaling & Intelligence',
     icon: 'rocket' as IconName,
-    description: "We deploy your new AI system and monitor its performance closely. We believe in continuous improvement, so we'll keep **optimizing your automations** to ensure they deliver maximum results.",
+    description: "We launch your systems and deploy **real-time monitoring dashboards**. We continuously optimize your infrastructure to ensure it scales alongside your revenue.",
   },
 ];
 
 export const TESTIMONIALS = [
   {
     name: 'Emily R.',
-    company: 'Marketing Director, BrightLink Tech',
-    quote: "Synaptix Studio transformed our lead qualification process. Our AI chatbot now handles 80% of initial inquiries, freeing up our sales team to focus on high-value leads. **Our conversion rate has increased by 30% in just one quarter.**"
+    company: 'Director of Ops, BrightLink Tech',
+    quote: "Synaptix Studio transformed our entire lead management infrastructure. Their systems now handle 80% of initial processing, allowing our team to focus on high-value strategy. **Operational efficiency has increased by 40%.**"
   },
   {
     name: 'David L.',
-    company: 'Founder, Apex Coaching',
-    quote: "The 24/7 AI Voice Agent is a game-changer. We're no longer missing calls after hours, and our clients love the instant booking confirmations. **It's like having three receptionists for a fraction of the cost.**"
+    company: 'CEO, Apex Systems',
+    quote: "The autonomous voice infrastructure they deployed is a game-changer. We've eliminated lead decay and reduced overhead costs significantly. **It's like having a 24/7 operations team for a fraction of the cost.**"
   },
   {
     name: 'Samantha P.',
     company: 'Operations Manager, Urban Properties',
-    quote: "The automated workflows they built for our client onboarding have saved us over 20 hours per week. **The process is now faster, error-free, and our clients are happier than ever.** It's the best investment we've made this year."
+    quote: "The automated infrastructure they built for our onboarding saved us 20+ hours per week per manager. **The process is now fully productized, error-free, and infinitely scalable.**"
   },
   {
-      name: "Michael Chen",
-      company: "CEO, InnovateNow",
-      quote: "The custom AI dashboard Synaptix Studio built for us provides real-time insights we never had before. **We can now make data-driven decisions instantly, which has been invaluable for our growth.**"
+    name: "Michael Chen",
+    company: "Founder, InnovateNow",
+    quote: "The custom intelligence dashboard provides visibility we never had. We are making data-driven decisions on our operations in real-time, which has unlocked a new level of growth."
   },
   {
     name: 'Jessica Nguyen',
-    company: 'E-commerce Owner, The Bloom Box',
-    quote: "Our AI-powered chatbot has been a massive success, handling customer queries about orders and products around the clock. **We've seen a 40% reduction in support tickets and a 15% increase in repeat customers.**"
+    company: 'CEO, The Bloom Box',
+    quote: "Our automated support infrastructure has been a massive success, handling complex logistics queries around the clock. **We've seen a 40% reduction in support costs while increasing customer satisfaction.**"
   },
   {
     name: 'Tom Anderson',
-    company: 'Lead Consultant, Keystone Financial',
-    quote: "Synaptix automated our entire client data intake and reporting process. What used to take days of manual data entry is now done in minutes. **This has freed up our consultants to spend more time with clients, directly impacting our revenue.**"
-  },
-  {
-    name: 'Maria Garcia',
-    company: 'Clinic Manager, HealWell Medical',
-    quote: "The AI Voice Receptionist handles all our appointment bookings and reminders flawlessly. **No-shows have dropped by over 50%, and our front desk staff can now focus on in-person patient care.** It's been incredible."
-  },
-  {
-    name: 'Chris Johnson',
-    company: 'Founder, LaunchPad SaaS',
-    quote: "We used Synaptix to build an AI-powered onboarding sequence for our new users. **It's personalized, interactive, and has improved our user activation rate by a staggering 200%.** Highly recommended for any SaaS business."
-  },
-  {
-    name: 'Sarah Kim',
-    company: 'Marketing Agency Owner, PixelPerfect',
-    quote: "The AI Content System they developed for us allows us to generate high-quality drafts for our clients in a fraction of the time. **We've been able to take on more clients without sacrificing quality.**"
-  },
-  {
-    name: 'Ben Carter',
-    company: 'Real Estate Broker, C&C Properties',
-    quote: "The AI Outreach System follows up with every single lead from our website instantly. **We're now converting leads that used to go cold, and our agents are closing more deals.** It's an essential part of our sales process."
+    company: 'Managing Partner, Keystone Financial',
+    quote: "Synaptix automated our entire data intake and compliance reporting. What used to take days is now done in minutes. **This infrastructure has fundamentally changed our profit margins.**"
   }
 ];
 
@@ -741,13 +660,13 @@ export const FOUNDER_STORY = {
   title: 'Founder & CEO',
   imageUrl: 'https://iili.io/KMA9J94.png',
   story: [
-    'Every idea starts with a question: **"What if business could be smarter?"**',
-    'For me, that question became a journey. From my early days experimenting with design, marketing, and e-commerce to diving deep into **AI automation**, I\'ve always been driven by one thing — learning fast and turning ideas into impact.',
-    'Over the years, I explored countless skills and industries, but when the AI boom began, I saw something most people missed: the real power wasn\'t just in AI itself, but in how **automation could save time, cut costs, and unlock growth** for businesses everywhere.',
+    'Every idea starts with a challenge: **"How can we make business truly autonomous?"**',
+    'For me, that question became a journey. From my early days solving complex operational friction in e-commerce to building enterprise-grade **AI infrastructure**, I\'ve always been driven by one thing — engineering impact.',
+    'Over the years, I explored countless industries, but I saw a systemic flaw: businesses were drowning in manual work while amazing AI remained locked in a bubble. The real power wasn\'t in the AI tools themselves, but in how **custom infrastructure could automate the entire core of a business**.',
     'That vision became Synaptix Studio.',
-    'I didn\'t just want to build another agency. I wanted to create a place where businesses could find **clarity, innovation, and results** without the guesswork. Today, with a growing team beside me, we\'re helping small and medium businesses **work smarter, not harder**.'
+    'We aren\'t an agency. We are an **infrastructure partner**. We build the neural core that allows B2B and SaaS companies to scale without the anchor of human overhead. Today, we\'re building the future of autonomous operations.'
   ],
-  quote: 'This is more than a company — it\'s a commitment to **simpler systems, stronger businesses, and smarter futures**.'
+  quote: 'We don\'t just automate tasks. We build the **infrastructure of the modern enterprise**.'
 };
 
 export const PARTNERS = [
@@ -974,14 +893,14 @@ For questions about these Terms, contact us at:
 `;
 
 export const AI_STRATEGY_ARTICLES: BlogPost[] = [
-    {
-      slug: 'ai-driven-automation-playbook',
-      title: "Unlock 30% Cost Savings: Your AI-Driven Automation Playbook for Every Department",
-      description: "A strategic guide for executives on implementing AI-driven automation across your entire organization to achieve significant operational efficiency, reduce costs, and drive sustainable growth.",
-      // FIX: Added missing 'category' property to conform to the BlogPost interface.
-      category: 'AI Strategy',
-      image: 'https://iili.io/JbcqgWB.png',
-      content: `
+  {
+    slug: 'ai-driven-automation-playbook',
+    title: "Unlock 30% Cost Savings: Your AI-Driven Automation Playbook for Every Department",
+    description: "A strategic guide for executives on implementing AI-driven automation across your entire organization to achieve significant operational efficiency, reduce costs, and drive sustainable growth.",
+    // FIX: Added missing 'category' property to conform to the BlogPost interface.
+    category: 'Process Optimization',
+    image: 'https://iili.io/JbcqgWB.png',
+    content: `
 In today's fiercely competitive landscape, mid-to-large-sized companies (100+ employees) are constantly seeking transformative strategies to achieve significant operational efficiency, reduce costs, and drive sustainable growth. The C-suite, VPs of Operations, and Heads of Digital Transformation often grapple with inefficient, manual processes that lead to high operational costs, slow turnaround times, and a struggle to scale without compromising quality. The solution? A meticulously crafted AI-Driven Automation Playbook that delivers measurable results.
 
 Artificial intelligence (AI) is no longer a futuristic concept reserved for tech giants; it's a practical, accessible tool poised to revolutionize every facet of your business operations. From automating mundane tasks to delivering predictive insights and enhancing customer experiences, AI automation is the strategic imperative for businesses aiming to stay ahead. In fact, companies that fully embrace AI report an average of a 20% increase in revenue and can see a return on investment (ROI) within 6 to 12 months. Imagine what a targeted strategy could do.
@@ -1169,7 +1088,7 @@ A: The goal of AI automation is not to replace human jobs entirely but to augmen
 **Q:** What are the biggest challenges in implementing an AI-Driven Automation Playbook?**
 A: Common challenges include a lack of in-house AI expertise and skilled talent, issues with data quality and availability, financial constraints, resistance to change from employees, and difficulties integrating AI with existing legacy systems. Overcoming these requires a clear AI automation strategy, investment in talent development, robust data governance, and often, partnership with expert AI automation agencies like Synaptix Studio.
       `
-    },
+  },
 ];
 
 export const LOADING_MESSAGES = {
@@ -1253,27 +1172,27 @@ export const LOADING_MESSAGES = {
     "Preparing your custom business strategies...",
   ],
   PUBLISHING_PIPELINE: [
-      "Phase 1: Strategizing and researching keywords...",
-      "Phase 2: Architecting SEO-optimized article outline...",
-      "Phase 3: Drafting the core content and body...",
-      "Phase 4: Fact-checking claims and embedding sources...",
-      "Phase 5: Weaving in internal links and CTAs...",
-      "Phase 6: Finalizing title, slug, and meta description...",
+    "Phase 1: Strategizing and researching keywords...",
+    "Phase 2: Architecting SEO-optimized article outline...",
+    "Phase 3: Drafting the core content and body...",
+    "Phase 4: Fact-checking claims and embedding sources...",
+    "Phase 5: Weaving in internal links and CTAs...",
+    "Phase 6: Finalizing title, slug, and meta description...",
   ],
   QA_CHECK: [
-      "Analyzing draft against blueprint...",
-      "Calculating keyword density and readability...",
-      "Verifying required elements (tables, FAQs)...",
-      "Formulating actionable feedback...",
-      "Finalizing Quality Assurance report...",
+    "Analyzing draft against blueprint...",
+    "Calculating keyword density and readability...",
+    "Verifying required elements (tables, FAQs)...",
+    "Formulating actionable feedback...",
+    "Finalizing Quality Assurance report...",
   ],
   CONTENT_STRATEGY: [
-      "Analyzing your existing content library...",
-      "Researching competitor articles and SEO data...",
-      "Identifying high-potential keyword gaps...",
-      "Brainstorming strategic article concepts...",
-      "Formulating data-driven article briefs...",
-      "Finalizing your content strategy...",
+    "Analyzing your existing content library...",
+    "Researching competitor articles and SEO data...",
+    "Identifying high-potential keyword gaps...",
+    "Brainstorming strategic article concepts...",
+    "Formulating data-driven article briefs...",
+    "Finalizing your content strategy...",
   ],
   PERFORMANCE_ANALYSIS: [
     "Simulating review of 30-90 days performance data...",
@@ -1310,47 +1229,47 @@ export const LOADING_MESSAGES = {
     "Compiling a list of top recommendations...",
   ],
   AUDIENCE_SUGGESTER: [
-      "Analyzing your topic...",
-      "Researching market demographics...",
-      "Identifying key pain points and goals...",
-      "Crafting a detailed audience persona...",
+    "Analyzing your topic...",
+    "Researching market demographics...",
+    "Identifying key pain points and goals...",
+    "Crafting a detailed audience persona...",
   ],
   KEYWORD_SUGGESTER: [
-      "Analyzing your article's core concepts...",
-      "Performing semantic keyword research...",
-      "Identifying high-impact long-tail opportunities...",
-      "Compiling your strategic keyword list...",
+    "Analyzing your article's core concepts...",
+    "Performing semantic keyword research...",
+    "Identifying high-impact long-tail opportunities...",
+    "Compiling your strategic keyword list...",
   ],
   KEYWORD_INSERTER: [
-      "Reading your article for context...",
-      "Finding natural insertion points for keywords...",
-      "Rewriting sentences for better SEO flow...",
-      "Ensuring content remains readable and valuable...",
-      "Finalizing the optimized article...",
+    "Reading your article for context...",
+    "Finding natural insertion points for keywords...",
+    "Rewriting sentences for better SEO flow...",
+    "Ensuring content remains readable and valuable...",
+    "Finalizing the optimized article...",
   ],
   TOOL_FINDER_AUTO: [
-      "Reading and understanding your article...",
-      "Identifying opportunities to add value...",
-      "Searching for relevant, high-quality AI tools...",
-      "Strategically rewriting sections to include tools...",
-      "Formatting new tables and lists...",
-      "Finalizing the enhanced article...",
+    "Reading and understanding your article...",
+    "Identifying opportunities to add value...",
+    "Searching for relevant, high-quality AI tools...",
+    "Strategically rewriting sections to include tools...",
+    "Formatting new tables and lists...",
+    "Finalizing the enhanced article...",
   ],
   FACT_CHECKER_AUTO: [
-      "Scanning your article for factual claims...",
-      "Identifying statistics and data points to verify...",
-      "Cross-referencing claims with high-authority sources...",
-      "Correcting inaccuracies and outdated information...",
-      "Adding citations for enhanced credibility...",
-      "Finalizing the verified article...",
+    "Scanning your article for factual claims...",
+    "Identifying statistics and data points to verify...",
+    "Cross-referencing claims with high-authority sources...",
+    "Correcting inaccuracies and outdated information...",
+    "Adding citations for enhanced credibility...",
+    "Finalizing the verified article...",
   ],
   CONTENT_IMPROVER: [
-      "Reading your article for context...",
-      "Analyzing content flow and structure...",
-      "Identifying the biggest opportunity for improvement...",
-      "Brainstorming strategic enhancements...",
-      "Rewriting the article with the suggested changes...",
-      "Finalizing the improved draft...",
+    "Reading your article for context...",
+    "Analyzing content flow and structure...",
+    "Identifying the biggest opportunity for improvement...",
+    "Brainstorming strategic enhancements...",
+    "Rewriting the article with the suggested changes...",
+    "Finalizing the improved draft...",
   ],
   HEADLINE_ANALYZER: [
     "Scoring current headline for virality...",
@@ -1367,7 +1286,7 @@ export const CAREER_CATEGORIES = [
     categoryTitle: 'Core AI Roles',
     roles: [
       {
-        title: 'AI Automation Strategist',
+        title: 'Automation Strategist',
         icon: 'zap' as IconName,
         responsibilities: [
           'Design and implement automation workflows tailored to client business needs.',
@@ -1377,7 +1296,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Vibe Coder',
+        title: 'Vibe Coder',
         icon: 'sparkles' as IconName,
         responsibilities: [
           'Build experimental AI prototypes blending code, design, and creativity.',
@@ -1387,7 +1306,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Generalist',
+        title: 'Generalist',
         icon: 'cube' as IconName,
         responsibilities: [
           'Operate as a multi-role AI expert, capable of contributing across diverse AI functions.',
@@ -1397,7 +1316,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Voice Agent Specialist',
+        title: 'Voice Agent Specialist',
         icon: 'phone' as IconName,
         responsibilities: [
           'Design, train, and deploy AI-powered voice assistants for businesses.',
@@ -1407,7 +1326,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Chatbot Specialist',
+        title: 'Chatbot Specialist',
         icon: 'chat' as IconName,
         responsibilities: [
           'Build AI chatbots for websites, apps, and client platforms.',
@@ -1417,7 +1336,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Website Developer',
+        title: 'Website Developer',
         icon: 'web' as IconName,
         responsibilities: [
           'Develop AI-powered websites and landing pages.',
@@ -1427,7 +1346,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Application Developer',
+        title: 'Application Developer',
         icon: 'layout' as IconName,
         responsibilities: [
           'Build custom AI-powered mobile and desktop applications.',
@@ -1437,23 +1356,23 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Automation Expert',
+        title: 'Automation Expert',
         icon: 'zap' as IconName,
         responsibilities: [
-            'Designs and implements automation workflows across multiple platforms.',
-            'Identifies bottlenecks in business processes and applies AI-powered solutions.',
-            'Trains businesses on using automation tools effectively.',
-            'Ensures systems are scalable, secure, and cost-efficient.',
+          'Designs and implements automation workflows across multiple platforms.',
+          'Identifies bottlenecks in business processes and applies AI-powered solutions.',
+          'Trains businesses on using automation tools effectively.',
+          'Ensures systems are scalable, secure, and cost-efficient.',
         ]
       },
       {
-        title: 'AI Data & Systems Integrator',
+        title: 'Data & Systems Integrator',
         icon: 'link' as IconName,
         responsibilities: [
-            'Connects CRMs, APIs, and third-party services into unified AI-driven workflows.',
-            'Ensures smooth data transfer and synchronization across platforms.',
-            'Works closely with developers to maintain system reliability.',
-            'Creates dashboards and reports to monitor integrated systems.',
+          'Connects CRMs, APIs, and third-party services into unified AI-driven workflows.',
+          'Ensures smooth data transfer and synchronization across platforms.',
+          'Works closely with developers to maintain system reliability.',
+          'Creates dashboards and reports to monitor integrated systems.',
         ]
       }
     ]
@@ -1462,7 +1381,7 @@ export const CAREER_CATEGORIES = [
     categoryTitle: 'Creative AI Roles',
     roles: [
       {
-        title: 'AI Content Creator',
+        title: 'Content Creator',
         icon: 'pencil' as IconName,
         responsibilities: [
           'Generate AI-powered multimedia content: text, video, and interactive media.',
@@ -1472,7 +1391,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Social Media Manager',
+        title: 'Social Media Manager',
         icon: 'megaphone' as IconName,
         responsibilities: [
           'Manage AI-powered social campaigns across platforms.',
@@ -1482,7 +1401,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Creative Head',
+        title: 'Creative Head',
         icon: 'lightbulb' as IconName,
         responsibilities: [
           'Oversee creative direction across campaigns and branding.',
@@ -1492,7 +1411,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Cold Caller (AI-Enhanced SDR)',
+        title: 'Cold Caller (AI-Enhanced SDR)',
         icon: 'microphone' as IconName,
         responsibilities: [
           'Use AI tools to automate outreach and lead qualification.',
@@ -1502,53 +1421,53 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Multimedia Producer',
+        title: 'Multimedia Producer',
         icon: 'youtube' as IconName,
         responsibilities: [
-            'Produces multimedia assets such as videos, podcasts, and interactive media using AI tools.',
-            'Enhances traditional production workflows with automation.',
-            'Collaborates with creative teams to deliver engaging digital experiences.',
-            'Manages multimedia libraries for cross-platform use.',
+          'Produces multimedia assets such as videos, podcasts, and interactive media using AI tools.',
+          'Enhances traditional production workflows with automation.',
+          'Collaborates with creative teams to deliver engaging digital experiences.',
+          'Manages multimedia libraries for cross-platform use.',
         ]
       },
       {
-        title: 'AI Marketing Innovator',
+        title: 'Marketing Innovator',
         icon: 'sparkles' as IconName,
         responsibilities: [
-            'Identifies new trends and emerging platforms for AI-powered campaigns.',
-            'Experiments with creative AI-driven marketing strategies tailored to Gen Z and Millennial audiences.',
-            'Tracks performance of campaigns and adapts in real time.',
-            'Brings innovative storytelling formats to branding.',
+          'Identifies new trends and emerging platforms for AI-powered campaigns.',
+          'Experiments with creative AI-driven marketing strategies tailored to Gen Z and Millennial audiences.',
+          'Tracks performance of campaigns and adapts in real time.',
+          'Brings innovative storytelling formats to branding.',
         ]
       },
       {
-        title: 'AI Campaign Strategist',
+        title: 'Campaign Strategist',
         icon: 'target' as IconName,
         responsibilities: [
-            'Develops data-driven marketing campaigns leveraging AI analytics.',
-            'Coordinates between creative, growth, and technical teams to align campaigns.',
-            'Designs automated campaign workflows for scalability.',
-            'Evaluates ROI and suggests optimization strategies.',
+          'Develops data-driven marketing campaigns leveraging AI analytics.',
+          'Coordinates between creative, growth, and technical teams to align campaigns.',
+          'Designs automated campaign workflows for scalability.',
+          'Evaluates ROI and suggests optimization strategies.',
         ]
       },
       {
-        title: 'AI Branding Experience Designer',
+        title: 'Branding Experience Designer',
         icon: 'layout' as IconName,
         responsibilities: [
-            'Crafts immersive digital brand identities using AI-driven design systems.',
-            'Ensures branding consistency across web, mobile, and AI tools.',
-            'Creates interactive experiences (e.g., motion, 3D, AR/VR) powered by AI.',
-            'Collaborates with content creators to maintain brand storytelling.',
+          'Crafts immersive digital brand identities using AI-driven design systems.',
+          'Ensures branding consistency across web, mobile, and AI tools.',
+          'Creates interactive experiences (e.g., motion, 3D, AR/VR) powered by AI.',
+          'Collaborates with content creators to maintain brand storytelling.',
         ]
       },
       {
-        title: 'AI Culture Curator',
+        title: 'Culture Curator',
         icon: 'users' as IconName,
         responsibilities: [
-            'Shapes brand culture through AI-driven creative narratives.',
-            'Aligns campaigns with cultural trends and audience values.',
-            'Oversees tone of voice, visual identity, and engagement style.',
-            'Acts as a bridge between community sentiment and brand positioning.',
+          'Shapes brand culture through AI-driven creative narratives.',
+          'Aligns campaigns with cultural trends and audience values.',
+          'Oversees tone of voice, visual identity, and engagement style.',
+          'Acts as a bridge between community sentiment and brand positioning.',
         ]
       }
     ]
@@ -1557,7 +1476,7 @@ export const CAREER_CATEGORIES = [
     categoryTitle: 'Growth, Strategy & Business Roles',
     roles: [
       {
-        title: 'AI Business Development Specialist',
+        title: 'Business Development Specialist',
         icon: 'chart-bar' as IconName,
         responsibilities: [
           'Identify and secure growth opportunities for Synaptix Studio.',
@@ -1567,7 +1486,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Growth & Content Participant',
+        title: 'Growth & Content Participant',
         icon: 'rocket' as IconName,
         responsibilities: [
           'Contribute to growth campaigns and marketing initiatives.',
@@ -1577,7 +1496,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Product Designer',
+        title: 'Product Designer',
         icon: 'layout' as IconName,
         responsibilities: [
           'Design AI-powered product experiences and workflows.',
@@ -1587,7 +1506,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Partnerships Manager',
+        title: 'Partnerships Manager',
         icon: 'link' as IconName,
         responsibilities: [
           'Develop strategic partnerships with AI tool providers and enterprises.',
@@ -1597,53 +1516,53 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Client Acquisition Expert',
+        title: 'Client Acquisition Expert',
         icon: 'megaphone' as IconName,
         responsibilities: [
-            'Builds AI-enhanced outreach systems to generate leads.',
-            'Uses automation to qualify and nurture potential clients.',
-            'Develops strategies for scalable client acquisition across industries.',
-            'Works closely with business development to increase conversion rates.',
+          'Builds AI-enhanced outreach systems to generate leads.',
+          'Uses automation to qualify and nurture potential clients.',
+          'Develops strategies for scalable client acquisition across industries.',
+          'Works closely with business development to increase conversion rates.',
         ]
       },
       {
-        title: 'AI Client Success Manager',
+        title: 'Client Success Manager',
         icon: 'check-circle' as IconName,
         responsibilities: [
-            'Ensures seamless onboarding of clients with AI-powered tools.',
-            'Monitors client satisfaction and system performance.',
-            'Provides proactive solutions to improve client outcomes.',
-            'Acts as the primary point of contact for ongoing relationships.',
+          'Ensures seamless onboarding of clients with AI-powered tools.',
+          'Monitors client satisfaction and system performance.',
+          'Provides proactive solutions to improve client outcomes.',
+          'Acts as primary point of contact for ongoing relationships.',
         ]
       },
       {
-        title: 'AI Project Manager',
+        title: 'Project Manager',
         icon: 'clipboard-list' as IconName,
         responsibilities: [
-            'Oversees end-to-end delivery of AI projects.',
-            'Coordinates between technical, creative, and strategy teams.',
-            'Implements agile project management practices.',
-            'Ensures deadlines, budgets, and quality standards are met.',
+          'Oversees end-to-end delivery of AI projects.',
+          'Coordinates between technical, creative, and strategy teams.',
+          'Implements agile project management practices.',
+          'Ensures deadlines, budgets, and quality standards are met.',
         ]
       },
       {
-        title: 'AI Team Manager',
+        title: 'Team Manager',
         icon: 'users' as IconName,
         responsibilities: [
-            'Manages cross-functional AI-focused teams.',
-            'Delegates responsibilities across automation, creative, and business experts.',
-            'Tracks team performance using AI analytics tools.',
-            'Mentors junior team members and supports professional growth.',
+          'Manages cross-functional AI-focused teams.',
+          'Delegates responsibilities across automation, creative, and business experts.',
+          'Tracks team performance using AI analytics tools.',
+          'Mentors junior team members and supports professional growth.',
         ]
       },
       {
-        title: 'AI Lead, Extractor & Manager',
+        title: 'Lead, Extractor & Manager',
         icon: 'search' as IconName,
         responsibilities: [
-            'Leads the client journey from acquisition to delivery.',
-            'Extracts key insights from client needs to design tailored AI solutions.',
-            'Manages both people and project pipelines.',
-            'Bridges leadership with execution to ensure smooth scaling.',
+          'Leads client journey from acquisition to delivery.',
+          'Extracts key insights from client needs to design tailored AI solutions.',
+          'Manages both people and project pipelines.',
+          'Bridges leadership with execution to ensure smooth scaling.',
         ]
       }
     ]
@@ -1652,7 +1571,7 @@ export const CAREER_CATEGORIES = [
     categoryTitle: 'Advanced & Senior Technical Roles',
     roles: [
       {
-        title: 'AI Systems Architect',
+        title: 'Systems Architect',
         icon: 'gear' as IconName,
         responsibilities: [
           'Design end-to-end AI architectures for enterprise clients.',
@@ -1663,7 +1582,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Solutions Engineer (Enterprise)',
+        title: 'Solutions Engineer (Enterprise)',
         icon: 'cube' as IconName,
         responsibilities: [
           'Translate business needs into detailed technical solutions.',
@@ -1674,7 +1593,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Backend Developer',
+        title: 'Backend Developer',
         icon: 'code' as IconName,
         responsibilities: [
           'Build and maintain AI-powered APIs, microservices, and backend infrastructure.',
@@ -1684,7 +1603,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Frontend Developer (with AI Integration)',
+        title: 'Frontend Developer (with AI Integration)',
         icon: 'code' as IconName,
         responsibilities: [
           'Develop web and mobile UIs that seamlessly integrate with AI systems.',
@@ -1694,7 +1613,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Full-Stack Developer (Senior)',
+        title: 'Full-Stack Developer (Senior)',
         icon: 'code' as IconName,
         responsibilities: [
           'Own complete delivery of AI-enabled applications (frontend + backend).',
@@ -1704,7 +1623,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI CRM Integration Specialist',
+        title: 'CRM Integration Specialist',
         icon: 'users' as IconName,
         responsibilities: [
           'Customize and deploy CRMs (Zoho, HubSpot, Salesforce) with AI-powered workflows.',
@@ -1714,7 +1633,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Data Engineer',
+        title: 'Data Engineer',
         icon: 'gear' as IconName,
         responsibilities: [
           'Build and maintain pipelines to collect, transform, and store data for AI models.',
@@ -1724,7 +1643,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI MLOps Engineer',
+        title: 'MLOps Engineer',
         icon: 'rocket' as IconName,
         responsibilities: [
           'Deploy, monitor, and manage machine learning models in production.',
@@ -1734,7 +1653,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Cloud Infrastructure Engineer',
+        title: 'Cloud Infrastructure Engineer',
         icon: 'zap' as IconName,
         responsibilities: [
           'Design and maintain scalable AI infrastructure on AWS, GCP, or Azure.',
@@ -1744,7 +1663,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Security & Compliance Lead (Senior)',
+        title: 'Security & Compliance Lead (Senior)',
         icon: 'check-circle' as IconName,
         responsibilities: [
           'Oversee end-to-end security for enterprise AI systems.',
@@ -1754,7 +1673,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Technical Program Manager',
+        title: 'Technical Program Manager',
         icon: 'clipboard-list' as IconName,
         responsibilities: [
           'Oversee multi-disciplinary AI projects across development, design, and client success.',
@@ -1764,7 +1683,7 @@ export const CAREER_CATEGORIES = [
         ]
       },
       {
-        title: 'AI Research Scientist (Senior)',
+        title: 'Research Scientist (Senior)',
         icon: 'search' as IconName,
         responsibilities: [
           'Investigate new AI techniques for enterprise use cases.',
@@ -1779,4 +1698,4 @@ export const CAREER_CATEGORIES = [
 
 export const ALL_CAREER_ROLES = CAREER_CATEGORIES.flatMap(category => category.roles);
 
-export const RESOURCE_CATEGORIES = ['Featured', 'Latest', 'AI Strategy', 'Automation', 'Case Studies', 'Business Growth'];
+export const RESOURCE_CATEGORIES = ['Featured', 'Latest', 'Process Optimization', 'Automation', 'Case Studies', 'Business Growth'];

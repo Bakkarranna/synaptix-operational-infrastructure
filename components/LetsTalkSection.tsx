@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useOnScreen } from '../hooks/useOnScreen';
 import { UserIcon, EmailIcon, PhoneIcon, PencilIcon, CheckCircleIcon } from './Icon';
 import StyledText from './StyledText';
-import { saveContactLead } from '../services/supabase';
+import { useMutation } from "convex/react";
+import { api } from "../convex/_generated/api";
 import { trackEvent } from '../services/analytics';
 
 interface LetsTalkSectionProps {
@@ -10,6 +11,7 @@ interface LetsTalkSectionProps {
 }
 
 const LetsTalkSection: React.FC<LetsTalkSectionProps> = ({ openCalendlyModal }) => {
+    const submitContact = useMutation(api.forms.submitContact);
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -19,7 +21,7 @@ const LetsTalkSection: React.FC<LetsTalkSectionProps> = ({ openCalendlyModal }) 
     const ref = useRef<HTMLDivElement>(null);
     const isVisible = useOnScreen(ref);
     const scrollPositionRef = useRef<number | null>(null);
-    
+
     React.useLayoutEffect(() => {
         if (scrollPositionRef.current !== null && submitted) {
             window.scrollTo({ top: scrollPositionRef.current, behavior: 'instant' });
@@ -46,18 +48,18 @@ const LetsTalkSection: React.FC<LetsTalkSectionProps> = ({ openCalendlyModal }) 
         setSubmitted(false);
 
         try {
-            await saveContactLead({
-                Name: formData.name,
-                Email: formData.email,
-                Phone: formData.phone,
-                Message: formData.message,
-                BookedDemo: false
+            await submitContact({
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                message: formData.message,
+                service_interest: undefined // or based on context if we had it
             });
-            console.log("'Let's Talk' data submitted to Supabase successfully. This confirms the backend connection is working.");
+            console.log("'Let's Talk' data submitted to Convex successfully.");
 
             // Set a static success message confirming the save
             setSuccessMessage(`**Thank you, ${formData.name}!** Your message has been successfully submitted. Our team will get back to you shortly.`);
-            
+
             trackEvent('submit_contact_form');
             setSubmitted(true);
             setFormData({ name: '', email: '', phone: '', message: '' });
@@ -71,8 +73,8 @@ const LetsTalkSection: React.FC<LetsTalkSectionProps> = ({ openCalendlyModal }) 
     };
 
     const handleBookDemoClick = () => {
-      trackEvent('click_book_demo', { section: 'lets_talk' });
-      openCalendlyModal();
+        trackEvent('click_book_demo', { section: 'lets_talk' });
+        openCalendlyModal();
     };
 
     if (submitted && !loading) {
@@ -138,7 +140,7 @@ const LetsTalkSection: React.FC<LetsTalkSectionProps> = ({ openCalendlyModal }) 
                                             </svg>
                                             Sending...
                                         </>
-                                    ) : 'Send Message'}
+                                    ) : 'Submit Inquiry'}
                                 </button>
 
                                 <div className="relative w-full max-w-xs text-center">
@@ -149,13 +151,13 @@ const LetsTalkSection: React.FC<LetsTalkSectionProps> = ({ openCalendlyModal }) 
                                         <span className="bg-white/20 backdrop-blur-sm dark:bg-brand-dark px-2 text-sm text-gray-500 dark:text-white/60">OR</span>
                                     </div>
                                 </div>
-                                
+
                                 <button
                                     type="button"
                                     onClick={handleBookDemoClick}
                                     className="w-full max-w-sm bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/20 text-gray-800 dark:text-white font-bold py-2.5 text-sm px-12 rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all transform hover:scale-105"
                                 >
-                                    Book a 15-Min Demo Call
+                                    Schedule Architecture Review
                                 </button>
                             </div>
                         </form>

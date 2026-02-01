@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import BlogAdminDashboard from '../../../components/admin/BlogAdminDashboard'
-import type { BlogPost } from '../../../services/supabase'
+import type { BlogPost } from '../../types'
 
 // Mock the Google GenAI
 vi.mock('@google/genai', () => ({
@@ -24,7 +24,7 @@ vi.mock('@google/genai', () => ({
 }))
 
 // Mock the services
-vi.mock('../../../services/supabase', () => ({
+vi.mock('../../types', () => ({
   deleteBlogPost: vi.fn(),
   updatePostPerformanceData: vi.fn(),
   saveBlogPost: vi.fn()

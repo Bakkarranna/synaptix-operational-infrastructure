@@ -1,5 +1,7 @@
 import React from 'react';
-import { saveAffiliateApplication } from '../services/supabase';
+// import { saveAffiliateApplication } from '../services/supabase'; // Removed
+import { useMutation } from "convex/react";
+import { api } from "../convex/_generated/api";
 import { UserIcon, EmailIcon, CheckCircleIcon, LinkedInIcon, CodeIcon } from './Icon';
 
 interface AffiliateApplicationFormProps {
@@ -14,6 +16,7 @@ const AffiliateApplicationForm: React.FC<AffiliateApplicationFormProps> = ({ onC
     workedBefore: 'No',
     affiliateCode: '',
   });
+  const submitAffiliate = useMutation(api.forms.submitAffiliate);
   const [loading, setLoading] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -34,12 +37,12 @@ const AffiliateApplicationForm: React.FC<AffiliateApplicationFormProps> = ({ onC
     console.log("Submitting affiliate application...");
 
     try {
-      await saveAffiliateApplication({
-        Name: formData.name,
-        Email: formData.email,
-        SocialProfile: formData.socialProfile,
-        WorkedWithUs: formData.workedBefore,
-        AffiliateCode: formData.affiliateCode,
+      await submitAffiliate({
+        name: formData.name,
+        email: formData.email,
+        socialProfile: formData.socialProfile,
+        workedWithUs: formData.workedBefore,
+        affiliateCode: formData.affiliateCode,
       });
       console.log("Affiliate application submitted to Supabase.");
       setSubmitted(true);

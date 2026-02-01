@@ -2,133 +2,137 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { Icon, SunIcon, MoonIcon } from '../Icon';
 import BlogEditorModal from './BlogEditorModal';
-import { BlogPost, deleteBlogPost, updatePostPerformanceData, PerformanceData } from '../../services/supabase';
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
+import { BlogPost } from '../../src/types';
 import AiLinkManagerModal from './AiLinkManagerModal';
 import DynamicLoader from '../DynamicLoader';
 import { LOADING_MESSAGES, RESOURCE_CATEGORIES, CALENDLY_LINK, CONTENT_WRITER_TYPES, CONTENT_WRITER_TONES } from '../../constants';
 import Modal from '../Modal';
 import BlogMarkdownRenderer from '../BlogMarkdownRenderer';
+import AIAdminDashboard from './AIAdminDashboard';
 
 interface BlogAdminDashboardProps {
-  initialPosts: BlogPost[];
-  onRefreshPosts: () => Promise<void>;
-  onLogout: () => void;
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
+    initialPosts: BlogPost[];
+    onRefreshPosts: () => Promise<void>;
+    onLogout: () => void;
+    theme: 'light' | 'dark';
+    toggleTheme: () => void;
 }
 
 interface AIPipelineProps {
-  onDraftGenerated: (draft: BlogPost) => void;
-  onCancel: () => void;
-  initialBrief?: {
-      topic: string;
-      keywords?: string;
-      audience?: string;
-  } | null;
+    onDraftGenerated: (draft: BlogPost) => void;
+    onCancel: () => void;
+    initialBrief?: {
+        topic: string;
+        keywords?: string;
+        audience?: string;
+    } | null;
 }
 
 const AIPublishingPipeline: React.FC<AIPipelineProps> = ({ onDraftGenerated, onCancel, initialBrief }) => {
-  const [brief, setBrief] = useState({
-    topic: '',
-    audience: '',
-    keywords: '',
-    wordCount: '2500-4000',
-    numTables: 1,
-    category: RESOURCE_CATEGORIES.filter(c => c !== 'All')[0],
-    tones: [] as string[],
-    tableDetails: '',
-    cta: '',
-    numShortTail: 5,
-    numLongTail: 10,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isSuggestingSeo, setIsSuggestingSeo] = useState(false);
-  
-  useEffect(() => {
-    if (initialBrief) {
-        setBrief(prev => ({
-            ...prev,
-            topic: initialBrief.topic,
-            keywords: initialBrief.keywords || '',
-            audience: initialBrief.audience || '',
-        }));
-    }
-  }, [initialBrief]);
-
-  const handleBriefChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    if (type === 'number') {
-        setBrief(prev => ({ ...prev, [name]: parseInt(value, 10) || 0 }));
-    } else {
-        setBrief(prev => ({ ...prev, [name]: value }));
-    }
-  };
-  
-  const handleToggle = (item: string, list: string[], setter: (newList: string[]) => void) => {
-    const newList = list.includes(item)
-        ? list.filter(i => i !== item)
-        : [...list, item];
-    setter(newList);
-  };
-
-  const parseFrontmatter = (markdown: string): { frontmatter: any; content: string } => {
-    // Re-architected parser: Pre-process to remove any top-level markdown code block wrappers from the AI.
-    // This makes the system resilient to this common AI formatting inconsistency.
-    let processedMarkdown = markdown.trim();
-    if (processedMarkdown.startsWith('```') && processedMarkdown.endsWith('```')) {
-        const lines = processedMarkdown.split('\n');
-        processedMarkdown = lines.slice(1, lines.length - 1).join('\n').trim();
-    }
-
-    // Regex to find a YAML frontmatter block. The opening '---' is now optional to handle AI inconsistencies.
-    const frontmatterRegex = /(?:---\s*\n)?([\s\S]+?)\n---\s*\n/;
-    const match = processedMarkdown.match(frontmatterRegex);
-
-    if (!match || typeof match.index === 'undefined') {
-        console.error("Malformed AI Response. Full response received:", processedMarkdown);
-        throw new Error("Invalid response format: Missing frontmatter. The AI did not provide the required article metadata.");
-    }
-
-    const frontmatterContent = match[1];
-    // The actual article content starts after the matched frontmatter block.
-    const content = processedMarkdown.substring(match.index + match[0].length).trim();
-
-    const frontmatter: { [key: string]: string } = {};
-    const expectedKeys = ['title', 'slug', 'metaDescription', 'keywords'];
-    let hasKeys = false;
-
-    frontmatterContent.split('\n').forEach(line => {
-        const parts = line.split(':');
-        if (parts.length > 1) {
-            const key = parts[0].trim();
-            const value = parts.slice(1).join(':').trim().replace(/^"|"$/g, '');
-            frontmatter[key] = value;
-            if(expectedKeys.includes(key)) {
-                hasKeys = true;
-            }
-        }
+    const [brief, setBrief] = useState({
+        topic: '',
+        audience: '',
+        keywords: '',
+        wordCount: '2500-4000',
+        numTables: 1,
+        category: RESOURCE_CATEGORIES.filter(c => c !== 'All')[0],
+        tones: [] as string[],
+        tableDetails: '',
+        cta: '',
+        numShortTail: 5,
+        numLongTail: 10,
     });
-    
-    // Additional validation to ensure we captured a real frontmatter block
-    if (!hasKeys) {
-        console.error("Malformed AI Response. Parsed block did not contain frontmatter keys. Full response:", processedMarkdown);
-        throw new Error("Invalid response format: Missing frontmatter keys. The AI's response structure was incorrect.");
-    }
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [isSuggestingSeo, setIsSuggestingSeo] = useState(false);
 
-    return { frontmatter, content };
-  };
+    useEffect(() => {
+        if (initialBrief) {
+            setBrief(prev => ({
+                ...prev,
+                topic: initialBrief.topic,
+                keywords: initialBrief.keywords || '',
+                audience: initialBrief.audience || '',
+            }));
+        }
+    }, [initialBrief]);
 
-  const handleSuggestSeo = async () => {
-    if (!brief.topic.trim()) {
-        setError("Please enter a topic first.");
-        return;
-    }
-    setIsSuggestingSeo(true);
-    setError(null);
-    try {
-        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-        const systemInstruction = `You are an expert SEO and marketing strategist for Synaptix Studio, an AI Automation Agency. For the given article topic, your task is to generate a target audience persona and a strategic list of keywords.
+    const handleBriefChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value, type } = e.target;
+        if (type === 'number') {
+            setBrief(prev => ({ ...prev, [name]: parseInt(value, 10) || 0 }));
+        } else {
+            setBrief(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const handleToggle = (item: string, list: string[], setter: (newList: string[]) => void) => {
+        const newList = list.includes(item)
+            ? list.filter(i => i !== item)
+            : [...list, item];
+        setter(newList);
+    };
+
+    const parseFrontmatter = (markdown: string): { frontmatter: any; content: string } => {
+        // Re-architected parser: Pre-process to remove any top-level markdown code block wrappers from the AI.
+        // This makes the system resilient to this common AI formatting inconsistency.
+        let processedMarkdown = markdown.trim();
+        if (processedMarkdown.startsWith('```') && processedMarkdown.endsWith('```')) {
+            const lines = processedMarkdown.split('\n');
+            processedMarkdown = lines.slice(1, lines.length - 1).join('\n').trim();
+        }
+
+        // Regex to find a YAML frontmatter block. The opening '---' is now optional to handle AI inconsistencies.
+        const frontmatterRegex = /(?:---\s*\n)?([\s\S]+?)\n---\s*\n/;
+        const match = processedMarkdown.match(frontmatterRegex);
+
+        if (!match || typeof match.index === 'undefined') {
+            console.error("Malformed AI Response. Full response received:", processedMarkdown);
+            throw new Error("Invalid response format: Missing frontmatter. The AI did not provide the required article metadata.");
+        }
+
+        const frontmatterContent = match[1];
+        // The actual article content starts after the matched frontmatter block.
+        const content = processedMarkdown.substring(match.index + match[0].length).trim();
+
+        const frontmatter: { [key: string]: string } = {};
+        const expectedKeys = ['title', 'slug', 'metaDescription', 'keywords'];
+        let hasKeys = false;
+
+        frontmatterContent.split('\n').forEach(line => {
+            const parts = line.split(':');
+            if (parts.length > 1) {
+                const key = parts[0].trim();
+                const value = parts.slice(1).join(':').trim().replace(/^"|"$/g, '');
+                frontmatter[key] = value;
+                if (expectedKeys.includes(key)) {
+                    hasKeys = true;
+                }
+            }
+        });
+
+        // Additional validation to ensure we captured a real frontmatter block
+        if (!hasKeys) {
+            console.error("Malformed AI Response. Parsed block did not contain frontmatter keys. Full response:", processedMarkdown);
+            throw new Error("Invalid response format: Missing frontmatter keys. The AI's response structure was incorrect.");
+        }
+
+        return { frontmatter, content };
+    };
+
+    const handleSuggestSeo = async () => {
+        if (!brief.topic.trim()) {
+            setError("Please enter a topic first.");
+            return;
+        }
+        setIsSuggestingSeo(true);
+        setError(null);
+        try {
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+            const systemInstruction = `You are an expert SEO and marketing strategist for Synaptix Studio, an AI Automation Agency. For the given article topic, your task is to generate a target audience persona and a strategic list of keywords.
 
         **CRITICAL REQUIREMENTS:**
         - The keyword list MUST include the mandatory brand keywords: "Synaptix Studio", "AI Automation Agency".
@@ -139,104 +143,104 @@ const AIPublishingPipeline: React.FC<AIPipelineProps> = ({ onDraftGenerated, onC
         2. "keywords": A comma-separated string containing exactly ${brief.numShortTail} short-tail keywords and ${brief.numLongTail} long-tail keywords, in addition to the mandatory brand keywords.
         
         **ABSOLUTE FINAL INSTRUCTION:** Your entire response, from the very first character, MUST be the valid JSON object. Do not include any text, explanation, or markdown formatting like \`\`\`json around it.`;
-        
-        const userPrompt = `Article Topic: "${brief.topic}"`;
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: userPrompt,
-            config: { systemInstruction, responseMimeType: 'application/json' }
+            const userPrompt = `Article Topic: "${brief.topic}"`;
+
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: userPrompt,
+                config: { systemInstruction, responseMimeType: 'application/json' }
+            });
+
+            // Resilient JSON parsing
+            const rawText = response.text;
+            const jsonMatch = rawText.match(/```json\s*([\s\S]*?)\s*```|(\{[\s\S]*\})/);
+            if (!jsonMatch || (!jsonMatch[1] && !jsonMatch[2])) {
+                throw new Error("No valid JSON object found in response.");
+            }
+            const jsonString = (jsonMatch[1] || jsonMatch[2]).trim();
+            const suggestions = JSON.parse(jsonString);
+
+            setBrief(prev => ({
+                ...prev,
+                audience: suggestions.audience || prev.audience,
+                keywords: suggestions.keywords || prev.keywords
+            }));
+
+        } catch (e: any) {
+            console.error("SEO Suggestion failed:", e);
+            setError(`Could not generate SEO suggestions. ${e.message}`);
+        } finally {
+            setIsSuggestingSeo(false);
+        }
+    };
+
+    const cleanupAiContent = (markdown: string): string => {
+        let cleaned = markdown.replace(/\[[\d\s,]+\]/g, ''); // Remove stray numerical citations
+
+        const blocks = cleaned.split(/(\n\s*\n)/); // Split by double newlines, keeping the separator
+        const cleanedBlocks = blocks.map(block => {
+            const trimmedBlock = block.trim();
+            // Guard clause: Avoid processing complex structures like tables, code blocks, or anything that already looks like a list.
+            if (trimmedBlock.includes('\n') || trimmedBlock.startsWith('```') || trimmedBlock.includes('|') || trimmedBlock.startsWith('*') || trimmedBlock.startsWith('-') || /^\d+\./.test(trimmedBlock)) {
+                return block;
+            }
+
+            // This regex is designed to find multiple "Label:* Description" patterns within a single paragraph.
+            const itemRegex = /((?:\*\*)?[^\n:]+?(?:\*\*)?):\*\s*([^\n]*?)(?=(?:\s+(?:\*\*)?[^\n:]+?(?:\*\*)?:\*)|$)/g;
+
+            const items = [...trimmedBlock.matchAll(itemRegex)];
+
+            // Only reformat if we find 2 or more distinct items, which strongly indicates a malformed list.
+            if (items.length >= 2) {
+                // Find where the list starts to separate any introductory text.
+                const firstMatchFullText = items[0][0];
+                const firstMatchIndex = trimmedBlock.indexOf(firstMatchFullText);
+
+                const intro = trimmedBlock.substring(0, firstMatchIndex).trim();
+
+                let newContent = intro ? `${intro}\n\n` : '';
+                newContent += items.map(match => {
+                    const label = match[1].trim().replace(/\*\*/g, ''); // Clean the label
+                    const desc = match[2].trim();
+                    return `* **${label}:** ${desc}`;
+                }).join('\n');
+
+                // Replace the trimmed block content within the original block to preserve surrounding whitespace.
+                return block.replace(trimmedBlock, newContent);
+            }
+
+            return block;
         });
 
-        // Resilient JSON parsing
-        const rawText = response.text;
-        const jsonMatch = rawText.match(/```json\s*([\s\S]*?)\s*```|(\{[\s\S]*\})/);
-        if (!jsonMatch || (!jsonMatch[1] && !jsonMatch[2])) {
-            throw new Error("No valid JSON object found in response.");
-        }
-        const jsonString = (jsonMatch[1] || jsonMatch[2]).trim();
-        const suggestions = JSON.parse(jsonString);
+        let joinedBlocks = cleanedBlocks.join('');
 
-        setBrief(prev => ({
-            ...prev,
-            audience: suggestions.audience || prev.audience,
-            keywords: suggestions.keywords || prev.keywords
-        }));
+        // Remove any "References" or "Sources" section at the very end of the article.
+        const lines = joinedBlocks.split('\n');
+        const referencesIndex = lines.findIndex(line =>
+            line.trim().toLowerCase().match(/^(#+\s*(references|sources|bibliography))|^(references:|sources:)/)
+        );
 
-    } catch (e: any) {
-        console.error("SEO Suggestion failed:", e);
-        setError(`Could not generate SEO suggestions. ${e.message}`);
-    } finally {
-        setIsSuggestingSeo(false);
-    }
-  };
-  
-const cleanupAiContent = (markdown: string): string => {
-    let cleaned = markdown.replace(/\[[\d\s,]+\]/g, ''); // Remove stray numerical citations
-
-    const blocks = cleaned.split(/(\n\s*\n)/); // Split by double newlines, keeping the separator
-    const cleanedBlocks = blocks.map(block => {
-        const trimmedBlock = block.trim();
-        // Guard clause: Avoid processing complex structures like tables, code blocks, or anything that already looks like a list.
-        if (trimmedBlock.includes('\n') || trimmedBlock.startsWith('```') || trimmedBlock.includes('|') || trimmedBlock.startsWith('*') || trimmedBlock.startsWith('-') || /^\d+\./.test(trimmedBlock)) {
-            return block;
+        if (referencesIndex !== -1) {
+            // To be safe, only remove it if it's one of the last sections in the document.
+            if (lines.length - referencesIndex < 30) {
+                joinedBlocks = lines.slice(0, referencesIndex).join('\n').trim();
+            }
         }
 
-        // This regex is designed to find multiple "Label:* Description" patterns within a single paragraph.
-        const itemRegex = /((?:\*\*)?[^\n:]+?(?:\*\*)?):\*\s*([^\n]*?)(?=(?:\s+(?:\*\*)?[^\n:]+?(?:\*\*)?:\*)|$)/g;
-        
-        const items = [...trimmedBlock.matchAll(itemRegex)];
+        return joinedBlocks;
+    };
 
-        // Only reformat if we find 2 or more distinct items, which strongly indicates a malformed list.
-        if (items.length >= 2) {
-            // Find where the list starts to separate any introductory text.
-            const firstMatchFullText = items[0][0];
-            const firstMatchIndex = trimmedBlock.indexOf(firstMatchFullText);
-            
-            const intro = trimmedBlock.substring(0, firstMatchIndex).trim();
-
-            let newContent = intro ? `${intro}\n\n` : '';
-            newContent += items.map(match => {
-                const label = match[1].trim().replace(/\*\*/g, ''); // Clean the label
-                const desc = match[2].trim();
-                return `* **${label}:** ${desc}`;
-            }).join('\n');
-            
-            // Replace the trimmed block content within the original block to preserve surrounding whitespace.
-            return block.replace(trimmedBlock, newContent);
+    const handleGenerate = async () => {
+        if (!brief.topic.trim()) {
+            setError('Please provide a topic for the article.');
+            return;
         }
-
-        return block;
-    });
-
-    let joinedBlocks = cleanedBlocks.join('');
-
-    // Remove any "References" or "Sources" section at the very end of the article.
-    const lines = joinedBlocks.split('\n');
-    const referencesIndex = lines.findIndex(line => 
-        line.trim().toLowerCase().match(/^(#+\s*(references|sources|bibliography))|^(references:|sources:)/)
-    );
-
-    if (referencesIndex !== -1) {
-        // To be safe, only remove it if it's one of the last sections in the document.
-        if (lines.length - referencesIndex < 30) {
-            joinedBlocks = lines.slice(0, referencesIndex).join('\n').trim();
-        }
-    }
-
-    return joinedBlocks;
-};
-
-  const handleGenerate = async () => {
-    if (!brief.topic.trim()) {
-      setError('Please provide a topic for the article.');
-      return;
-    }
-    setIsLoading(true);
-    setError(null);
-    try {
-      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-      const systemInstruction = `You are an elite AI Content Strategy team for Synaptix Studio. Your primary objective is to take a brief and autonomously execute a complete content creation pipeline, resulting in a professional-grade, SEO-optimized article that adheres to the strict "Synaptix Studio Blog Blueprint".
+        setIsLoading(true);
+        setError(null);
+        try {
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+            const systemInstruction = `You are an elite AI Content Strategy team for Synaptix Studio. Your primary objective is to take a brief and autonomously execute a complete content creation pipeline, resulting in a professional-grade, SEO-optimized article that adheres to the strict "Synaptix Studio Blog Blueprint".
 
 **THE AI PUBLISHING PIPELINE (Your Automated Workflow):**
 
@@ -301,140 +305,140 @@ keywords: "your, final, keyword, list"
 # The Full Article Draft Starts Here
 ## Introduction
 [...content...]`;
-      
-      const userPrompt = `Generate a full article draft based on this brief:
+
+            const userPrompt = `Generate a full article draft based on this brief:
       - Topic: "${brief.topic}"
       - Category: "${brief.category}"
       - Target Audience: "${brief.audience}"
       - Primary Keywords: "${brief.keywords}"
       - Desired Tones: "${brief.tones.join(', ')}"`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: userPrompt,
-        config: {
-          systemInstruction,
-          tools: [{ googleSearch: {} }],
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: userPrompt,
+                config: {
+                    systemInstruction,
+                    tools: [{ googleSearch: {} }],
+                }
+            });
+
+            if (!response.text || response.text.trim() === '') {
+                console.error("AI response was empty. Full response:", JSON.stringify(response, null, 2));
+                const blockReason = response.promptFeedback?.blockReason;
+                if (blockReason) {
+                    throw new Error(`The request was blocked by the API. Reason: ${blockReason}. Please revise your prompt.`);
+                }
+                throw new Error("The AI returned an empty response. This might be due to a content safety filter or an internal error. Please try again with a different topic.");
+            }
+
+            const cleanedText = cleanupAiContent(response.text);
+            const { frontmatter, content } = parseFrontmatter(cleanedText);
+
+            const newPost: BlogPost = {
+                title: frontmatter.title,
+                slug: frontmatter.slug,
+                description: frontmatter.metaDescription,
+                content: content,
+                keywords: frontmatter.keywords,
+                category: brief.category,
+                image: 'https://iili.io/Jbc1Aol.png', // Default image
+                externalLinks: []
+            };
+            onDraftGenerated(newPost);
+        } catch (e: any) {
+            console.error(e);
+            setError(`Failed to generate draft: ${e.message}. The AI's response might not have been in the correct format.`);
+        } finally {
+            setIsLoading(false);
         }
-      });
-      
-      if (!response.text || response.text.trim() === '') {
-          console.error("AI response was empty. Full response:", JSON.stringify(response, null, 2));
-          const blockReason = response.promptFeedback?.blockReason;
-          if (blockReason) {
-              throw new Error(`The request was blocked by the API. Reason: ${blockReason}. Please revise your prompt.`);
-          }
-          throw new Error("The AI returned an empty response. This might be due to a content safety filter or an internal error. Please try again with a different topic.");
-      }
-      
-      const cleanedText = cleanupAiContent(response.text);
-      const { frontmatter, content } = parseFrontmatter(cleanedText);
+    };
 
-      const newPost: BlogPost = {
-        title: frontmatter.title,
-        slug: frontmatter.slug,
-        description: frontmatter.metaDescription,
-        content: content,
-        keywords: frontmatter.keywords,
-        category: brief.category,
-        image: 'https://iili.io/Jbc1Aol.png', // Default image
-        externalLinks: []
-      };
-      onDraftGenerated(newPost);
-    } catch (e: any) {
-      console.error(e);
-      setError(`Failed to generate draft: ${e.message}. The AI's response might not have been in the correct format.`);
-    } finally {
-      setIsLoading(false);
+    if (isLoading) {
+        return <DynamicLoader messages={LOADING_MESSAGES.PUBLISHING_PIPELINE} />;
     }
-  };
 
-  if (isLoading) {
-    return <DynamicLoader messages={LOADING_MESSAGES.PUBLISHING_PIPELINE} />;
-  }
+    return (
+        <div className="bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-6 space-y-4 max-w-3xl mx-auto animate-fade-in-fast text-gray-900 dark:text-white">
+            <h3 className="text-xl font-bold flex items-center gap-2">
+                <Icon name="sparkles" className="h-6 w-6 text-primary" />
+                AI Publishing Pipeline
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-white/70">Start with a topic. Our AI team will handle the rest, from SEO research to the final draft.</p>
 
-  return (
-    <div className="bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-6 space-y-4 max-w-3xl mx-auto animate-fade-in-fast text-gray-900 dark:text-white">
-        <h3 className="text-xl font-bold flex items-center gap-2">
-            <Icon name="sparkles" className="h-6 w-6 text-primary" />
-            AI Publishing Pipeline
-        </h3>
-        <p className="text-sm text-gray-600 dark:text-white/70">Start with a topic. Our AI team will handle the rest, from SEO research to the final draft.</p>
-        
-        <div className="space-y-4">
-            <div>
-                <label className="block text-sm font-bold mb-1">Topic *</label>
-                <input name="topic" value={brief.topic} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-gray-900 dark:text-white" placeholder="e.g., The Future of AI in Marketing" />
-            </div>
-
-            <div className="p-4 bg-gray-50/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg space-y-4">
-                <div className="flex justify-between items-center">
-                    <h4 className="text-base font-bold">SEO & Targeting</h4>
-                    <button onClick={handleSuggestSeo} disabled={isSuggestingSeo || !brief.topic.trim()} className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <Icon name="lightbulb" className="h-4 w-4"/>
-                        {isSuggestingSeo ? 'Suggesting...' : 'Suggest with AI'}
-                    </button>
-                </div>
-                {isSuggestingSeo && <div className="text-center text-xs">Generating suggestions...</div>}
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="md:col-span-1">
-                         <label className="block text-xs font-bold mb-1">Short-Tail Keywords</label>
-                        <input name="numShortTail" type="number" value={brief.numShortTail} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" />
-                    </div>
-                     <div className="md:col-span-1">
-                         <label className="block text-xs font-bold mb-1">Long-Tail Keywords</label>
-                        <input name="numLongTail" type="number" value={brief.numLongTail} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" />
-                    </div>
-                     <div className="md:col-span-1">
-                        <label className="block text-xs font-bold mb-1">Category</label>
-                        <select name="category" value={brief.category} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white">
-                            {RESOURCE_CATEGORIES.filter(c => c !== 'All').map(cat => <option key={cat}>{cat}</option>)}
-                        </select>
-                    </div>
-                </div>
-                
-                <textarea name="audience" value={brief.audience} onChange={handleBriefChange} rows={3} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" placeholder="Describe the Target Audience (optional)..."/>
-                <textarea name="keywords" value={brief.keywords} onChange={handleBriefChange} rows={2} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" placeholder="Specific keywords to include (optional)..."/>
-            </div>
-
-            <div className="p-4 bg-gray-50/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg space-y-4">
-                 <h4 className="text-base font-bold">Content Options</h4>
-                
+            <div className="space-y-4">
                 <div>
-                    <label className="block text-sm font-bold mb-2">Tone of Voice</label>
-                    <div className="flex flex-wrap gap-2">
-                        {CONTENT_WRITER_TONES.map(tone => (
-                            <button key={tone} type="button" onClick={() => handleToggle(tone, brief.tones, (newList) => setBrief(prev => ({ ...prev, tones: newList })))} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border ${brief.tones.includes(tone) ? 'bg-primary/20 border-primary/50 text-primary dark:text-white' : 'bg-black/5 dark:bg-white/10 border-transparent hover:bg-black/10 dark:hover:bg-white/20 text-gray-700 dark:text-white/80'}`}>{tone}</button>
-                        ))}
-                    </div>
+                    <label className="block text-sm font-bold mb-1">Topic *</label>
+                    <input name="topic" value={brief.topic} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-gray-900 dark:text-white" placeholder="e.g., The Future of AI in Marketing" />
                 </div>
-                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <select name="wordCount" value={brief.wordCount} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white">
-                        <option>1000-1500</option>
-                        <option>2500-4000</option>
-                        <option>4000+</option>
-                    </select>
-                    <div>
-                        <label className="block text-xs font-bold mb-1">Number of Tables</label>
-                        <input name="numTables" type="number" value={brief.numTables} onChange={(e) => setBrief(prev => ({ ...prev, numTables: parseInt(e.target.value) || 0 }))} min="0" className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" />
-                    </div>
-                </div>
-                <textarea name="tableDetails" value={brief.tableDetails} onChange={handleBriefChange} rows={2} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm" placeholder="Details about tables (e.g., 'A table comparing AI models')..." />
-                <input name="cta" value={brief.cta} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm" placeholder="Call to Action (optional)" />
 
+                <div className="p-4 bg-gray-50/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg space-y-4">
+                    <div className="flex justify-between items-center">
+                        <h4 className="text-base font-bold">SEO & Targeting</h4>
+                        <button onClick={handleSuggestSeo} disabled={isSuggestingSeo || !brief.topic.trim()} className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <Icon name="lightbulb" className="h-4 w-4" />
+                            {isSuggestingSeo ? 'Suggesting...' : 'Suggest with AI'}
+                        </button>
+                    </div>
+                    {isSuggestingSeo && <div className="text-center text-xs">Generating suggestions...</div>}
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="md:col-span-1">
+                            <label className="block text-xs font-bold mb-1">Short-Tail Keywords</label>
+                            <input name="numShortTail" type="number" value={brief.numShortTail} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" />
+                        </div>
+                        <div className="md:col-span-1">
+                            <label className="block text-xs font-bold mb-1">Long-Tail Keywords</label>
+                            <input name="numLongTail" type="number" value={brief.numLongTail} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" />
+                        </div>
+                        <div className="md:col-span-1">
+                            <label className="block text-xs font-bold mb-1">Category</label>
+                            <select name="category" value={brief.category} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white">
+                                {RESOURCE_CATEGORIES.filter(c => c !== 'All').map(cat => <option key={cat}>{cat}</option>)}
+                            </select>
+                        </div>
+                    </div>
+
+                    <textarea name="audience" value={brief.audience} onChange={handleBriefChange} rows={3} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" placeholder="Describe the Target Audience (optional)..." />
+                    <textarea name="keywords" value={brief.keywords} onChange={handleBriefChange} rows={2} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" placeholder="Specific keywords to include (optional)..." />
+                </div>
+
+                <div className="p-4 bg-gray-50/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg space-y-4">
+                    <h4 className="text-base font-bold">Content Options</h4>
+
+                    <div>
+                        <label className="block text-sm font-bold mb-2">Tone of Voice</label>
+                        <div className="flex flex-wrap gap-2">
+                            {CONTENT_WRITER_TONES.map(tone => (
+                                <button key={tone} type="button" onClick={() => handleToggle(tone, brief.tones, (newList) => setBrief(prev => ({ ...prev, tones: newList })))} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border ${brief.tones.includes(tone) ? 'bg-primary/20 border-primary/50 text-primary dark:text-white' : 'bg-black/5 dark:bg-white/10 border-transparent hover:bg-black/10 dark:hover:bg-white/20 text-gray-700 dark:text-white/80'}`}>{tone}</button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <select name="wordCount" value={brief.wordCount} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white">
+                            <option>1000-1500</option>
+                            <option>2500-4000</option>
+                            <option>4000+</option>
+                        </select>
+                        <div>
+                            <label className="block text-xs font-bold mb-1">Number of Tables</label>
+                            <input name="numTables" type="number" value={brief.numTables} onChange={(e) => setBrief(prev => ({ ...prev, numTables: parseInt(e.target.value) || 0 }))} min="0" className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm text-gray-900 dark:text-white" />
+                        </div>
+                    </div>
+                    <textarea name="tableDetails" value={brief.tableDetails} onChange={handleBriefChange} rows={2} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm" placeholder="Details about tables (e.g., 'A table comparing AI models')..." />
+                    <input name="cta" value={brief.cta} onChange={handleBriefChange} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-300 dark:border-white/20 rounded-md p-2 text-sm" placeholder="Call to Action (optional)" />
+
+                </div>
+            </div>
+
+            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+
+            <div className="flex gap-4 pt-2">
+                <button onClick={onCancel} className="w-full bg-gray-200 dark:bg-white/10 text-gray-800 dark:text-white py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20">Cancel</button>
+                <button onClick={handleGenerate} disabled={!brief.topic.trim()} className="w-full bg-primary text-white font-bold py-2 rounded-lg hover:bg-opacity-90 disabled:opacity-50">Generate Article</button>
             </div>
         </div>
-        
-        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-        
-        <div className="flex gap-4 pt-2">
-            <button onClick={onCancel} className="w-full bg-gray-200 dark:bg-white/10 text-gray-800 dark:text-white py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20">Cancel</button>
-            <button onClick={handleGenerate} disabled={!brief.topic.trim()} className="w-full bg-primary text-white font-bold py-2 rounded-lg hover:bg-opacity-90 disabled:opacity-50">Generate Article</button>
-        </div>
-    </div>
-  );
+    );
 };
 
 interface ArticleBrief {
@@ -511,10 +515,10 @@ const ContentStrategistView: React.FC<ContentStrategistViewProps> = ({ allPosts,
                     {isLoading ? 'Analyzing...' : 'Generate New Strategy'}
                 </button>
             </div>
-            
+
             {isLoading && <DynamicLoader messages={LOADING_MESSAGES.CONTENT_STRATEGY} className="mt-8" />}
             {error && <p className="text-red-400 text-sm text-center mt-4">{error}</p>}
-            
+
             {suggestions.length > 0 && (
                 <div className="mt-12 space-y-6">
                     {suggestions.map((brief, index) => (
@@ -548,8 +552,10 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
     const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const updatePost = useMutation(api.blog.updatePost);
     const [generatedMeta, setGeneratedMeta] = useState<string[]>([]);
-    
+
     const handleAnalyze = async (post: BlogPost) => {
         if (!post || !post.id) return;
         setIsLoading(true);
@@ -570,7 +576,7 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
             - "summary": (string) A brief, high-level summary of the article's performance.
             - "metrics": (array of objects) An array of 2-3 key performance metrics. Each object must have "name" (string, e.g., "Click-Through Rate"), "value" (string, e.g., "2.1% (Below Average)"), and "insight" (string, a brief explanation).
             - "recommendations": (array of objects) An array of 2-3 specific, high-impact optimization recommendations. Each object must have "recommendation" (string) and "priority" (string: "High", "Medium", "Low").`;
-            
+
             const userPrompt = `Analyze the performance of this article:\nTitle: "${post.title}"\nContent Snippet: "${post.content.substring(0, 500)}..."`;
 
             const response = await ai.models.generateContent({
@@ -579,19 +585,34 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
                 config: { systemInstruction, responseMimeType: 'application/json' }
             });
 
-            const performanceData: PerformanceData = JSON.parse(response.text);
-            const updatedPost = await updatePostPerformanceData(post.id, performanceData);
-            onAnalysisComplete(updatedPost);
-            setSelectedPost(updatedPost);
+            // const performanceData: PerformanceData = JSON.parse(response.text);
+            const performanceData = JSON.parse(response.text); // Use inferred type or defined type
+            // const updatedPost = await updatePostPerformanceData(post.id, performanceData);
+            // CONVEX update
+            if (post.id) {
+                await updatePost({
+                    id: post.id as Id<"blog_posts">,
+                    performance_data: performanceData
+                });
+                // We need to fetch the updated post or manually update state.
+                // onRefreshPosts will handle it if we trigger it, but here we just update local state?
+                // Simple refetch via callback
+                const updatedPost = { ...post, performance_data: performanceData }; // Optimistic
+                // But wait, updatePost doesn't return the post.
+                // We should probably rely on onRefreshPosts or similar.
+                // However, we need to call onAnalysisComplete.
+                onAnalysisComplete(updatedPost);
+                setSelectedPost(updatedPost);
+            }
 
-        } catch(e: any) {
+        } catch (e: any) {
             console.error(e);
             setError(`Performance analysis failed: ${e.message}`);
         } finally {
             setIsLoading(false);
         }
     };
-    
+
     const handleGenerateMeta = async () => {
         if (!selectedPost) return;
         try {
@@ -608,7 +629,7 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
             console.error("Meta generation failed:", e);
         }
     };
-    
+
     const getTimeAgo = (dateString?: string | null) => {
         if (!dateString) return 'Never';
         const date = new Date(dateString);
@@ -647,18 +668,18 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
                 {selectedPost ? (
                     <div className="bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-6">
                         <div className="flex justify-between items-start">
-                             <div>
+                            <div>
                                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">{selectedPost.title}</h3>
                                 <p className="text-xs text-gray-500 dark:text-white/60">Last analyzed: {getTimeAgo(selectedPost.last_analyzed_at)}</p>
-                             </div>
-                             <button onClick={() => handleAnalyze(selectedPost)} disabled={isLoading} className="bg-blue-500/20 text-blue-600 dark:text-blue-300 font-bold py-2 px-4 rounded-full text-sm hover:bg-blue-500/30 flex items-center gap-2">
+                            </div>
+                            <button onClick={() => handleAnalyze(selectedPost)} disabled={isLoading} className="bg-blue-500/20 text-blue-600 dark:text-blue-300 font-bold py-2 px-4 rounded-full text-sm hover:bg-blue-500/30 flex items-center gap-2">
                                 <Icon name="chart-bar" className="h-4 w-4" />
                                 {isLoading ? 'Analyzing...' : 'Re-Analyze'}
-                             </button>
+                            </button>
                         </div>
                         {isLoading && <DynamicLoader messages={LOADING_MESSAGES.PERFORMANCE_ANALYSIS} className="mt-4" />}
                         {error && <p className="text-red-400 text-sm text-center mt-4">{error}</p>}
-                        
+
                         {selectedPost.performance_data && !isLoading && (
                             <div className="mt-6 space-y-6 animate-fade-in-fast">
                                 <div>
@@ -668,7 +689,7 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
                                 <div>
                                     <h4 className="font-bold">Key Metrics</h4>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                                        {selectedPost.performance_data.metrics.map(metric => (
+                                        {selectedPost.performance_data.metrics.map((metric: { name: string; value: string; insight: string }) => (
                                             <div key={metric.name} className="bg-gray-100 dark:bg-white/5 p-3 rounded-lg">
                                                 <p className="text-xs font-semibold text-gray-500 dark:text-white/60">{metric.name}</p>
                                                 <p className="text-lg font-bold text-gray-900 dark:text-white">{metric.value}</p>
@@ -677,10 +698,10 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
                                         ))}
                                     </div>
                                 </div>
-                                 <div>
+                                <div>
                                     <h4 className="font-bold">High-Impact Recommendations</h4>
                                     <ul className="space-y-2 mt-2">
-                                        {selectedPost.performance_data.recommendations.map(rec => (
+                                        {selectedPost.performance_data.recommendations.map((rec: { priority: string; recommendation: string }) => (
                                             <li key={rec.recommendation} className="flex items-start gap-2 text-sm">
                                                 <span className={`font-bold text-xs px-2 py-0.5 rounded-full mt-0.5 ${rec.priority === 'High' ? 'bg-red-500/20 text-red-400' : rec.priority === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400'}`}>{rec.priority}</span>
                                                 <span className="text-gray-700 dark:text-white/80">{rec.recommendation}</span>
@@ -714,227 +735,232 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
 };
 
 const BlogAdminDashboard: React.FC<BlogAdminDashboardProps> = ({ initialPosts, onRefreshPosts, onLogout, theme, toggleTheme }) => {
-  const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
-  const [view, setView] = useState<'posts' | 'pipeline' | 'strategist' | 'optimizer'>('posts');
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [isLinkManagerOpen, setIsLinkManagerOpen] = useState(false);
-  const [deletingPostId, setDeletingPostId] = useState<number | null>(null);
-  const [initialBrief, setInitialBrief] = useState<{ topic: string; keywords: string; } | null>(null);
-  const [copiedPostId, setCopiedPostId] = useState<number | null>(null);
-  const [postToPreview, setPostToPreview] = useState<BlogPost | null>(null);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  
-  useEffect(() => {
-    setPosts(initialPosts);
-  }, [initialPosts]);
+    const deletePost = useMutation(api.blog.deletePost);
+    const updatePost = useMutation(api.blog.updatePost);
 
-  // This effect synchronizes the `selectedPost` state with the main `posts` list.
-  // This is crucial for ensuring that after a save and refresh, the editor
-  // receives the most up-to-date version of the post, not a stale one.
-  useEffect(() => {
-    if (selectedPost) {
-        const updatedPost = posts.find(p => p.slug === selectedPost.slug);
-        if (updatedPost) {
-            setSelectedPost(updatedPost);
+    const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
+    const [view, setView] = useState<'posts' | 'pipeline' | 'strategist' | 'optimizer' | 'ai-tools'>('posts');
+    const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
+    const [isLinkManagerOpen, setIsLinkManagerOpen] = useState(false);
+    const [deletingPostId, setDeletingPostId] = useState<string | null>(null); // Changed to string
+    const [initialBrief, setInitialBrief] = useState<{ topic: string; keywords: string; } | null>(null);
+    const [copiedPostId, setCopiedPostId] = useState<string | null>(null); // Changed to string
+    const [postToPreview, setPostToPreview] = useState<BlogPost | null>(null);
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+    useEffect(() => {
+        setPosts(initialPosts);
+    }, [initialPosts]);
+
+    // This effect synchronizes the `selectedPost` state with the main `posts` list.
+    // This is crucial for ensuring that after a save and refresh, the editor
+    // receives the most up-to-date version of the post, not a stale one.
+    useEffect(() => {
+        if (selectedPost) {
+            const updatedPost = posts.find(p => p.slug === selectedPost.slug);
+            if (updatedPost) {
+                setSelectedPost(updatedPost);
+            }
         }
-    }
-  }, [posts, selectedPost?.slug]);
-  
-  const handleEdit = (post: BlogPost) => {
-    setSelectedPost(post);
-    setIsEditorOpen(true);
-  };
-  
-  const handleCreateNew = () => {
-    setView('pipeline');
-    setInitialBrief(null); // Reset any brief from strategist
-  };
-  
-  const handleGenerateFromBrief = (brief: { topic: string; keywords: string; }) => {
-    setInitialBrief(brief);
-    setView('pipeline');
-  };
-  
-  const handleSave = async () => {
-    setIsEditorOpen(false);
-    setIsLinkManagerOpen(false);
-    await onRefreshPosts();
-  };
-  
-  const handleDelete = async (postId: number) => {
-    if (window.confirm('Are you sure you want to delete this post? This cannot be undone.')) {
-        setDeletingPostId(postId);
-        try {
-            await deleteBlogPost(postId);
-            await onRefreshPosts();
-        } catch (e: any) {
-            console.error(e);
-            alert(`Failed to delete post: ${e.message}`);
-        } finally {
-            setDeletingPostId(null);
+    }, [posts, selectedPost?.slug]);
+
+    const handleEdit = (post: BlogPost) => {
+        setSelectedPost(post);
+        setIsEditorOpen(true);
+    };
+
+    const handleCreateNew = () => {
+        setView('pipeline');
+        setInitialBrief(null); // Reset any brief from strategist
+    };
+
+    const handleGenerateFromBrief = (brief: { topic: string; keywords: string; }) => {
+        setInitialBrief(brief);
+        setView('pipeline');
+    };
+
+    const handleSave = async () => {
+        setIsEditorOpen(false);
+        setIsLinkManagerOpen(false);
+        await onRefreshPosts();
+    };
+
+    const handleDelete = async (postId: string) => { // ID string
+        if (window.confirm('Are you sure you want to delete this post? This cannot be undone.')) {
+            setDeletingPostId(postId);
+            try {
+                await deletePost({ id: postId as Id<"blog_posts"> });
+                await onRefreshPosts();
+            } catch (e: any) {
+                console.error(e);
+                alert(`Failed to delete post: ${e.message}`);
+            } finally {
+                setDeletingPostId(null);
+            }
         }
-    }
-  };
+    };
 
-  const onAnalysisComplete = (updatedPost: BlogPost) => {
-      setPosts(prevPosts => prevPosts.map(p => p.id === updatedPost.id ? updatedPost : p));
-  };
+    const onAnalysisComplete = (updatedPost: BlogPost) => {
+        setPosts(prevPosts => prevPosts.map(p => p.id === updatedPost.id ? updatedPost : p));
+    };
 
-  const handlePreview = (post: BlogPost) => {
-    setPostToPreview(post);
-    setIsPreviewOpen(true);
-  };
+    const handlePreview = (post: BlogPost) => {
+        setPostToPreview(post);
+        setIsPreviewOpen(true);
+    };
 
-  const handleCopyContent = (post: BlogPost) => {
-    navigator.clipboard.writeText(post.content);
-    setCopiedPostId(post.id!);
-    setTimeout(() => {
-      setCopiedPostId(null);
-    }, 2000);
-  };
-  
-  return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-brand-dark text-white' : 'bg-gray-50 text-gray-900'}`}>
-      <header className="bg-white dark:bg-brand-dark/50 backdrop-blur-md border-b border-gray-200 dark:border-white/10 p-4 flex justify-between items-center sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-            <img src={theme === 'dark' ? "https://iili.io/Fkb6akl.png" : "https://iili.io/KFWHFZG.png"} alt="Logo" className="h-8"/>
-            <h1 className="text-xl font-bold">Admin Dashboard</h1>
-        </div>
-         <div className="flex items-center gap-4">
-            <button onClick={toggleTheme} className="p-2 rounded-full text-gray-600 dark:text-white/80 hover:bg-gray-200 dark:hover:bg-white/10">
-              {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
-            </button>
-            <button onClick={onLogout} className="text-sm font-semibold text-red-500 hover:text-red-400">Logout</button>
-         </div>
-      </header>
-      
-      <div className="p-4 sm:p-8 max-w-7xl mx-auto">
-        <nav className="mb-8 flex flex-wrap gap-2">
-            {[{id: 'posts', label: 'All Posts', icon: 'pencil'}, {id: 'pipeline', label: 'Create New Post', icon: 'sparkles'}, {id: 'strategist', label: 'AI Content Strategist', icon: 'lightbulb'}, {id: 'optimizer', label: 'Performance Optimizer', icon: 'chart-bar'}].map(item => (
-                <button
-                    key={item.id}
-                    onClick={() => {
-                        if (item.id === 'pipeline') {
-                            handleCreateNew();
-                        } else {
-                            setView(item.id as any)
-                        }
-                    }}
-                    className={`px-4 py-2 text-sm font-bold rounded-full flex items-center gap-2 transition-colors ${view === item.id ? 'bg-primary text-white' : 'bg-white dark:bg-black/20 hover:bg-gray-200 dark:hover:bg-black/40'}`}
-                >
-                    <Icon name={item.icon as any} className="h-4 w-4" />
-                    {item.label}
-                </button>
-            ))}
-        </nav>
-        
-        {view === 'posts' && (
-            <div className="animate-fade-in-fast">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold">Blog Posts ({posts.length})</h2>
-                    <button onClick={handleCreateNew} className="bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
-                        <Icon name="pencil" className="h-5 w-5"/>
-                        Create New Post
+    const handleCopyContent = (post: BlogPost) => {
+        navigator.clipboard.writeText(post.content);
+        setCopiedPostId(String(post.id!));
+        setTimeout(() => {
+            setCopiedPostId(null);
+        }, 2000);
+    };
+
+    return (
+        <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-brand-dark text-white' : 'bg-gray-50 text-gray-900'}`}>
+            <header className="bg-white dark:bg-brand-dark/50 backdrop-blur-md border-b border-gray-200 dark:border-white/10 p-4 flex justify-between items-center sticky top-0 z-50">
+                <div className="flex items-center gap-3">
+                    <img src={theme === 'dark' ? "https://iili.io/Fkb6akl.png" : "https://iili.io/KFWHFZG.png"} alt="Logo" className="h-8" />
+                    <h1 className="text-xl font-bold">Admin Dashboard</h1>
+                </div>
+                <div className="flex items-center gap-4">
+                    <button onClick={toggleTheme} className="p-2 rounded-full text-gray-600 dark:text-white/80 hover:bg-gray-200 dark:hover:bg-white/10">
+                        {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
                     </button>
+                    <button onClick={onLogout} className="text-sm font-semibold text-red-500 hover:text-red-400">Logout</button>
                 </div>
-                 <div className="bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl shadow-sm overflow-hidden">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-gray-50 dark:bg-white/5 text-xs uppercase text-gray-700 dark:text-white/70">
-                                <tr>
-                                    <th className="px-6 py-3">Title</th>
-                                    <th className="px-6 py-3">Category</th>
-                                    <th className="px-6 py-3">Created</th>
-                                    <th className="px-6 py-3">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {posts.map(post => (
-                                    <tr key={post.slug} className="border-b dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5">
-                                        <td className="px-6 py-4 font-bold">{post.title}</td>
-                                        <td className="px-6 py-4">{post.category}</td>
-                                        <td className="px-6 py-4">{post.created_at ? new Date(post.created_at).toLocaleDateString() : 'N/A'}</td>
-                                        <td className="px-6 py-4 flex flex-wrap items-center gap-x-4 gap-y-1">
-                                            <button onClick={() => handlePreview(post)} className="font-semibold text-green-500 hover:text-green-400">View</button>
-                                            <button onClick={() => handleEdit(post)} className="font-semibold text-blue-400 hover:text-blue-300">Edit</button>
-                                            <button
-                                                onClick={() => handleCopyContent(post)}
-                                                className="font-semibold text-gray-500 hover:text-gray-400"
-                                            >
-                                                {copiedPostId === post.id ? 'Copied!' : 'Copy'}
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(post.id!)}
-                                                disabled={deletingPostId === post.id}
-                                                className="font-semibold text-red-400 hover:text-red-300 disabled:opacity-50"
-                                            >
-                                                {deletingPostId === post.id ? 'Deleting...' : 'Delete'}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+            </header>
+
+            <div className="p-4 sm:p-8 max-w-7xl mx-auto">
+                <nav className="mb-8 flex flex-wrap gap-2">
+                    {[{ id: 'posts', label: 'All Posts', icon: 'pencil' }, { id: 'pipeline', label: 'Create New Post', icon: 'sparkles' }, { id: 'strategist', label: 'AI Content Strategist', icon: 'lightbulb' }, { id: 'optimizer', label: 'Performance Optimizer', icon: 'chart-bar' }, { id: 'ai-tools', label: 'AI Tools', icon: 'users' }].map(item => (
+                        <button
+                            key={item.id}
+                            onClick={() => {
+                                if (item.id === 'pipeline') {
+                                    handleCreateNew();
+                                } else {
+                                    setView(item.id as any)
+                                }
+                            }}
+                            className={`px-4 py-2 text-sm font-bold rounded-full flex items-center gap-2 transition-colors ${view === item.id ? 'bg-primary text-white' : 'bg-white dark:bg-black/20 hover:bg-gray-200 dark:hover:bg-black/40'}`}
+                        >
+                            <Icon name={item.icon as any} className="h-4 w-4" />
+                            {item.label}
+                        </button>
+                    ))}
+                </nav>
+
+                {view === 'posts' && (
+                    <div className="animate-fade-in-fast">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold">Blog Posts ({posts.length})</h2>
+                            <button onClick={handleCreateNew} className="bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
+                                <Icon name="pencil" className="h-5 w-5" />
+                                Create New Post
+                            </button>
+                        </div>
+                        <div className="bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl shadow-sm overflow-hidden">
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="bg-gray-50 dark:bg-white/5 text-xs uppercase text-gray-700 dark:text-white/70">
+                                        <tr>
+                                            <th className="px-6 py-3">Title</th>
+                                            <th className="px-6 py-3">Category</th>
+                                            <th className="px-6 py-3">Created</th>
+                                            <th className="px-6 py-3">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {posts.map(post => (
+                                            <tr key={post.slug} className="border-b dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5">
+                                                <td className="px-6 py-4 font-bold">{post.title}</td>
+                                                <td className="px-6 py-4">{post.category}</td>
+                                                <td className="px-6 py-4">{post.created_at ? new Date(post.created_at).toLocaleDateString() : 'N/A'}</td>
+                                                <td className="px-6 py-4 flex flex-wrap items-center gap-x-4 gap-y-1">
+                                                    <button onClick={() => handlePreview(post)} className="font-semibold text-green-500 hover:text-green-400">View</button>
+                                                    <button onClick={() => handleEdit(post)} className="font-semibold text-blue-400 hover:text-blue-300">Edit</button>
+                                                    <button
+                                                        onClick={() => handleCopyContent(post)}
+                                                        className="font-semibold text-gray-500 hover:text-gray-400"
+                                                    >
+                                                        {copiedPostId === String(post.id) ? 'Copied!' : 'Copy'}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(String(post.id!))}
+                                                        disabled={deletingPostId === String(post.id)}
+                                                        className="font-semibold text-red-400 hover:text-red-300 disabled:opacity-50"
+                                                    >
+                                                        {deletingPostId === post.id ? 'Deleting...' : 'Delete'}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {view === 'pipeline' && (
+                    <AIPublishingPipeline
+                        onDraftGenerated={(draft) => {
+                            setSelectedPost(draft);
+                            setIsEditorOpen(true);
+                            setView('posts');
+                        }}
+                        onCancel={() => setView('posts')}
+                        initialBrief={initialBrief}
+                    />
+                )}
+
+                {view === 'strategist' && <ContentStrategistView allPosts={posts} onGenerateFromBrief={handleGenerateFromBrief} />}
+
+                {view === 'optimizer' && <PerformanceOptimizerView allPosts={posts} onAnalysisComplete={onAnalysisComplete} />}
+
+                {view === 'ai-tools' && <AIAdminDashboard theme={theme} />}
+
             </div>
-        )}
-        
-        {view === 'pipeline' && (
-            <AIPublishingPipeline
-                onDraftGenerated={(draft) => {
-                    setSelectedPost(draft);
-                    setIsEditorOpen(true);
-                    setView('posts');
+
+            <BlogEditorModal
+                isOpen={isEditorOpen}
+                onClose={() => setIsEditorOpen(false)}
+                onSave={handleSave}
+                post={selectedPost}
+                onOpenLinkManager={() => {
+                    setIsEditorOpen(false);
+                    setIsLinkManagerOpen(true);
                 }}
-                onCancel={() => setView('posts')}
-                initialBrief={initialBrief}
             />
-        )}
-        
-        {view === 'strategist' && <ContentStrategistView allPosts={posts} onGenerateFromBrief={handleGenerateFromBrief} />}
-        
-        {view === 'optimizer' && <PerformanceOptimizerView allPosts={posts} onAnalysisComplete={onAnalysisComplete} />}
 
-      </div>
-      
-      <BlogEditorModal
-        isOpen={isEditorOpen}
-        onClose={() => setIsEditorOpen(false)}
-        onSave={handleSave}
-        post={selectedPost}
-        onOpenLinkManager={() => {
-            setIsEditorOpen(false);
-            setIsLinkManagerOpen(true);
-        }}
-      />
-      
-      {selectedPost && (
-          <AiLinkManagerModal
-            isOpen={isLinkManagerOpen}
-            onClose={() => {
-                setIsLinkManagerOpen(false);
-                setIsEditorOpen(true); // Re-open editor when link manager is closed
-            }}
-            post={selectedPost}
-            allPosts={posts}
-            onSave={handleSave}
-          />
-      )}
-      
-      <Modal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} size="5xl">
-        {postToPreview && (
-            <article className="text-gray-900 dark:text-white">
-                <img src={postToPreview.image} alt={postToPreview.title} className="w-full object-contain rounded-xl shadow-lg bg-gray-100 dark:bg-black/20 mb-8"/>
-                <span className="text-sm font-bold text-primary mb-2 block">{postToPreview.category}</span>
-                <h1 className="text-2xl sm:text-3xl font-bold font-montserrat mb-6">{postToPreview.title}</h1>
-                <BlogMarkdownRenderer content={postToPreview.content} />
-            </article>
-        )}
-      </Modal>
+            {selectedPost && (
+                <AiLinkManagerModal
+                    isOpen={isLinkManagerOpen}
+                    onClose={() => {
+                        setIsLinkManagerOpen(false);
+                        setIsEditorOpen(true); // Re-open editor when link manager is closed
+                    }}
+                    post={selectedPost}
+                    allPosts={posts}
+                    onSave={handleSave}
+                />
+            )}
 
-    </div>
-  );
+            <Modal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} size="5xl">
+                {postToPreview && (
+                    <article className="text-gray-900 dark:text-white">
+                        <img src={postToPreview.image} alt={postToPreview.title} className="w-full object-contain rounded-xl shadow-lg bg-gray-100 dark:bg-black/20 mb-8" />
+                        <span className="text-sm font-bold text-primary mb-2 block">{postToPreview.category}</span>
+                        <h1 className="text-2xl sm:text-3xl font-bold font-montserrat mb-6">{postToPreview.title}</h1>
+                        <BlogMarkdownRenderer content={postToPreview.content} />
+                    </article>
+                )}
+            </Modal>
+
+        </div>
+    );
 };
 export default BlogAdminDashboard;

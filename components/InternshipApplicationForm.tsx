@@ -1,6 +1,8 @@
 
 import React from 'react';
-import { saveInternshipApplication } from '../services/supabase';
+import { useMutation } from "convex/react";
+import { api } from "../convex/_generated/api";
+// import { saveInternshipApplication } from '../services/supabase'; // Removed
 import { UserIcon, EmailIcon, CheckCircleIcon, LinkedInIcon, PencilIcon, WebIcon, TargetIcon } from './Icon';
 import { ALL_CAREER_ROLES } from '../constants';
 
@@ -17,6 +19,7 @@ const InternshipApplicationForm: React.FC<InternshipApplicationFormProps> = ({ o
     coverLetter: '',
     resumeLink: '',
   });
+  const submitInternship = useMutation(api.forms.submitInternship);
   const [loading, setLoading] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -37,13 +40,14 @@ const InternshipApplicationForm: React.FC<InternshipApplicationFormProps> = ({ o
     console.log("Submitting internship application...");
 
     try {
-      await saveInternshipApplication({
-        Name: formData.name,
-        Email: formData.email,
-        SocialProfile: formData.socialProfile,
-        AppliedRole: formData.appliedRole,
-        CoverLetter: formData.coverLetter,
-        ResumeLink: formData.resumeLink,
+
+      await submitInternship({
+        name: formData.name,
+        email: formData.email,
+        socialProfile: formData.socialProfile,
+        appliedRole: formData.appliedRole,
+        coverLetter: formData.coverLetter,
+        resumeLink: formData.resumeLink,
       });
       console.log("Internship application submitted to Supabase.");
       setSubmitted(true);
@@ -93,16 +97,16 @@ const InternshipApplicationForm: React.FC<InternshipApplicationFormProps> = ({ o
           <div className="group flex items-center gap-3 px-4 rounded-lg border border-gray-200 dark:border-white/20 bg-white/80 dark:bg-black/30 backdrop-blur-sm transition-all group-focus-within:ring-2 group-focus-within:ring-primary/50 dark:group-focus-within:ring-white relative">
             <TargetIcon className="h-5 w-5 text-gray-500 dark:text-white/70 flex-shrink-0" />
             <select id="appliedRole" name="appliedRole" value={formData.appliedRole} onChange={handleInputChange} className="w-full bg-transparent py-3 pr-8 border-none focus:ring-0 appearance-none text-gray-900 dark:text-white">
-                {ALL_CAREER_ROLES.map(role => <option key={role.title} className="bg-white dark:bg-gray-800">{role.title}</option>)}
+              {ALL_CAREER_ROLES.map(role => <option key={role.title} className="bg-white dark:bg-gray-800">{role.title}</option>)}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 dark:text-white/70">
-               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
           </div>
         </div>
         <div className="group flex items-start gap-3 px-4 py-3 rounded-lg border border-gray-200 dark:border-white/20 bg-white/80 dark:bg-black/30 backdrop-blur-sm transition-all group-focus-within:ring-2 group-focus-within:ring-primary/50 dark:group-focus-within:ring-white">
-            <PencilIcon className="h-5 w-5 text-gray-500 dark:text-white/70 flex-shrink-0 mt-1" />
-            <textarea name="coverLetter" placeholder="Why are you a great fit for this role and Synaptix Studio?" rows={5} value={formData.coverLetter} onChange={handleInputChange} className="w-full bg-transparent border-none focus:ring-0 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none" required></textarea>
+          <PencilIcon className="h-5 w-5 text-gray-500 dark:text-white/70 flex-shrink-0 mt-1" />
+          <textarea name="coverLetter" placeholder="Why are you a great fit for this role and Synaptix Studio?" rows={5} value={formData.coverLetter} onChange={handleInputChange} className="w-full bg-transparent border-none focus:ring-0 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none" required></textarea>
         </div>
 
         {error && <p className="text-center text-red-400 text-sm" role="alert">{error}</p>}

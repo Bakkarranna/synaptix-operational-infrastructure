@@ -4,7 +4,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import { useOnScreen } from '../hooks/useOnScreen';
 import { ArrowRightIcon } from './Icon';
 import StyledText from './StyledText';
-import { BlogPost } from '../services/supabase';
+import { BlogPost } from '../src/types';
 
 interface ResourceCenterSectionProps {
   blogPosts: BlogPost[];
@@ -58,9 +58,9 @@ const ResourceCenterSection: React.FC<ResourceCenterSectionProps> = ({ blogPosts
       return [];
     }
     const articlesByDate = [...blogPosts].sort((a, b) => {
-        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
-        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
-        return dateB - dateA;
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return dateB - dateA;
     });
 
     const featuredPosts: BlogPost[] = [];
@@ -69,32 +69,32 @@ const ResourceCenterSection: React.FC<ResourceCenterSectionProps> = ({ blogPosts
     const MAX_FEATURED = 4;
 
     for (const post of articlesByDate) {
-        if (post.category && !usedCategories.has(post.category) && !usedSlugs.has(post.slug)) {
-            featuredPosts.push(post);
-            usedCategories.add(post.category);
-            usedSlugs.add(post.slug);
-        }
+      if (post.category && !usedCategories.has(post.category) && !usedSlugs.has(post.slug)) {
+        featuredPosts.push(post);
+        usedCategories.add(post.category);
+        usedSlugs.add(post.slug);
+      }
     }
 
     if (featuredPosts.length < MAX_FEATURED) {
-        for (const post of articlesByDate) {
-            if (featuredPosts.length >= MAX_FEATURED) break;
-            if (!usedSlugs.has(post.slug)) {
-                featuredPosts.push(post);
-                usedSlugs.add(post.slug);
-            }
+      for (const post of articlesByDate) {
+        if (featuredPosts.length >= MAX_FEATURED) break;
+        if (!usedSlugs.has(post.slug)) {
+          featuredPosts.push(post);
+          usedSlugs.add(post.slug);
         }
+      }
     }
-    
+
     return featuredPosts
-        .sort((a, b) => {
-            const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
-            const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
-            return dateB - dateA;
-        })
-        .slice(0, MAX_FEATURED);
+      .sort((a, b) => {
+        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+        return dateB - dateA;
+      })
+      .slice(0, MAX_FEATURED);
   }, [blogPosts]);
-  
+
   const description = "Explore our latest insights on AI, automation, and business growth. **Handpicked articles** to keep you ahead of the curve.";
   const title = "From Our **Featured Articles**";
 
@@ -111,17 +111,17 @@ const ResourceCenterSection: React.FC<ResourceCenterSectionProps> = ({ blogPosts
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {featuredResources.map((resource, index) => (
-              <ResourceCard 
-                key={resource.slug} 
-                resource={resource} 
-                index={index} 
-                navigate={navigate} 
+              <ResourceCard
+                key={resource.slug}
+                resource={resource}
+                index={index}
+                navigate={navigate}
               />
             ))}
           </div>
 
           <div className="text-center mt-16">
-             <button
+            <button
               onClick={() => navigate('/blog')}
               className="bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2.5 px-8 text-sm rounded-full hover:bg-primary/30 transition-all transform hover:scale-105 animate-glow"
             >

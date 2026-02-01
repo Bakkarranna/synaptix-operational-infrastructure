@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { getBlogPosts, BlogPost } from '../services/supabase';
+import { useQuery } from "convex/react";
+import { api } from "../convex/_generated/api";
+import { BlogPost } from '../src/types';
 
 const Sitemap: React.FC = () => {
-    const [posts, setPosts] = useState<BlogPost[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const blogPosts = useQuery(api.blog.getPosts) || [];
+    const posts = blogPosts; // Alias for compatibility
 
+    // const [posts, setPosts] = useState<BlogPost[]>([]); // Removed
+    // const [loading, setLoading] = useState(true); // Removed
+    // const [error, setError] = useState<string | null>(null); // Removed
+
+    /*
     useEffect(() => {
-        const fetchPostsForSitemap = async () => {
-            try {
-                const blogPosts = await getBlogPosts();
-                setPosts(blogPosts);
-            } catch (err) {
-                console.error("Failed to fetch posts for sitemap:", err);
-                setError("Could not load blog posts for sitemap.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchPostsForSitemap();
+        // ... removed fetch
     }, []);
+    */
 
     const baseUrl = 'https://synaptixstudio.com';
     const today = new Date().toISOString().split('T')[0];
@@ -33,14 +28,8 @@ const Sitemap: React.FC = () => {
         { path: '/privacy', priority: '0.5', changefreq: 'yearly' },
         { path: '/terms', priority: '0.5', changefreq: 'yearly' },
     ];
-    
-    if (loading) {
-        return <pre>Generating sitemap...</pre>;
-    }
 
-    if (error) {
-        return <pre>{`Error: ${error}`}</pre>;
-    }
+
 
     const staticPagesXml = staticPages.map(page => `
     <url>
@@ -49,7 +38,7 @@ const Sitemap: React.FC = () => {
         <changefreq>${page.changefreq}</changefreq>
         <priority>${page.priority}</priority>
     </url>`).join('');
-        
+
     const blogPostsXml = posts.map(post => `
     <url>
         <loc>${baseUrl}/#/blog/${post.slug}</loc>

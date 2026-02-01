@@ -17,22 +17,22 @@ const CustomSolutionsSection: React.FC<CustomSolutionsSectionProps> = ({ navigat
   const [activeTab, setActiveTab] = useState<SolutionKey>(solutionKeys[0]);
 
   const activeSolution = CUSTOM_SOLUTIONS[activeTab];
-  
+
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref);
 
   const handleCTAClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    navigate('/#ai-strategy');
+    navigate('/#process-mining');
   };
 
   const title = "Bespoke **AI for Your Industry**";
   const subtitle = "Your challenges are unique. **Your AI solutions should be too.**";
 
   return (
-    <section 
-      ref={ref} 
-      id="custom-solutions" 
+    <section
+      ref={ref}
+      id="custom-solutions"
       className={`py-16 sm:py-20 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
     >
       <div className="container mx-auto px-6">
@@ -65,8 +65,8 @@ const CustomSolutionsSection: React.FC<CustomSolutionsSectionProps> = ({ navigat
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white font-montserrat mb-3">{activeSolution.title}</h3>
                 <p className="text-gray-600 dark:text-white/80 mb-6 text-sm"><StyledText text={activeSolution.description} /></p>
-                <a href="/#ai-strategy" onClick={handleCTAClick} className="inline-block bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-1.5 px-4 text-xs sm:text-sm rounded-full hover:bg-primary/30 transition-all transform hover:scale-105 animate-glow">
-                  Request Custom Quote
+                <a href="/#process-mining" onClick={handleCTAClick} className="inline-block bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-1.5 px-4 text-xs sm:text-sm rounded-full hover:bg-primary/30 transition-all transform hover:scale-105 animate-glow">
+                  Request Automation Blueprint
                 </a>
               </div>
             </div>

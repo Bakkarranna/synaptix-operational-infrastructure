@@ -8,7 +8,7 @@ vi.mock('../../services/analytics', () => ({
   trackEvent: vi.fn(),
 }))
 
-vi.mock('../../services/supabase', () => ({
+vi.mock('../types', () => ({
   saveStrategyLead: vi.fn().mockResolvedValue({}),
 }))
 

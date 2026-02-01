@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import AiLinkManagerModal from '../../../components/admin/AiLinkManagerModal'
-import type { BlogPost } from '../../../services/supabase'
+import type { BlogPost } from '../../types'
 
 // Mock the Google GenAI
 vi.mock('@google/genai', () => ({
@@ -26,7 +26,7 @@ vi.mock('@google/genai', () => ({
 }))
 
 // Mock the services
-vi.mock('../../../services/supabase', () => ({
+vi.mock('../../types', () => ({
   saveBlogPost: vi.fn().mockResolvedValue(undefined)
 }))
 

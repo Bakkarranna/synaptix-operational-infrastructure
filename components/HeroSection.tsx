@@ -2,10 +2,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import StyledText from './StyledText';
 import { trackEvent } from '../services/analytics';
-import { saveNewsletter } from '../services/supabase';
-import { PARTNERS, SOCIAL_LINKS, FLOATING_SERVICES, TRUSTED_BY_CLIENTS, CALENDLY_LINK } from '../constants';
+import { useMutation } from "convex/react";
+import { api } from "../convex/_generated/api";
+import { SOCIAL_LINKS, FLOATING_SERVICES, TRUSTED_BY_CLIENTS, CALENDLY_LINK } from '../constants';
 import { Icon, SendIcon, CheckCircleIcon, GiftIcon, LightbulbIcon, BoltIcon, WebIcon } from './Icon';
-import InteractiveNetwork from './InteractiveNetwork';
 import PartnerLogo from './PartnerLogo';
 
 interface HeroSectionProps {
@@ -168,15 +168,13 @@ const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate, openC
 const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
-  // State for partner logo carousel
-  const [partnerPage, setPartnerPage] = useState(0);
-  const [partnerLogosExiting, setPartnerLogosExiting] = useState(false);
+   const [loading, setLoading] = useState(false);
+   const [error, setError] = useState<string | null>(null);
 
-  // State for animated button text
-  const [buttonTextIndex, setButtonTextIndex] = useState(0);
+  const submitNewsletter = useMutation(api.forms.submitNewsletter);
+
+   // State for animated button text
+   const [buttonTextIndex, setButtonTextIndex] = useState(0);
 
   const buttonTexts = useMemo(() => ["Subscribe", "Get AI Insights", "Stay Ahead"], []);
 
@@ -200,7 +198,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
     }
     setLoading(true);
     try {
-      await saveNewsletter({ Email: email });
+      await submitNewsletter({ email: email });
       setSubmitted(true);
       trackEvent('subscribe_newsletter', { section: 'hero' });
       setEmail('');
@@ -264,27 +262,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
       return () => clearTimeout(timeout);
     }
   }, [subIndex, isDeleting, taglineIndex, taglines]);
-  
-  // Partner carousel logic
-  const partnersPerPage = 5;
-  const totalPartnerPages = Math.ceil(PARTNERS.length / partnersPerPage);
-
-  useEffect(() => {
-      if (totalPartnerPages <= 1) return;
-      const timer = setInterval(() => {
-          setPartnerLogosExiting(true);
-          setTimeout(() => {
-            setPartnerPage(prev => (prev + 1) % totalPartnerPages);
-            setPartnerLogosExiting(false);
-          }, 300);
-      }, 8000); // A slow but dynamic rotation
-      return () => clearInterval(timer);
-  }, [totalPartnerPages]);
-
-  const partnersToShow = PARTNERS.slice(
-      partnerPage * partnersPerPage,
-      (partnerPage + 1) * partnersPerPage
-  );
 
   return (
     <section id="home" className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-28 sm:pt-24 pb-40 lg:pb-32">
@@ -298,7 +275,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                     </div>
                     <h1 className="text-4xl sm:text-5xl lg:text-6xl font-pixel !leading-tight tracking-normal">
                         <span className="bg-gradient-to-r from-gray-800 to-black bg-clip-text text-transparent dark:bg-gradient-to-r dark:from-brand-accent dark:via-white dark:to-brand-accent dark:animate-shimmer [background-size:200%_auto]">
-                        Synaptix Studio: The Future of Smart Business
+                        The Neural Core for Your Operations
                         </span>
                     </h1>
                     <p className="mt-4 text-sm md:text-base text-gray-800 dark:text-white/90 font-bold min-h-6">
@@ -339,7 +316,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                     </form>
                     {error && <p id="hero-email-error" className="text-red-400 text-xs mt-2" role="alert" aria-live="polite">{error}</p>}
                     {submitted && <p className="text-green-500 dark:text-green-300 text-xs mt-2" role="status" aria-live="polite">Success! Thanks for subscribing.</p>}
-                     {/* NEW CTA Buttons */}
+                      {/* NEW CTA Buttons */}
                     <div className="mt-6 flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
                       <button
                           type="button"
@@ -349,29 +326,19 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                       >
                           Get Your Free AI Strategy
                       </button>
-                      {/* Explore AI Tools - Desktop Only */}
-                      <a
-                          href="/ai-tools"
-                          onClick={(e) => { e.preventDefault(); navigate('/ai-tools'); }}
-                          className="hidden lg:inline-block text-center bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full transition-all transform hover:scale-105 hover:bg-primary/30"
-                      >
-                          Explore AI Tools
-                      </a>
-                      {/* Book a Demo - Mobile/Tablet Only */}
                       <button
                           type="button"
                           onClick={openCalendlyModal}
                           aria-label="Book a free demo session"
-                          className="lg:hidden text-center bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full transition-all transform hover:scale-105 hover:bg-primary/30"
+                          className="text-center bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full transition-all transform hover:scale-105 hover:bg-primary/30"
                       >
                           Book a Free Demo
                       </button>
-                  </div>
+                   </div>
                 </div>
 
-                {/* Middle Column: Interactive Network */}
-                <div className="hidden lg:flex items-center justify-center lg:col-span-1 animate-fade-in">
-                    <InteractiveNetwork navigate={navigate} />
+                {/* Middle Column: Empty Space */}
+                <div className="hidden lg:flex items-center justify-center lg:col-span-1">
                 </div>
 
                 {/* Right Column: Cards */}
@@ -384,7 +351,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
       {/* Bottom alignment container */}
       <div className="absolute bottom-10 inset-x-0 z-20 px-24 hidden lg:flex items-baseline">
         {/* Left: Follow us on */}
-        <div className="w-1/3 text-left animate-fade-in">
+        <div className="w-1/2 text-left animate-fade-in">
             <h4 className="font-bold text-xs text-gray-600 dark:text-white/70 tracking-wider uppercase mb-2">Follow us on</h4>
             <div className="flex items-center space-x-4">
               {SOCIAL_LINKS.map(social => (
@@ -402,25 +369,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
             </div>
         </div>
 
-        {/* Center: POWERING SOLUTIONS WITH */}
-        <div className="w-1/3 text-center animate-fade-in">
-            <h4 className="font-bold text-xs text-gray-600 dark:text-white/70 tracking-wider uppercase mb-2">POWERING SOLUTIONS WITH</h4>
-            <div
-              className={`flex justify-center items-center h-12 gap-x-4 transition-opacity duration-300 min-h-[48px] ${partnerLogosExiting ? 'opacity-0' : 'opacity-100'}`}
-            >
-                {partnersToShow.map(partner => (
-                    <div key={partner.name} className="group flex-shrink-0 h-10 w-20 flex items-center justify-center">
-                        <PartnerLogo
-                            name={partner.name}
-                            domain={partner.domain}
-                        />
-                    </div>
-                ))}
-            </div>
-        </div>
-
         {/* Right: Get in Touch */}
-        <div className="w-1/3 text-right animate-fade-in">
+        <div className="w-1/2 text-right animate-fade-in">
             <h4 className="font-bold text-xs text-gray-600 dark:text-white/70 tracking-wider uppercase mb-2">Get in Touch</h4>
             <a href="mailto:info@synaptixstudio.com" className="font-semibold text-sm text-gray-800 dark:text-white/90 hover:text-primary transition-colors flex items-center justify-end gap-2">
                 <Icon name="email" className="h-4 w-4" />

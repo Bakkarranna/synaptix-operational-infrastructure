@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import BlogPage from '../../components/BlogPage'
-import type { BlogPost } from '../../services/supabase'
+import type { BlogPost } from '../types'
 
 // Mock external dependencies
 vi.mock('../../constants', () => ({

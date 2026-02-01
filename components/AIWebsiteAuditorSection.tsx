@@ -4,7 +4,9 @@ import { useOnScreen } from '../hooks/useOnScreen';
 import { FileSearchIcon, DownloadIcon, CheckIcon, XCircleIcon } from './Icon';
 import StyledText from './StyledText';
 import ViralityMeter from './ViralityMeter';
-import { saveAuditLead, saveNewsletter } from '../services/supabase';
+// import { saveAuditLead, saveNewsletter } from '../services/supabase'; // Removed
+import { useMutation } from "convex/react";
+import { api } from "../convex/_generated/api";
 import MarkdownRenderer from './MarkdownRenderer';
 import jsPDF from 'jspdf';
 import { trackEvent } from '../services/analytics';
@@ -32,10 +34,10 @@ interface AIWebsiteAuditorSectionProps {
 }
 
 const BUSINESS_TYPES = [
-    'E-commerce', 
-    'B2B SaaS', 
-    'Local Service', 
-    'Professional Services (e.g., Agency, Consultant)', 
+    'E-commerce',
+    'B2B SaaS',
+    'Local Service',
+    'Professional Services (e.g., Agency, Consultant)',
     'Content Publisher / Blog'
 ];
 
@@ -131,7 +133,7 @@ const Report: React.FC<{ result: AuditResult; url: string }> = ({ result, url })
 
         addText(`Strategic Audit for ${hostname}`, 18, true);
         y += 5;
-        
+
         addText("Executive Summary", 14, true);
         addText(result.executiveSummary, 10);
         y += 5;
@@ -166,18 +168,18 @@ const Report: React.FC<{ result: AuditResult; url: string }> = ({ result, url })
 
             <h3 className="text-2xl font-bold font-montserrat text-center mb-2 text-gray-900 dark:text-white">Strategic Audit for</h3>
             <p className="text-lg font-semibold text-primary text-center mb-8">{hostname}</p>
-            
+
             <div className="text-center mb-12 bg-white/20 dark:bg-black/20 backdrop-blur-sm p-6 rounded-lg border border-gray-900/10 dark:border-white/10">
-                 <h4 className="font-bold text-lg text-gray-900 dark:text-white font-montserrat mb-4">Executive Summary</h4>
-                 <div className="prose dark:prose-invert max-w-none mx-auto text-gray-700 dark:text-white/80">
+                <h4 className="font-bold text-lg text-gray-900 dark:text-white font-montserrat mb-4">Executive Summary</h4>
+                <div className="prose dark:prose-invert max-w-none mx-auto text-gray-700 dark:text-white/80">
                     <MarkdownRenderer content={result.executiveSummary} />
-                 </div>
+                </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 sm:gap-8 text-center mb-12">
                 <div><h4 className="font-bold text-gray-700 dark:text-white/80 mb-2 text-sm">Overall</h4><ViralityMeter score={result.overallScore} /></div>
                 {result.sections.map(section => (
-                     <div key={section.title}><h4 className="font-bold text-gray-700 dark:text-white/80 mb-2 text-sm">{section.title}</h4><ViralityMeter score={section.score} /></div>
+                    <div key={section.title}><h4 className="font-bold text-gray-700 dark:text-white/80 mb-2 text-sm">{section.title}</h4><ViralityMeter score={section.score} /></div>
                 ))}
             </div>
 
@@ -236,23 +238,23 @@ const parseAuditMarkdown = (markdown: string): AuditResult => {
             currentMode = null;
             continue;
         }
-        
+
         if (trimmedLine.startsWith('## Actionable Recommendations')) {
             currentMode = 'recommendations';
             currentSection = null;
             continue;
         }
-        
+
         if (trimmedLine.startsWith('### Strengths')) {
             currentMode = 'strengths';
             continue;
         }
-        
+
         if (trimmedLine.startsWith('### Weaknesses')) {
             currentMode = 'weaknesses';
             continue;
         }
-        
+
         if (currentMode === 'summary') {
             result.executiveSummary += `${trimmedLine}\n`;
         } else if (currentMode === 'strengths' && currentSection && (trimmedLine.startsWith('*') || trimmedLine.startsWith('-'))) {
@@ -282,6 +284,9 @@ const AIWebsiteAuditorSection: React.FC<AIWebsiteAuditorSectionProps> = ({ navig
     const [result, setResult] = useState<AuditResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const submitAuditor = useMutation(api.forms.submitAuditor);
+    const submitNewsletter = useMutation(api.forms.submitNewsletter);
 
     const ref = useRef<HTMLDivElement>(null);
     const resultsRef = useRef<HTMLDivElement>(null);
@@ -351,7 +356,7 @@ Your output MUST be a single, valid markdown document following this exact struc
 * [Low] A low-priority recommendation.`;
 
             const userPrompt = `Audit the website at this URL: ${url}. The business is in the "${businessType}" industry. Focus your analysis accordingly.`;
-            
+
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
                 contents: userPrompt,
@@ -360,13 +365,13 @@ Your output MUST be a single, valid markdown document following this exact struc
                     tools: [{ googleSearch: {} }],
                 }
             });
-            
+
             const parsedResult = parseAuditMarkdown(response.text);
 
-            await saveAuditLead({ Website: url, Report: JSON.stringify(parsedResult) });
+            await submitAuditor({ website: url, report: JSON.stringify(parsedResult), email: email.trim() || undefined });
 
             if (email.trim()) {
-                await saveNewsletter({ Email: email.trim() });
+                await submitNewsletter({ email: email.trim() });
             }
 
             setResult(parsedResult);
@@ -379,7 +384,7 @@ Your output MUST be a single, valid markdown document following this exact struc
             setLoading(false);
         }
     };
-    
+
     const title = "AI Website **Auditor**";
     const description = "Get an instant, **AI-powered strategic audit** of your website. Our auditor analyzes SEO, user experience, and conversion optimization to give you actionable insights.";
 
@@ -411,14 +416,14 @@ Your output MUST be a single, valid markdown document following this exact struc
                         </div>
                         {error && <p className="text-center text-red-400 text-sm" role="alert">{error}</p>}
                         <div className="pt-2">
-                             <button type="submit" disabled={loading} className="w-full bg-primary/20 border border-primary/50 text-primary dark:text-white font-bold py-3 px-6 text-base rounded-full hover:bg-primary/30 transition-all transform hover:scale-105 animate-glow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
-                                <FileSearchIcon className="h-5 w-5 mr-2"/>
+                            <button type="submit" disabled={loading} className="w-full bg-primary/20 border border-primary/50 text-primary dark:text-white font-bold py-3 px-6 text-base rounded-full hover:bg-primary/30 transition-all transform hover:scale-105 animate-glow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+                                <FileSearchIcon className="h-5 w-5 mr-2" />
                                 {loading ? 'Auditing Your Website...' : 'Start Free Audit'}
                             </button>
                         </div>
                     </form>
                 </div>
-                
+
                 <div ref={resultsRef} className="mt-8 max-w-5xl mx-auto">
                     {loading && <DynamicLoader messages={LOADING_MESSAGES.WEBSITE_AUDIT} className="mt-12" />}
                     {!loading && result && (

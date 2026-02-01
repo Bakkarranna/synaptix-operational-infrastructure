@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import BlogEditorModal from '../../../components/admin/BlogEditorModal'
-import type { BlogPost } from '../../../services/supabase'
+import type { BlogPost } from '../../types'
 
 // Mock the Google GenAI
 vi.mock('@google/genai', () => ({
@@ -44,7 +44,7 @@ This is the content of the AI-generated test article.`
 }))
 
 // Mock the services
-vi.mock('../../../services/supabase', () => ({
+vi.mock('../../types', () => ({
   saveBlogPost: vi.fn().mockResolvedValue({ id: 1 })
 }))
 

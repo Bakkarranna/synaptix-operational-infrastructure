@@ -63,9 +63,7 @@ const InteractiveNetwork: React.FC<InteractiveNetworkProps> = ({ navigate }) => 
   const nodes = useMemo<PositionedNode[]>(() => {
     const mainNodes: NodeData[] = [
         { id: 'services', label: 'Services', icon: 'gear', description: 'Explore our suite of AI automation services.', target: '/#services', size: 10 },
-        { id: 'launchpad', label: 'AI Launchpad', icon: 'rocket', description: 'Find tailored solutions for your business profile.', target: '/#launchpad', size: 10 },
         { id: 'pricing', label: 'Pricing', icon: 'calculator', description: 'Build a custom quote with our interactive calculator.', target: '/#pricing', size: 10 },
-        { id: 'ai-tools', label: 'AI Tools', icon: 'sparkles', description: 'Try our free suite of AI-powered business tools.', target: '/ai-tools', size: 10 },
         { id: 'blog', label: 'Blog', icon: 'pencil', description: 'Read our latest insights on AI and automation.', target: '/blog', size: 10 },
         { id: 'about', label: 'About Us', icon: 'users', description: 'Learn about our mission, vision, and team.', target: '/#about', size: 10 },
         { id: 'partner', label: 'Partners', icon: 'users', description: 'Join our affiliate or referral program.', target: '/partner', size: 10 },

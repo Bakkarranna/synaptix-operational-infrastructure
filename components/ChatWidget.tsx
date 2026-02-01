@@ -4,9 +4,9 @@ import { GoogleGenAI, Chat } from '@google/genai';
 import { SendIcon, CloseIcon, ChatBubbleIcon, MicrophoneIcon, VolumeUpIcon, VolumeOffIcon, Icon, IconName } from './Icon';
 import MarkdownRenderer from './MarkdownRenderer';
 import { CALENDLY_LINK } from '../constants';
-import { saveChatLog } from '../services/supabase';
+// import { saveChatLog } from '../services/supabase'; // Unused
 import { trackEvent } from '../services/analytics';
-import { BlogPost } from '../services/supabase';
+import { BlogPost } from '../src/types';
 
 interface SocialLink {
   platform: string;
@@ -32,12 +32,12 @@ interface ChatWidgetProps {
 
 const UserVoiceMessage: React.FC<{ message: Message; messageRef: React.RefObject<HTMLDivElement> | null }> = ({ message, messageRef }) => {
   const [showTranscript, setShowTranscript] = useState(false);
-  
+
   return (
     <div ref={messageRef} className="flex items-end gap-2 justify-end animate-fade-in-fast">
       <div className="w-full max-w-[85%] rounded-2xl px-3 py-2 text-white bg-primary rounded-br-none space-y-2">
         {message.audioUrl && <audio src={message.audioUrl} controls className="w-full h-10" />}
-        <button 
+        <button
           onClick={() => setShowTranscript(s => !s)}
           className="text-xs font-semibold text-white/80 hover:text-white underline"
         >
@@ -80,21 +80,21 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
     const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
     const articlesForPrompt = blogPosts.map(post => ({
-        title: post.title,
-        slug: post.slug,
-        description: post.description,
-        category: post.category
+      title: post.title,
+      slug: post.slug,
+      description: post.description,
+      category: post.category
     })).slice(0, 15); // Limit to recent 15 to keep prompt size manageable
 
     const articlesKnowledgeBase = articlesForPrompt.length > 0
-        ? `
+      ? `
     **6. Blog Articles:**
     - We have a blog with articles on AI Strategy, Automation, Case Studies, and Business Growth.
     - If a user's question can be answered by one of the following articles, you MUST use the "navigateTo" field to direct them to it. The path should be "/blog/[slug]".
     - Here is a list of available articles:
     ${articlesForPrompt.map(p => `- Title: "${p.title}", Slug: "${p.slug}", Description: "${p.description}"`).join('\n    ')}
     `
-        : `
+      : `
     **6. Blog Articles:**
     - We have a blog with articles on AI strategy and automation. You can direct users to the main blog page at "/blog".
     `;
@@ -120,17 +120,17 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
     - We have a "Free Business Tools" page (\`/ai-tools\`) where users can try our AI capabilities. 
     - If a user's request maps directly to a specific tool, you MUST use the "navigateTo" field to direct them to it. The path should be "/ai-tools#[tool-slug]".
     - Here is a list of available tools and their slugs:
-      - **Agent Generator** (\`/ai-tools#ai-agent-generator\`): For creating custom AI chatbots or voice agents.
-      - **Content Strategist** (\`/ai-tools#viral-content-strategist\`): For generating viral social media content.
-      - **Business Strategist** (\`/ai-tools#ai-idea-generator\`): For brainstorming AI automation ideas for a business.
-      - **Financial Analyst** (\`/ai-tools#roi-calculator\`): For calculating the ROI of AI implementation.
-      - **Ad Copy Generator** (\`/ai-tools#ai-ad-copy-generator\`): For creating ad copy for various platforms.
-      - **Subject Line Tester** (\`/ai-tools#ai-subject-line-tester\`): For analyzing and improving email subject lines.
-      - **Website Auditor** (\`/ai-tools#ai-website-auditor\`): For getting an AI-powered SEO and UX audit of a website.
-      - **Knowledge Base Generator** (\`/ai-tools#ai-knowledge-base-generator\`): For turning a website into a structured knowledge base for AI training.
+      - **Agent Architect** (\`/ai-tools#ai-agent-generator\`): For building custom autonomous agents and voice infrastructure.
+      - **Systems Docs** (\`/ai-tools#viral-content-strategist\`): For automated generation of operational documentation and manuals.
+      - **Automation Strategy** (\`/ai-tools#ai-idea-generator\`): For engineering custom automation blueprints for B2B/SaaS systems.
+      - **ROI Simulator** (\`/ai-tools#roi-calculator\`): For calculating the operational savings and revenue growth from high-ticket infrastructure.
+      - **Intake Logic** (\`/ai-tools#ai-ad-copy-generator\`): For designing intelligent lead intake and qualification flows.
+      - **Workflow Auditor** (\`/ai-tools#ai-subject-line-tester\`): For auditing the effectiveness of automated communications.
+      - **Operational Audit** (\`/ai-tools#ai-website-auditor\`): For a professional audit of website operational effectiveness and conversion infrastructure.
+      - **Knowledge Base** (\`/ai-tools#ai-knowledge-base-generator\`): For building a centralized data nerve center for AI training.
 
     **4. Contact & Next Steps:**
-    - The best way to get a custom plan is to use the "Free AI Strategy" generator on the '/#ai-strategy' section of the homepage.
+    - The best way to get a custom plan is to use the "Process Mining Audit" request form on the '/#process-mining' section of the homepage.
     - For a detailed discussion, users can book a free demo call. If they ask to do this, use the navigateTo field with the value "${CALENDLY_LINK}".
 
     **5. Social Media:**
@@ -170,27 +170,27 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
 
   useEffect(() => {
     if (isLoading) {
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
-        }
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+      }
     } else {
-        if (lastUserMessageRef.current && messages[messages.length - 1]?.sender === 'ai') {
-            lastUserMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
-        }
+      if (lastUserMessageRef.current && messages[messages.length - 1]?.sender === 'ai') {
+        lastUserMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+      }
     }
   }, [messages, isLoading]);
-  
+
   useEffect(() => {
     if (!isOpen && 'speechSynthesis' in window) {
-        speechSynthesis.cancel();
+      speechSynthesis.cancel();
     }
   }, [isOpen]);
 
   const speak = (text: string) => {
     if (isMuted || !('speechSynthesis' in window)) {
-        return;
+      return;
     }
     const cleanedText = text.replace(/\*\*|\*/g, '');
     const utterance = new SpeechSynthesisUtterance(cleanedText);
@@ -200,24 +200,24 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
 
   const handleToggleMute = () => {
     setIsMuted(prev => {
-        const nextIsMuted = !prev;
-        if (nextIsMuted && 'speechSynthesis' in window) {
-            speechSynthesis.cancel();
-        }
-        return nextIsMuted;
+      const nextIsMuted = !prev;
+      if (nextIsMuted && 'speechSynthesis' in window) {
+        speechSynthesis.cancel();
+      }
+      return nextIsMuted;
     });
   };
 
   const handleNavAction = (action: string) => {
     if ('speechSynthesis' in window) {
-        speechSynthesis.cancel();
+      speechSynthesis.cancel();
     }
     if (action === CALENDLY_LINK) {
-        openCalendlyModal();
-        setIsOpen(false);
+      openCalendlyModal();
+      setIsOpen(false);
     } else if (action) {
-        navigate(action);
-        setIsOpen(false);
+      navigate(action);
+      setIsOpen(false);
     }
   };
 
@@ -231,33 +231,33 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
     setCurrentSuggestions([]);
 
     try {
-        const response = await chat.sendMessage({ message: messageText });
-        const jsonMatch = response.text.match(/```json\s*([\s\S]*?)\s*```|(\{[\s\S]*\})/);
-        if (!jsonMatch || (!jsonMatch[1] && !jsonMatch[2])) {
-            throw new Error("No valid JSON object found in response.");
-        }
-        const jsonString = (jsonMatch[1] || jsonMatch[2]).trim();
-        const parsedResponse = JSON.parse(jsonString);
+      const response = await chat.sendMessage({ message: messageText });
+      const jsonMatch = response.text.match(/```json\s*([\s\S]*?)\s*```|(\{[\s\S]*\})/);
+      if (!jsonMatch || (!jsonMatch[1] && !jsonMatch[2])) {
+        throw new Error("No valid JSON object found in response.");
+      }
+      const jsonString = (jsonMatch[1] || jsonMatch[2]).trim();
+      const parsedResponse = JSON.parse(jsonString);
 
-        const aiMessage: Message = {
-            sender: 'ai',
-            text: parsedResponse.response,
-            navAction: parsedResponse.navigateTo,
-            navActionText: parsedResponse.navigateToText,
-            externalLinks: parsedResponse.externalLinks
-        };
-        
-        setMessages(prev => [...prev, aiMessage]);
-        setCurrentSuggestions(parsedResponse.suggestions || []);
-        speak(parsedResponse.response);
-        
+      const aiMessage: Message = {
+        sender: 'ai',
+        text: parsedResponse.response,
+        navAction: parsedResponse.navigateTo,
+        navActionText: parsedResponse.navigateToText,
+        externalLinks: parsedResponse.externalLinks
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+      setCurrentSuggestions(parsedResponse.suggestions || []);
+      speak(parsedResponse.response);
+
     } catch (error) {
-        console.error("Chatbot error:", error);
-        const errorMessage: Message = { sender: 'ai', text: "I'm having a little trouble right now. Please try asking in a different way." };
-        setMessages(prev => [...prev, errorMessage]);
-        speak(errorMessage.text);
+      console.error("Chatbot error:", error);
+      const errorMessage: Message = { sender: 'ai', text: "I'm having a little trouble right now. Please try asking in a different way." };
+      setMessages(prev => [...prev, errorMessage]);
+      speak(errorMessage.text);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -267,63 +267,63 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
       alert("Speech recognition is not supported in this browser.");
       return;
     }
-    
+
     recognitionRef.current = new SpeechRecognition();
     recognitionRef.current.continuous = true;
     recognitionRef.current.interimResults = true;
     finalTranscriptRef.current = '';
 
     recognitionRef.current.onresult = (event: any) => {
-        let interimTranscript = '';
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-            if (event.results[i].isFinal) {
-                finalTranscriptRef.current += event.results[i][0].transcript;
-            } else {
-                interimTranscript += event.results[i][0].transcript;
-            }
+      let interimTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscriptRef.current += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
         }
-        setInput(finalTranscriptRef.current + interimTranscript);
+      }
+      setInput(finalTranscriptRef.current + interimTranscript);
     };
-    
+
     recognitionRef.current.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
-        setIsRecording(false);
+      console.error('Speech recognition error:', event.error);
+      setIsRecording(false);
     };
 
     recognitionRef.current.onend = () => {
-        setIsRecording(false);
+      setIsRecording(false);
     };
 
     navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            mediaRecorderRef.current = new MediaRecorder(stream);
-            mediaRecorderRef.current.ondataavailable = event => {
-                audioChunksRef.current.push(event.data);
-            };
-            mediaRecorderRef.current.onstop = () => {
-                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                audioChunksRef.current = [];
-                if (finalTranscriptRef.current.trim()) {
-                    setMessages(prev => [...prev, {
-                        sender: 'user',
-                        text: finalTranscriptRef.current,
-                        isVoiceNote: true,
-                        audioUrl: audioUrl
-                    }]);
-                    sendMessage(finalTranscriptRef.current);
-                }
-                stream.getTracks().forEach(track => track.stop());
-            };
-            
-            mediaRecorderRef.current.start();
-            recognitionRef.current.start();
-            setIsRecording(true);
-        })
-        .catch(err => {
-            console.error("Error accessing microphone:", err);
-            alert("Could not access microphone. Please check your browser permissions.");
-        });
+      .then(stream => {
+        mediaRecorderRef.current = new MediaRecorder(stream);
+        mediaRecorderRef.current.ondataavailable = event => {
+          audioChunksRef.current.push(event.data);
+        };
+        mediaRecorderRef.current.onstop = () => {
+          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          audioChunksRef.current = [];
+          if (finalTranscriptRef.current.trim()) {
+            setMessages(prev => [...prev, {
+              sender: 'user',
+              text: finalTranscriptRef.current,
+              isVoiceNote: true,
+              audioUrl: audioUrl
+            }]);
+            sendMessage(finalTranscriptRef.current);
+          }
+          stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorderRef.current.start();
+        recognitionRef.current.start();
+        setIsRecording(true);
+      })
+      .catch(err => {
+        console.error("Error accessing microphone:", err);
+        alert("Could not access microphone. Please check your browser permissions.");
+      });
   };
 
   const stopRecording = () => {
@@ -335,7 +335,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
     }
     setIsRecording(false);
   };
-  
+
   return (
     <div className="fixed bottom-4 right-4 z-40">
       {isOpen && (
@@ -343,17 +343,17 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
           {/* Header */}
           <div className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-between items-center flex-shrink-0">
             <div className="flex items-center gap-3">
-                <div className="relative">
-                    <img src={theme === 'dark' ? "https://iili.io/Fkb6akl.png" : "https://iili.io/KFWHFZG.png"} alt="Synaptix Studio" className="h-8 w-8 rounded-full" />
-                    <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white dark:ring-black/50"></span>
-                </div>
-                <div>
-                    <h3 className="font-bold text-gray-900 dark:text-white">Synaptix AI</h3>
-                    <p className="text-xs text-gray-500 dark:text-white/60">Your AI Automation Guide</p>
-                </div>
+              <div className="relative">
+                <img src={theme === 'dark' ? "https://iili.io/Fkb6akl.png" : "https://iili.io/KFWHFZG.png"} alt="Synaptix Studio" className="h-8 w-8 rounded-full" />
+                <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white dark:ring-black/50"></span>
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 dark:text-white">Synaptix AI</h3>
+                <p className="text-xs text-gray-500 dark:text-white/60">Your AI Automation Guide</p>
+              </div>
             </div>
             <button onClick={handleToggleMute} className="text-gray-500 dark:text-white/70 hover:text-gray-800 dark:hover:text-white p-1">
-                {isMuted ? <VolumeOffIcon className="h-5 w-5" /> : <VolumeUpIcon className="h-5 w-5" />}
+              {isMuted ? <VolumeOffIcon className="h-5 w-5" /> : <VolumeUpIcon className="h-5 w-5" />}
             </button>
           </div>
 
@@ -366,33 +366,33 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
               }
               const isLastUserMessage = msg.sender === 'user' && index === messages.length - 2 && messages[messages.length - 1]?.sender === 'ai';
               return (
-                <div 
+                <div
                   key={index}
                   ref={isLastUserMessage ? lastUserMessageRef : null}
                   className={`flex items-start gap-2 ${msg.sender === 'user' ? 'justify-end' : ''}`}
                 >
                   {msg.sender === 'ai' && <ChatBubbleIcon className="h-6 w-6 text-primary flex-shrink-0" />}
                   <div className={`max-w-[85%] rounded-2xl px-3 py-2 ${msg.sender === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-white/30 dark:bg-white/10 backdrop-blur-sm text-gray-800 dark:text-white rounded-bl-none'}`}>
-                     <MarkdownRenderer content={msg.text} />
-                     {msg.navAction && msg.navActionText && (
-                        <button onClick={() => handleNavAction(msg.navAction!)} className="mt-2 text-sm font-bold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1 rounded-full">
-                            {msg.navActionText}
-                        </button>
-                     )}
-                     {msg.externalLinks && (
-                       <div className="mt-2 space-x-2">
-                         {msg.externalLinks.map(link => (
-                            <a href={link.url} key={link.platform} target="_blank" rel="noopener noreferrer" className="inline-block p-2 bg-gray-200 dark:bg-white/10 rounded-full hover:bg-gray-300 dark:hover:bg-white/20">
-                                <Icon name={link.platform.toLowerCase() as IconName} className="h-5 w-5 text-gray-600 dark:text-white"/>
-                            </a>
-                         ))}
-                       </div>
-                     )}
+                    <MarkdownRenderer content={msg.text} />
+                    {msg.navAction && msg.navActionText && (
+                      <button onClick={() => handleNavAction(msg.navAction!)} className="mt-2 text-sm font-bold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1 rounded-full">
+                        {msg.navActionText}
+                      </button>
+                    )}
+                    {msg.externalLinks && (
+                      <div className="mt-2 space-x-2">
+                        {msg.externalLinks.map(link => (
+                          <a href={link.url} key={link.platform} target="_blank" rel="noopener noreferrer" className="inline-block p-2 bg-gray-200 dark:bg-white/10 rounded-full hover:bg-gray-300 dark:hover:bg-white/20">
+                            <Icon name={link.platform.toLowerCase() as IconName} className="h-5 w-5 text-gray-600 dark:text-white" />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )
             })}
-             {isLoading && (
+            {isLoading && (
               <div className="flex items-start gap-2">
                 <ChatBubbleIcon className="h-6 w-6 text-primary flex-shrink-0" />
                 <div className="max-w-[85%] rounded-2xl px-3 py-2 bg-white/30 dark:bg-white/10 backdrop-blur-sm rounded-bl-none">
@@ -404,42 +404,42 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
                 </div>
               </div>
             )}
-             {!isLoading && currentSuggestions.length > 0 && (
-                <div className="space-y-2 pt-4 animate-fade-in">
-                    {currentSuggestions.map((suggestion, i) => (
-                        <button
-                            key={i}
-                            onClick={() => sendMessage(suggestion)}
-                            className="w-full text-left text-sm p-3 rounded-lg text-gray-700 dark:text-white bg-white/10 dark:bg-white/5 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-white/10 transition-colors"
-                        >
-                            {suggestion}
-                        </button>
-                    ))}
-                </div>
+            {!isLoading && currentSuggestions.length > 0 && (
+              <div className="space-y-2 pt-4 animate-fade-in">
+                {currentSuggestions.map((suggestion, i) => (
+                  <button
+                    key={i}
+                    onClick={() => sendMessage(suggestion)}
+                    className="w-full text-left text-sm p-3 rounded-lg text-gray-700 dark:text-white bg-white/10 dark:bg-white/5 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-white/10 transition-colors"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
           {/* Input */}
           <div className="p-4 border-t border-gray-200 dark:border-white/10 flex-shrink-0">
             <form onSubmit={e => { e.preventDefault(); sendMessage(input); }} className="flex gap-2">
-              <input 
-                type="text" 
-                value={input} 
-                onChange={e => setInput(e.target.value)} 
+              <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
                 placeholder="Ask me anything..."
                 className="w-full bg-white/80 dark:bg-black/30 backdrop-blur-sm border border-black/10 dark:border-white/20 focus:border-primary dark:focus:border-white/20 focus:ring-0 rounded-lg text-gray-800 dark:text-white px-4 py-2 transition"
                 disabled={isLoading}
               />
               {isRecording ? (
-                  <button type="button" onClick={stopRecording} className="bg-red-500 text-white p-3 rounded-lg animate-pulse">
-                      <MicrophoneIcon className="h-5 w-5"/>
-                  </button>
+                <button type="button" onClick={stopRecording} className="bg-red-500 text-white p-3 rounded-lg animate-pulse">
+                  <MicrophoneIcon className="h-5 w-5" />
+                </button>
               ) : (
-                  <button type="button" onClick={startRecording} className="bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white p-3 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 transition">
-                      <MicrophoneIcon className="h-5 w-5"/>
-                  </button>
+                <button type="button" onClick={startRecording} className="bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white p-3 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 transition">
+                  <MicrophoneIcon className="h-5 w-5" />
+                </button>
               )}
               <button type="submit" disabled={isLoading || !input.trim()} className="bg-primary text-white p-3 rounded-lg hover:bg-opacity-90 transition disabled:opacity-50">
-                <SendIcon className="h-5 w-5"/>
+                <SendIcon className="h-5 w-5" />
               </button>
             </form>
           </div>

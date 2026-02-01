@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { Icon } from '../Icon';
-import { BlogPost, saveBlogPost } from '../../services/supabase';
+// import { BlogPost, saveBlogPost } from '../../services/supabase'; // Unused
+import { BlogPost } from '../../src/types';
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
 import DynamicLoader from '../DynamicLoader';
 import { LOADING_MESSAGES, NAV_LINKS, RESOURCES_LINKS, AI_TOOLS_NAV_LINKS } from '../../constants';
 
@@ -32,11 +36,11 @@ interface ExistingLink {
 }
 
 interface AiLinkManagerModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  post: BlogPost;
-  allPosts: BlogPost[];
-  onSave: () => void;
+    isOpen: boolean;
+    onClose: () => void;
+    post: BlogPost;
+    allPosts: BlogPost[];
+    onSave: () => void;
 }
 
 // Note: Brave API is now handled server-side through /api/brave endpoint
@@ -44,17 +48,17 @@ interface AiLinkManagerModalProps {
 const searchWithBrave = async (query: string): Promise<string | null> => {
     try {
         const response = await fetch(`/api/brave?q=${encodeURIComponent(query)}`);
-        
+
         if (!response.ok) {
             const errorBody = await response.text();
             console.error(`Brave API error for query "${query}": ${response.status} ${response.statusText}`, errorBody);
             throw new Error(`Brave API request failed with status ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.web && data.web.results && data.web.results.length > 0) {
-            const preferredResult = data.web.results.find((r: any) => 
+            const preferredResult = data.web.results.find((r: any) =>
                 r.url && !r.url.includes('youtube.com') && !r.url.includes('twitter.com') && !r.url.includes('linkedin.com')
             );
             return preferredResult ? preferredResult.url : data.web.results[0].url;
@@ -156,122 +160,82 @@ const SuggestionCard: React.FC<{ suggestion: UIManagedSuggestion; onApply: (sugg
 );
 
 const AiLinkManagerModal: React.FC<AiLinkManagerModalProps> = ({ isOpen, onClose, post, allPosts, onSave }) => {
-  const [content, setContent] = useState(post.content);
-  const [existingInternalLinks, setExistingInternalLinks] = useState<ExistingLink[]>([]);
-  const [existingExternalLinks, setExistingExternalLinks] = useState<ExistingLink[]>([]);
-  
-  const [internalSuggestions, setInternalSuggestions] = useState<UIManagedSuggestion[]>([]);
-  const [externalSuggestions, setExternalSuggestions] = useState<UIManagedSuggestion[]>([]);
+    const updatePost = useMutation(api.blog.updatePost);
+    const [content, setContent] = useState(post.content);
+    const [existingInternalLinks, setExistingInternalLinks] = useState<ExistingLink[]>([]);
+    const [existingExternalLinks, setExistingExternalLinks] = useState<ExistingLink[]>([]);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
-  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const [internalSuggestions, setInternalSuggestions] = useState<UIManagedSuggestion[]>([]);
+    const [externalSuggestions, setExternalSuggestions] = useState<UIManagedSuggestion[]>([]);
 
-  const parseLinksFromContent = useCallback(() => {
-    const internal: ExistingLink[] = [];
-    const external: ExistingLink[] = [];
-    let match;
-    let idCounter = 0;
-    const localRegex = new RegExp(linkRegex);
-    while ((match = localRegex.exec(content)) !== null) {
-        const url = match[2];
-        const linkData: ExistingLink = {
-            id: idCounter++,
-            original: match[0],
-            text: match[1],
-            url: url,
-        };
-        if (url.startsWith('/blog/') || !url.startsWith('http')) {
-            internal.push(linkData);
-        } else {
-            external.push(linkData);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+    const parseLinksFromContent = useCallback(() => {
+        const internal: ExistingLink[] = [];
+        const external: ExistingLink[] = [];
+        let match;
+        let idCounter = 0;
+        const localRegex = new RegExp(linkRegex);
+        while ((match = localRegex.exec(content)) !== null) {
+            const url = match[2];
+            const linkData: ExistingLink = {
+                id: idCounter++,
+                original: match[0],
+                text: match[1],
+                url: url,
+            };
+            if (url.startsWith('/blog/') || !url.startsWith('http')) {
+                internal.push(linkData);
+            } else {
+                external.push(linkData);
+            }
         }
-    }
-    setExistingInternalLinks(internal);
-    setExistingExternalLinks(external);
-  }, [content]);
+        setExistingInternalLinks(internal);
+        setExistingExternalLinks(external);
+    }, [content]);
 
-  useEffect(() => {
-    if (isOpen) {
-      setContent(post.content);
-    } else {
-      setInternalSuggestions([]);
-      setExternalSuggestions([]);
-      setError(null);
-      setIsLoading(false);
-    }
-  }, [isOpen, post]);
-  
-  useEffect(() => {
-    parseLinksFromContent();
-  }, [content, parseLinksFromContent]);
+    useEffect(() => {
+        if (isOpen) {
+            setContent(post.content);
+        } else {
+            setInternalSuggestions([]);
+            setExternalSuggestions([]);
+            setError(null);
+            setIsLoading(false);
+        }
+    }, [isOpen, post]);
 
-  const handleUpdateLink = (id: number, newText: string, newUrl: string) => {
-    const linkToUpdate = [...existingInternalLinks, ...existingExternalLinks].find(link => link.id === id);
-    if (!linkToUpdate) return;
-    const newLinkMarkdown = `[${newText}](${newUrl})`;
-    setContent(prevContent => prevContent.replace(linkToUpdate.original, newLinkMarkdown));
-  };
-  
-  const handleDeleteLink = (id: number) => {
-    const linkToDelete = [...existingInternalLinks, ...existingExternalLinks].find(link => link.id === id);
-    if (!linkToDelete) return;
-    setContent(prevContent => prevContent.replace(linkToDelete.original, linkToDelete.text));
-  };
-  
-  const handleApplySuggestion = (suggestion: UIManagedSuggestion) => {
-    const { textToReplace, finalUrl } = suggestion;
-    
-    // This logic prevents nesting errors like [[text]...](...) by cleaning the text before creating a new link.
-    const plainText = textToReplace.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1').replace(/\*\*/g, '');
-    const isBolded = textToReplace.includes('**');
-    
-    // Critical check: do not apply a link to text that is already inside an anchor.
-    const contentWithoutAnchors = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text) => ' '.repeat(text.length));
-    if (contentWithoutAnchors.indexOf(textToReplace) === -1) {
-        alert(`Could not apply suggestion. The text "${plainText}" appears to already be part of a link.`);
-        return;
-    }
-    
-    let newLinkMarkdown = `[${plainText}](${finalUrl})`;
-    if (isBolded) {
-        newLinkMarkdown = `**${newLinkMarkdown}**`;
-    }
+    useEffect(() => {
+        parseLinksFromContent();
+    }, [content, parseLinksFromContent]);
 
-    const replaceFirst = (str: string, find: string, replace: string) => {
-        const index = str.indexOf(find);
-        if (index === -1) return str;
-        return str.substring(0, index) + replace + str.substring(index + find.length);
+    const handleUpdateLink = (id: number, newText: string, newUrl: string) => {
+        const linkToUpdate = [...existingInternalLinks, ...existingExternalLinks].find(link => link.id === id);
+        if (!linkToUpdate) return;
+        const newLinkMarkdown = `[${newText}](${newUrl})`;
+        setContent((prevContent: string) => prevContent.replace(linkToUpdate.original, newLinkMarkdown));
     };
 
-    const updatedContent = replaceFirst(content, textToReplace, newLinkMarkdown);
+    const handleDeleteLink = (id: number) => {
+        const linkToDelete = [...existingInternalLinks, ...existingExternalLinks].find(link => link.id === id);
+        if (!linkToDelete) return;
+        setContent((prevContent: string) => prevContent.replace(linkToDelete.original, linkToDelete.text));
+    };
 
-    if (updatedContent !== content) {
-        setContent(updatedContent);
-        if (suggestion.category === 'Internal Link') {
-            setInternalSuggestions(prev => prev.filter(s => s.id !== suggestion.id));
-        } else {
-            setExternalSuggestions(prev => prev.filter(s => s.id !== suggestion.id));
-        }
-    } else {
-        alert(`Could not find the exact text "${textToReplace}" to replace. It might already be a link or have been changed.`);
-    }
-  };
-
-  const handleApplyAll = (type: 'internal' | 'external') => {
-    let newContent = content;
-    const suggestionsToApply = (type === 'internal' ? internalSuggestions : externalSuggestions).filter(s => s.status === 'verified' || s.status === 'pre-verified');
-    
-    suggestionsToApply.forEach(suggestion => {
+    const handleApplySuggestion = (suggestion: UIManagedSuggestion) => {
         const { textToReplace, finalUrl } = suggestion;
-        
+
+        // This logic prevents nesting errors like [[text]...](...) by cleaning the text before creating a new link.
         const plainText = textToReplace.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1').replace(/\*\*/g, '');
         const isBolded = textToReplace.includes('**');
-        
-        const contentWithoutAnchors = newContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text) => ' '.repeat(text.length));
+
+        // Critical check: do not apply a link to text that is already inside an anchor.
+        const contentWithoutAnchors = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string) => ' '.repeat(text.length));
         if (contentWithoutAnchors.indexOf(textToReplace) === -1) {
-            console.warn(`Skipping suggestion for "${plainText}" as it appears to already be linked.`);
+            alert(`Could not apply suggestion. The text "${plainText}" appears to already be part of a link.`);
             return;
         }
 
@@ -285,77 +249,118 @@ const AiLinkManagerModal: React.FC<AiLinkManagerModalProps> = ({ isOpen, onClose
             if (index === -1) return str;
             return str.substring(0, index) + replace + str.substring(index + find.length);
         };
-        newContent = replaceFirst(newContent, textToReplace, newLinkMarkdown);
-    });
-    
-    setContent(newContent);
-    if (type === 'internal') {
-        setInternalSuggestions(prev => prev.filter(s => s.status !== 'verified' && s.status !== 'pre-verified'));
-    } else {
-        setExternalSuggestions(prev => prev.filter(s => s.status !== 'verified' && s.status !== 'pre-verified'));
-    }
-  };
-  
-  const verifyExternalSuggestion = useCallback(async (suggestion: UIManagedSuggestion) => {
-    setExternalSuggestions(prev => prev.map(s => s.id === suggestion.id ? { ...s, status: 'pending', errorMessage: undefined } : s));
-    try {
-        const url = await searchWithBrave(suggestion.searchQuery!);
-        setExternalSuggestions(prev => prev.map(s => {
-            if (s.id === suggestion.id) {
-                return url
-                    ? { ...s, status: 'verified', finalUrl: url }
-                    : { ...s, status: 'failed', errorMessage: 'Link not found via search.' };
+
+        const updatedContent = replaceFirst(content, textToReplace, newLinkMarkdown);
+
+        if (updatedContent !== content) {
+            setContent(updatedContent);
+            if (suggestion.category === 'Internal Link') {
+                setInternalSuggestions(prev => prev.filter(s => s.id !== suggestion.id));
+            } else {
+                setExternalSuggestions(prev => prev.filter(s => s.id !== suggestion.id));
             }
-            return s;
-        }));
-    } catch (e) {
-         setExternalSuggestions(prev => prev.map(s => {
-            if (s.id === suggestion.id) {
-                return { ...s, status: 'failed', errorMessage: 'Failed to fetch' };
-            }
-            return s;
-        }));
-    }
-  }, []);
-
-  const findInternalLinkOpportunities = useCallback((contentToScan: string, sitemap: { title: string; url: string }[]): UIManagedSuggestion[] => {
-    let suggestions: UIManagedSuggestion[] = [];
-    let idCounter = 0;
-    
-    const contentWithoutAnchors = contentToScan.replace(/\[([^\]]+)\]\([^)]+\)/g, (_, text) => ' '.repeat(text.length));
-
-    sitemap.forEach(page => {
-        if (!page.title || page.title.length < 5) return;
-        
-        const escapedTitle = page.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const keywordRegex = new RegExp(`\\b(${escapedTitle})\\b`, 'gi');
-
-        let match;
-        while ((match = keywordRegex.exec(contentWithoutAnchors)) !== null) {
-             const foundText = match[1];
-             const contextStart = Math.max(0, match.index - 30);
-             const contextEnd = Math.min(contentToScan.length, match.index + foundText.length + 30);
-             const context = contentToScan.substring(contextStart, contextEnd).replace(/\n/g, ' ');
-
-             suggestions.push({
-                id: Date.now() + idCounter++,
-                textToReplace: foundText,
-                context,
-                reasoning: `Links to the "${page.title}" page.`,
-                category: 'Internal Link',
-                url: page.url,
-                finalUrl: page.url,
-                status: 'pre-verified'
-             });
+        } else {
+            alert(`Could not find the exact text "${textToReplace}" to replace. It might already be a link or have been changed.`);
         }
-    });
-    
-    const uniqueSuggestions = Array.from(new Map(suggestions.map(item => [item.textToReplace.toLowerCase(), item])).values());
-    return uniqueSuggestions;
-  }, []);
+    };
 
-  const fetchExternalSuggestions = async (ai: GoogleGenAI): Promise<AISuggestion[]> => {
-      const systemInstruction = `You are an expert External Link Strategist. Your task is to analyze an article and suggest high-value external links to improve its SEO and user experience. You have no knowledge of the internal sitemap.
+    const handleApplyAll = (type: 'internal' | 'external') => {
+        let newContent = content;
+        const suggestionsToApply = (type === 'internal' ? internalSuggestions : externalSuggestions).filter(s => s.status === 'verified' || s.status === 'pre-verified');
+
+        suggestionsToApply.forEach(suggestion => {
+            const { textToReplace, finalUrl } = suggestion;
+
+            const plainText = textToReplace.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1').replace(/\*\*/g, '');
+            const isBolded = textToReplace.includes('**');
+
+            const contentWithoutAnchors = newContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string) => ' '.repeat(text.length));
+            if (contentWithoutAnchors.indexOf(textToReplace) === -1) {
+                console.warn(`Skipping suggestion for "${plainText}" as it appears to already be linked.`);
+                return;
+            }
+
+            let newLinkMarkdown = `[${plainText}](${finalUrl})`;
+            if (isBolded) {
+                newLinkMarkdown = `**${newLinkMarkdown}**`;
+            }
+
+            const replaceFirst = (str: string, find: string, replace: string) => {
+                const index = str.indexOf(find);
+                if (index === -1) return str;
+                return str.substring(0, index) + replace + str.substring(index + find.length);
+            };
+            newContent = replaceFirst(newContent, textToReplace, newLinkMarkdown);
+        });
+
+        setContent(newContent);
+        if (type === 'internal') {
+            setInternalSuggestions(prev => prev.filter(s => s.status !== 'verified' && s.status !== 'pre-verified'));
+        } else {
+            setExternalSuggestions(prev => prev.filter(s => s.status !== 'verified' && s.status !== 'pre-verified'));
+        }
+    };
+
+    const verifyExternalSuggestion = useCallback(async (suggestion: UIManagedSuggestion) => {
+        setExternalSuggestions(prev => prev.map(s => s.id === suggestion.id ? { ...s, status: 'pending', errorMessage: undefined } : s));
+        try {
+            const url = await searchWithBrave(suggestion.searchQuery!);
+            setExternalSuggestions(prev => prev.map(s => {
+                if (s.id === suggestion.id) {
+                    return url
+                        ? { ...s, status: 'verified', finalUrl: url }
+                        : { ...s, status: 'failed', errorMessage: 'Link not found via search.' };
+                }
+                return s;
+            }));
+        } catch (e) {
+            setExternalSuggestions(prev => prev.map(s => {
+                if (s.id === suggestion.id) {
+                    return { ...s, status: 'failed', errorMessage: 'Failed to fetch' };
+                }
+                return s;
+            }));
+        }
+    }, []);
+
+    const findInternalLinkOpportunities = useCallback((contentToScan: string, sitemap: { title: string; url: string }[]): UIManagedSuggestion[] => {
+        let suggestions: UIManagedSuggestion[] = [];
+        let idCounter = 0;
+
+        const contentWithoutAnchors = contentToScan.replace(/\[([^\]]+)\]\([^)]+\)/g, (_, text) => ' '.repeat(text.length));
+
+        sitemap.forEach(page => {
+            if (!page.title || page.title.length < 5) return;
+
+            const escapedTitle = page.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const keywordRegex = new RegExp(`\\b(${escapedTitle})\\b`, 'gi');
+
+            let match;
+            while ((match = keywordRegex.exec(contentWithoutAnchors)) !== null) {
+                const foundText = match[1];
+                const contextStart = Math.max(0, match.index - 30);
+                const contextEnd = Math.min(contentToScan.length, match.index + foundText.length + 30);
+                const context = contentToScan.substring(contextStart, contextEnd).replace(/\n/g, ' ');
+
+                suggestions.push({
+                    id: Date.now() + idCounter++,
+                    textToReplace: foundText,
+                    context,
+                    reasoning: `Links to the "${page.title}" page.`,
+                    category: 'Internal Link',
+                    url: page.url,
+                    finalUrl: page.url,
+                    status: 'pre-verified'
+                });
+            }
+        });
+
+        const uniqueSuggestions = Array.from(new Map(suggestions.map(item => [item.textToReplace.toLowerCase(), item])).values());
+        return uniqueSuggestions;
+    }, []);
+
+    const fetchExternalSuggestions = async (ai: GoogleGenAI): Promise<AISuggestion[]> => {
+        const systemInstruction = `You are an expert External Link Strategist. Your task is to analyze an article and suggest high-value external links to improve its SEO and user experience. You have no knowledge of the internal sitemap.
 
       **YOUR TASK & OUTPUT FORMAT:**
       Your entire response MUST be a single, valid JSON object with one key: "suggestions".
@@ -379,153 +384,160 @@ const AiLinkManagerModal: React.FC<AiLinkManagerModalProps> = ({ isOpen, onClose
       5.  **NO RE-LINKING:** Do NOT suggest a link for text that is already part of a markdown link.
       6.  **NO SELF-LINKING:** You are STRICTLY FORBIDDEN from suggesting any links to 'synaptixstudio.com', 'synaptix.studio', or any other variation of the company's own domain. This is the job of the internal link system. Your focus is exclusively on third-party external sites.`;
 
-      const userPrompt = `Analyze this article and suggest ONLY external links based on my strict rules:\n---\n${content}\n---`;
+        const userPrompt = `Analyze this article and suggest ONLY external links based on my strict rules:\n---\n${content}\n---`;
 
-      const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: userPrompt,
-          config: { systemInstruction, responseMimeType: 'application/json' }
-      });
-      if (!response.text) {
-          throw new Error('AI response was empty');
-      }
-      return JSON.parse(response.text).suggestions || [];
-  };
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: userPrompt,
+            config: { systemInstruction, responseMimeType: 'application/json' }
+        });
+        if (!response.text) {
+            throw new Error('AI response was empty');
+        }
+        return JSON.parse(response.text).suggestions || [];
+    };
 
-  const fetchSuggestions = async () => {
-    setIsLoading(true);
-    setError(null);
-    setInternalSuggestions([]);
-    setExternalSuggestions([]);
-    
-    try {
-        const sitemap = [
-            ...allPosts.filter(p => p.slug !== post.slug).map(p => ({ title: p.title, url: `/blog/${p.slug}` })),
-            ...NAV_LINKS.map(l => ({ title: l.label, url: l.href })),
-            ...RESOURCES_LINKS.map(l => ({ title: l.label, url: l.href })),
-            ...AI_TOOLS_NAV_LINKS.map(l => ({ title: l.label, url: `/ai-tools${l.href}` })),
-            { title: "Privacy Policy", url: "/privacy" },
-            { title: "Terms of Service", url: "/terms" },
-            { title: "Synaptix Studio", url: "https://www.synaptixstudio.com/"},
-            { title: "AI Automation Agency", url: "https://www.synaptixstudio.com/#services"}
-        ];
-        
-        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-        const [internalRes, externalRes] = await Promise.all([
-            Promise.resolve(findInternalLinkOpportunities(content, sitemap)),
-            fetchExternalSuggestions(ai)
-        ]);
+    const fetchSuggestions = async () => {
+        setIsLoading(true);
+        setError(null);
+        setInternalSuggestions([]);
+        setExternalSuggestions([]);
 
-        setInternalSuggestions(internalRes);
+        try {
+            const sitemap = [
+                ...allPosts.filter(p => p.slug !== post.slug).map(p => ({ title: p.title, url: `/blog/${p.slug}` })),
+                ...NAV_LINKS.map(l => ({ title: l.label, url: l.href })),
+                ...RESOURCES_LINKS.map(l => ({ title: l.label, url: l.href })),
+                ...AI_TOOLS_NAV_LINKS.map(l => ({ title: l.label, url: `/ai-tools${l.href}` })),
+                { title: "Privacy Policy", url: "/privacy" },
+                { title: "Terms of Service", url: "/terms" },
+                { title: "Synaptix Studio", url: "https://www.synaptixstudio.com/" },
+                { title: "AI Automation Agency", url: "https://www.synaptixstudio.com/#services" }
+            ];
 
-        const externalSugs = externalRes.map((s, i) => {
-            const base = { ...s, id: i + internalRes.length };
-            if (s.category === 'GitHub Repository') return { ...base, status: 'pre-verified', finalUrl: `https://github.com/${s.path}` };
-            if (s.category === 'Subreddit') return { ...base, status: 'pre-verified', finalUrl: `https://www.reddit.com/${s.path}` };
-            return { ...base, status: 'pending', finalUrl: '' };
-        }) as UIManagedSuggestion[];
-        setExternalSuggestions(externalSugs);
+            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+            const [internalRes, externalRes] = await Promise.all([
+                Promise.resolve(findInternalLinkOpportunities(content, sitemap)),
+                fetchExternalSuggestions(ai)
+            ]);
 
-        await Promise.all(externalSugs.filter(s => s.status === 'pending').map(verifyExternalSuggestion));
+            setInternalSuggestions(internalRes);
 
-    } catch (err: any) {
-        console.error("AI Link Suggestion Error:", err);
-        setError("The AI failed to generate suggestions. You can try again or proceed manually.");
-    } finally {
-        setIsLoading(false);
-    }
-  };
-  
-  const handleFinalizeAndSave = async () => {
-    try {
-        await saveBlogPost({ ...post, content });
-        onSave();
-    } catch(e: any) {
-        alert(`Failed to save changes: ${e.message}`);
-    }
-  };
-  
-  if (!isOpen) return null;
+            const externalSugs = externalRes.map((s, i) => {
+                const base = { ...s, id: i + internalRes.length };
+                if (s.category === 'GitHub Repository') return { ...base, status: 'pre-verified', finalUrl: `https://github.com/${s.path}` };
+                if (s.category === 'Subreddit') return { ...base, status: 'pre-verified', finalUrl: `https://www.reddit.com/${s.path}` };
+                return { ...base, status: 'pending', finalUrl: '' };
+            }) as UIManagedSuggestion[];
+            setExternalSuggestions(externalSugs);
 
-  return (
-    <div className="fixed inset-0 bg-black/80 z-[102] flex items-center justify-center p-4 animate-fade-in-fast" onClick={onClose}>
-      <div className="bg-white dark:bg-brand-dark border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl w-full max-w-4xl m-4 relative animate-slide-in-up-fast flex flex-col h-[90vh]" onClick={(e) => e.stopPropagation()}>
-        <header className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-between items-center flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <Icon name="link" className="h-6 w-6 text-primary"/>
-            <h2 className="text-xl font-bold truncate pr-4 text-gray-900 dark:text-white">Link Hub for "{post.title}"</h2>
-          </div>
-          <button onClick={onClose} className="text-gray-500 dark:text-white/70 hover:text-gray-900 dark:hover:text-white"><Icon name="close" className="h-6 w-6" /></button>
-        </header>
+            await Promise.all(externalSugs.filter(s => s.status === 'pending').map(verifyExternalSuggestion));
 
-        <main className="p-6 space-y-4 overflow-y-auto custom-scrollbar">
-            <Accordion title={<>Existing Links ({existingInternalLinks.length + existingExternalLinks.length})</>} defaultOpen={true}>
-                 <div className="space-y-4 p-2">
-                    <div>
-                        <h4 className="font-bold text-gray-900 dark:text-white mb-2">Internal Links ({existingInternalLinks.length})</h4>
-                        <div className="space-y-3">
-                            {existingInternalLinks.map(link => (
-                                <EditableLinkRow key={link.id} link={link} onUpdate={handleUpdateLink} onDelete={handleDeleteLink} />
-                            ))}
-                            {existingInternalLinks.length === 0 && <p className="text-center text-sm text-gray-500 dark:text-white/60 p-4">No internal links found.</p>}
-                        </div>
+        } catch (err: any) {
+            console.error("AI Link Suggestion Error:", err);
+            setError("The AI failed to generate suggestions. You can try again or proceed manually.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleFinalizeAndSave = async () => {
+        try {
+            if (post.id) {
+                await updatePost({
+                    id: post.id as Id<"blog_posts">,
+                    content: content
+                });
+                onSave();
+            } else {
+                throw new Error("Cannot update a post without an ID.");
+            }
+        } catch (e: any) {
+            alert(`Failed to save changes: ${e.message}`);
+        }
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black/80 z-[102] flex items-center justify-center p-4 animate-fade-in-fast" onClick={onClose}>
+            <div className="bg-white dark:bg-brand-dark border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl w-full max-w-4xl m-4 relative animate-slide-in-up-fast flex flex-col h-[90vh]" onClick={(e) => e.stopPropagation()}>
+                <header className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-between items-center flex-shrink-0">
+                    <div className="flex items-center gap-3">
+                        <Icon name="link" className="h-6 w-6 text-primary" />
+                        <h2 className="text-xl font-bold truncate pr-4 text-gray-900 dark:text-white">Link Hub for "{post.title}"</h2>
                     </div>
-                     <div>
-                        <h4 className="font-bold text-gray-900 dark:text-white mb-2">External Links ({existingExternalLinks.length})</h4>
-                        <div className="space-y-3">
-                            {existingExternalLinks.map(link => (
-                                <EditableLinkRow key={link.id} link={link} onUpdate={handleUpdateLink} onDelete={handleDeleteLink} />
-                            ))}
-                             {existingExternalLinks.length === 0 && <p className="text-center text-sm text-gray-500 dark:text-white/60 p-4">No external links found.</p>}
+                    <button onClick={onClose} className="text-gray-500 dark:text-white/70 hover:text-gray-900 dark:hover:text-white"><Icon name="close" className="h-6 w-6" /></button>
+                </header>
+
+                <main className="p-6 space-y-4 overflow-y-auto custom-scrollbar">
+                    <Accordion title={<>Existing Links ({existingInternalLinks.length + existingExternalLinks.length})</>} defaultOpen={true}>
+                        <div className="space-y-4 p-2">
+                            <div>
+                                <h4 className="font-bold text-gray-900 dark:text-white mb-2">Internal Links ({existingInternalLinks.length})</h4>
+                                <div className="space-y-3">
+                                    {existingInternalLinks.map(link => (
+                                        <EditableLinkRow key={link.id} link={link} onUpdate={handleUpdateLink} onDelete={handleDeleteLink} />
+                                    ))}
+                                    {existingInternalLinks.length === 0 && <p className="text-center text-sm text-gray-500 dark:text-white/60 p-4">No internal links found.</p>}
+                                </div>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-gray-900 dark:text-white mb-2">External Links ({existingExternalLinks.length})</h4>
+                                <div className="space-y-3">
+                                    {existingExternalLinks.map(link => (
+                                        <EditableLinkRow key={link.id} link={link} onUpdate={handleUpdateLink} onDelete={handleDeleteLink} />
+                                    ))}
+                                    {existingExternalLinks.length === 0 && <p className="text-center text-sm text-gray-500 dark:text-white/60 p-4">No external links found.</p>}
+                                </div>
+                            </div>
                         </div>
+                    </Accordion>
+
+                    <Accordion title={<>AI Link Suggester</>}>
+                        <div className="p-2 space-y-4">
+                            <button onClick={fetchSuggestions} disabled={isLoading} className="w-full bg-gray-200 dark:bg-white/10 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 flex items-center justify-center gap-2 text-sm text-gray-900 dark:text-white mt-4">
+                                <Icon name="sparkles" className="h-5 w-5" />
+                                {isLoading ? 'Searching...' : 'Get New Suggestions'}
+                            </button>
+                            {isLoading ? <DynamicLoader messages={LOADING_MESSAGES.LINK_MANAGER} /> : (
+                                <>
+                                    {error && <p className="text-red-400 text-sm text-center bg-red-500/10 p-3 rounded-lg">{error}</p>}
+
+                                    {/* Internal Suggestions */}
+                                    <div className="space-y-3 mt-4">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="font-bold text-gray-900 dark:text-white">Internal Link Suggestions ({internalSuggestions.length})</h4>
+                                            <button onClick={() => handleApplyAll('internal')} disabled={!internalSuggestions.some(s => s.status === 'pre-verified')} className="text-xs font-bold bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full disabled:opacity-50">Apply All</button>
+                                        </div>
+                                        {internalSuggestions.map((s) => <SuggestionCard key={s.id} suggestion={s} onApply={handleApplySuggestion} onRetry={() => { }} />)}
+                                    </div>
+
+                                    {/* External Suggestions */}
+                                    <div className="space-y-3 mt-4">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="font-bold text-gray-900 dark:text-white">External Link Suggestions ({externalSuggestions.length})</h4>
+                                            <button onClick={() => handleApplyAll('external')} disabled={!externalSuggestions.some(s => s.status === 'verified' || s.status === 'pre-verified')} className="text-xs font-bold bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full disabled:opacity-50">Apply All Verified</button>
+                                        </div>
+                                        {externalSuggestions.map((s) => <SuggestionCard key={s.id} suggestion={s} onApply={handleApplySuggestion} onRetry={verifyExternalSuggestion} />)}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </Accordion>
+                </main>
+
+                <footer className="p-4 border-t border-gray-200 dark:border-white/10 flex justify-end items-center flex-shrink-0">
+                    <div className="flex gap-4">
+                        <button onClick={onClose} className="bg-gray-200 dark:bg-white/10 py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 text-gray-800 dark:text-white">Cancel</button>
+                        <button onClick={handleFinalizeAndSave} className="bg-primary text-white font-bold py-2 px-6 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
+                            <Icon name="check" className="h-5 w-5" />
+                            Finalize & Save Changes
+                        </button>
                     </div>
-                 </div>
-            </Accordion>
-            
-             <Accordion title={<>AI Link Suggester</>}>
-                <div className="p-2 space-y-4">
-                    <button onClick={fetchSuggestions} disabled={isLoading} className="w-full bg-gray-200 dark:bg-white/10 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 flex items-center justify-center gap-2 text-sm text-gray-900 dark:text-white mt-4">
-                        <Icon name="sparkles" className="h-5 w-5"/>
-                        {isLoading ? 'Searching...' : 'Get New Suggestions'}
-                    </button>
-                    {isLoading ? <DynamicLoader messages={LOADING_MESSAGES.LINK_MANAGER} /> : (
-                        <>
-                            {error && <p className="text-red-400 text-sm text-center bg-red-500/10 p-3 rounded-lg">{error}</p>}
-                            
-                            {/* Internal Suggestions */}
-                            <div className="space-y-3 mt-4">
-                                <div className="flex justify-between items-center">
-                                    <h4 className="font-bold text-gray-900 dark:text-white">Internal Link Suggestions ({internalSuggestions.length})</h4>
-                                    <button onClick={() => handleApplyAll('internal')} disabled={!internalSuggestions.some(s => s.status === 'pre-verified')} className="text-xs font-bold bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full disabled:opacity-50">Apply All</button>
-                                </div>
-                                {internalSuggestions.map((s) => <SuggestionCard key={s.id} suggestion={s} onApply={handleApplySuggestion} onRetry={() => {}} />)}
-                            </div>
-
-                            {/* External Suggestions */}
-                            <div className="space-y-3 mt-4">
-                                <div className="flex justify-between items-center">
-                                    <h4 className="font-bold text-gray-900 dark:text-white">External Link Suggestions ({externalSuggestions.length})</h4>
-                                    <button onClick={() => handleApplyAll('external')} disabled={!externalSuggestions.some(s => s.status === 'verified' || s.status === 'pre-verified')} className="text-xs font-bold bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full disabled:opacity-50">Apply All Verified</button>
-                                </div>
-                                {externalSuggestions.map((s) => <SuggestionCard key={s.id} suggestion={s} onApply={handleApplySuggestion} onRetry={verifyExternalSuggestion} />)}
-                            </div>
-                        </>
-                    )}
-                </div>
-            </Accordion>
-        </main>
-
-        <footer className="p-4 border-t border-gray-200 dark:border-white/10 flex justify-end items-center flex-shrink-0">
-          <div className="flex gap-4">
-            <button onClick={onClose} className="bg-gray-200 dark:bg-white/10 py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-white/20 text-gray-800 dark:text-white">Cancel</button>
-            <button onClick={handleFinalizeAndSave} className="bg-primary text-white font-bold py-2 px-6 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
-                <Icon name="check" className="h-5 w-5"/>
-                Finalize & Save Changes
-            </button>
-          </div>
-        </footer>
-      </div>
-    </div>
-  );
+                </footer>
+            </div>
+        </div>
+    );
 };
 export default AiLinkManagerModal;
