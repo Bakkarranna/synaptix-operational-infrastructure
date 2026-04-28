@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+const convexUrl = import.meta.env.VITE_CONVEX_URL as string | undefined;
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -12,10 +12,20 @@ if (!rootElement) {
 }
 
 const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <ConvexProvider client={convex}>
+
+if (convexUrl) {
+  const convex = new ConvexReactClient(convexUrl);
+  root.render(
+    <React.StrictMode>
+      <ConvexProvider client={convex}>
+        <App />
+      </ConvexProvider>
+    </React.StrictMode>
+  );
+} else {
+  root.render(
+    <React.StrictMode>
       <App />
-    </ConvexProvider>
-  </React.StrictMode>
-);
+    </React.StrictMode>
+  );
+}
