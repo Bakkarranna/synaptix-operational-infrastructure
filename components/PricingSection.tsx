@@ -4,6 +4,8 @@ import { CORE_SERVICES, ADD_ONS, TRUST_POINTS, YEARLY_DISCOUNT_PERCENTAGE, CALEN
 import { useOnScreen } from '../hooks/useOnScreen';
 import { Icon, IconName, CheckIcon } from './Icon';
 import StyledText from './StyledText';
+import { useConvex } from "convex/react";
+import { api } from "../convex/_generated/api";
 import TrustedBySection from './TrustedBySection';
 
 interface PricingSectionProps {
@@ -43,6 +45,8 @@ const AnimatedNumber: React.FC<{ value: number }> = ({ value }) => {
 const PricingSection: React.FC<PricingSectionProps> = ({ navigate, openCalendlyModal }) => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const isSectionVisible = useOnScreen(sectionRef);
+
+    const convex = useConvex();
 
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
@@ -115,17 +119,19 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate, openCalendlyM
         setReferralError(null);
         setReferralApplied(false);
 
-        // Simulate verification delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        const VALID_CODES = ['SYNAPTIX10', 'LAUNCH2025', 'STUDIO10'];
-        if (VALID_CODES.includes(referralCode.trim().toUpperCase())) {
-            setReferralApplied(true);
-        } else {
-            setReferralError('Invalid or expired code.');
+        try {
+            const isValid = await convex.query(api.forms.checkReferralCode, { code: referralCode });
+            if (isValid) {
+                setReferralApplied(true);
+            } else {
+                setReferralError('Invalid or expired code.');
+            }
+        } catch (error) {
+            console.error('Error verifying code:', error);
+            setReferralError('Could not verify code. Please try again.');
+        } finally {
+            setIsVerifyingCode(false);
         }
-
-        setIsVerifyingCode(false);
     }
 
     const yearlyDiscountMultiplier = (100 - YEARLY_DISCOUNT_PERCENTAGE) / 100;

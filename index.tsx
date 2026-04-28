@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import ConvexApp from './ConvexApp';
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL as string | undefined;
@@ -14,18 +15,20 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 
 if (convexUrl) {
+  // Full Convex mode — all hooks (useQuery, useConvex, useMutation) work normally
   const convex = new ConvexReactClient(convexUrl);
   root.render(
     <React.StrictMode>
       <ConvexProvider client={convex}>
-        <App />
+        <ConvexApp />
       </ConvexProvider>
     </React.StrictMode>
   );
 } else {
+  // No Convex URL configured — render with static data only, no Convex hooks
   root.render(
     <React.StrictMode>
-      <App />
+      <App convexPostsRaw={undefined} />
     </React.StrictMode>
   );
 }

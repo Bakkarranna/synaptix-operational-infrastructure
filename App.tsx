@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { BlogPost } from "./src/types"; // path to types in src
+import { BlogPost } from "./src/types";
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import ServicesSection from './components/ServicesSection';
@@ -34,6 +34,17 @@ import PasswordModal from './components/admin/PasswordModal';
 import BlogAdminDashboard from './components/admin/BlogAdminDashboard';
 import Sitemap from './components/Sitemap';
 import { trackPageView } from './services/analytics';
+
+class SitemapBoundary extends React.Component<{ children: React.ReactNode }, { errored: boolean }> {
+  state = { errored: false };
+  static getDerivedStateFromError() { return { errored: true }; }
+  render() {
+    if (this.state.errored) {
+      return <pre style={{ whiteSpace: 'pre-wrap' }}>{'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>'}</pre>;
+    }
+    return this.props.children;
+  }
+}
 import { useOnScreen } from './hooks/useOnScreen';
 import CalendlyModal from './components/CalendlyModal';
 
@@ -75,6 +86,10 @@ const FAQSection: React.FC = () => {
       </div>
     </section>
   );
+}
+
+interface AppProps {
+  convexPostsRaw?: any[] | undefined;
 }
 
 interface MainContentProps {
@@ -197,26 +212,37 @@ const getInitialTheme = (): 'light' | 'dark' => {
 };
 
 
-const App: React.FC = () => {
+const App: React.FC<AppProps> = ({ convexPostsRaw }) => {
   // Handle sitemap route before any other app logic.
   // This is a special case for search engine crawlers.
   if (window.location.pathname === '/sitemap.xml' && !window.location.hash) {
-    return <Sitemap />;
+    return <SitemapBoundary><Sitemap /></SitemapBoundary>;
   }
 
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState({ pathname: '/', hash: '' });
   const blogPosts = useMemo(() => {
-    const posts = [...AI_STRATEGY_ARTICLES];
-    posts.sort((a, b) => {
+    const dbPosts = (convexPostsRaw || []).map((p: any) => ({
+      ...p,
+      id: p._id,
+      externalLinks: p.external_links,
+      keywords: Array.isArray(p.keywords) ? p.keywords.join(', ') : (p.keywords || ''),
+    })) as BlogPost[];
+
+    const dbSlugs = new Set(dbPosts.map(p => p.slug));
+    const newStaticPosts = AI_STRATEGY_ARTICLES.filter(p => !dbSlugs.has(p.slug));
+    const allPosts = [...newStaticPosts, ...dbPosts];
+
+    allPosts.sort((a, b) => {
       const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
       const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
       return dateB - dateA;
     });
-    return posts;
-  }, []);
 
-  const blogFetchStatus = 'success';
+    return allPosts;
+  }, [convexPostsRaw]);
+
+  const blogFetchStatus = convexPostsRaw === undefined ? 'loading' : 'success';
   const blogLoadingError = null;
 
   // Admin state
