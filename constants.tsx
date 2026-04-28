@@ -245,10 +245,46 @@ export const INDUSTRIES = ['E-commerce', 'Healthcare', 'Real Estate', 'SaaS', 'E
 export const BUSINESS_SIZES = ['1-10 employees', '11-50 employees', '51-200 employees', '200+ employees'];
 export const PRIMARY_GOALS = ['Increase Revenue', 'Reduce Costs', 'Improve Customer Service', 'Boost Marketing'];
 export const CURRENCIES = { USD: { symbol: '$', rate: 1 }, EUR: { symbol: '€', rate: 0.93 }, AED: { symbol: 'AED', rate: 3.67 } };
-export const CORE_SERVICES: never[] = [];
-export const ADD_ONS: never[] = [];
-export const ROI_HIGHLIGHTS: Record<string, { icon: IconName; title: string; description: string }> = {};
-export const TRUST_POINTS: { text: string; icon: IconName }[] = [];
+
+interface FeeRange { min: number; max: number }
+interface CoreService { id: string; icon: IconName; title: string; description: string; setupFeeRange: FeeRange; retainerFeeRange: FeeRange }
+interface AddOn { id: string; title: string; setupFee: number; monthlyFee: number }
+
+export const CORE_SERVICES: CoreService[] = [
+  { id: 'premium-website', icon: 'layout' as IconName, title: 'Premium Website', description: 'Cinematic, 3D-animated, conversion-engineered multi-page website.', setupFeeRange: { min: 4000, max: 12000 }, retainerFeeRange: { min: 300, max: 800 } },
+  { id: 'landing-page', icon: 'target' as IconName, title: 'Landing Page', description: 'CRO-optimised single-page campaign site. 72-hour delivery SLA.', setupFeeRange: { min: 1500, max: 4000 }, retainerFeeRange: { min: 150, max: 400 } },
+  { id: 'web-app', icon: 'code' as IconName, title: 'Web App / SaaS', description: 'Full-stack product: auth, dashboard, billing, CI/CD, test suite.', setupFeeRange: { min: 8000, max: 30000 }, retainerFeeRange: { min: 500, max: 2000 } },
+  { id: 'mobile-app', icon: 'phone' as IconName, title: 'Mobile App', description: 'iOS & Android with React Native. App Store + Play Store submission.', setupFeeRange: { min: 10000, max: 35000 }, retainerFeeRange: { min: 600, max: 2500 } },
+  { id: 'ai-agent', icon: 'zap' as IconName, title: 'AI Agent System', description: 'Custom-trained agents with CRM sync, voice, and monitoring dashboard.', setupFeeRange: { min: 5000, max: 20000 }, retainerFeeRange: { min: 800, max: 3000 } },
+];
+
+export const ADD_ONS: AddOn[] = [
+  { id: 'brand-identity', title: 'Brand Identity System', setupFee: 2500, monthlyFee: 0 },
+  { id: 'seo-foundation', title: 'SEO Foundation & Structured Data', setupFee: 800, monthlyFee: 200 },
+  { id: 'analytics-setup', title: 'Analytics & Heatmap Wiring', setupFee: 500, monthlyFee: 100 },
+  { id: 'crm-integration', title: 'CRM / HubSpot Integration', setupFee: 1200, monthlyFee: 300 },
+  { id: 'cms-setup', title: 'CMS Setup (Sanity / Contentful)', setupFee: 900, monthlyFee: 150 },
+  { id: 'maintenance', title: 'Monthly Maintenance & Support', setupFee: 0, monthlyFee: 400 },
+];
+
+export const ROI_HIGHLIGHTS: Record<string, { icon: IconName; title: string; description: string }> = {
+  'premium-website': { icon: 'layout' as IconName, title: '300% More Qualified Leads', description: 'Clients report tripling inbound inquiry quality within 90 days of launch.' },
+  'landing-page': { icon: 'target' as IconName, title: '15–20% Conversion Rates', description: 'Our CRO-engineered pages consistently outperform industry averages of 2–5%.' },
+  'web-app': { icon: 'code' as IconName, title: 'Ship in Weeks, Not Months', description: 'Agentic workflows cut traditional build time by 60–70% without sacrificing quality.' },
+  'mobile-app': { icon: 'phone' as IconName, title: 'Top 10 on Launch Day', description: 'Structured App Store launch strategy drives organic downloads from day one.' },
+  'ai-agent': { icon: 'zap' as IconName, title: '80% of Tasks Automated', description: 'Clients replace $40k–$100k in annual headcount with always-on AI agents.' },
+  'brand-identity': { icon: 'sparkles' as IconName, title: 'Premium Positioning Unlocked', description: 'A cohesive brand system lets you charge 2–3× more and win deals on presentation alone.' },
+  'seo-foundation': { icon: 'search' as IconName, title: 'Rank From Day One', description: 'Structured data and technical SEO built in — not bolted on after launch.' },
+};
+
+export const TRUST_POINTS: { text: string; icon: IconName }[] = [
+  { text: 'All projects include full test coverage and OWASP security audit', icon: 'shield' as IconName },
+  { text: 'Lighthouse 95+ guaranteed on every delivery', icon: 'zap' as IconName },
+  { text: 'You own 100% of the code and assets from day one', icon: 'check' as IconName },
+  { text: 'Fixed-scope, fixed-price. No surprise invoices', icon: 'lock' as IconName },
+  { text: 'Delivered with documentation and handoff session', icon: 'book' as IconName },
+  { text: 'Serving clients in US, UK, UAE, and Australia', icon: 'globe' as IconName },
+];
 export const CUSTOM_SOLUTIONS: Record<string, { title: string; icon: IconName; description: string }> = {};
 export const HOW_IT_WORKS_STEPS: { title: string; icon: IconName; description: string }[] = [];
 export const LAUNCHPAD_PERSONAS: Record<string, { title: string; icon: IconName; description: string; challenges: { title: string; description: string }[]; solutions: { title: string; description: string }[] }> = {};
