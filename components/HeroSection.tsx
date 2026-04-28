@@ -1,381 +1,298 @@
-
-import React, { useState, useEffect, useMemo } from 'react';
-import StyledText from './StyledText';
+import React, { useState, useEffect } from 'react';
 import { trackEvent } from '../services/analytics';
-import { useMutation } from "convex/react";
-import { api } from "../convex/_generated/api";
-import { SOCIAL_LINKS, FLOATING_SERVICES, TRUSTED_BY_CLIENTS, CALENDLY_LINK } from '../constants';
-import { Icon, SendIcon, CheckCircleIcon, GiftIcon, LightbulbIcon, BoltIcon, WebIcon } from './Icon';
-import PartnerLogo from './PartnerLogo';
+import { FLOATING_SERVICES, CTA_BUTTONS, CALENDLY_LINK } from '../constants';
+import { Icon } from './Icon';
 
 interface HeroSectionProps {
   navigate: (path: string) => void;
   openCalendlyModal: () => void;
 }
 
-interface RightColumnContentProps {
-  navigate: (path: string) => void;
-  openCalendlyModal: () => void;
-}
+const TAGLINES = [
+  'Cinematic websites that stop the scroll.',
+  'Web apps shipped in weeks, not quarters.',
+  'Mobile apps with native-grade performance.',
+  'AI-powered systems that run while you sleep.',
+  'Brand identity that commands premium prices.',
+  'Digital that makes your competitors nervous.',
+];
 
-const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate, openCalendlyModal }) => {
-    const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
-    const [exiting, setExiting] = useState(false);
-    const [clientLogoPage, setClientLogoPage] = useState(0);
-    const [logosExiting, setLogosExiting] = useState(false);
-    const logosPerPage = 4;
-    const totalLogoPages = Math.ceil(TRUSTED_BY_CLIENTS.length / logosPerPage);
-    const [leadsCaptured, setLeadsCaptured] = useState(127);
+const QUALITY_BADGES = [
+  { label: 'TypeScript Strict', icon: 'check' as const },
+  { label: 'OWASP Secured', icon: 'check' as const },
+  { label: 'Lighthouse 98/100', icon: 'check' as const },
+  { label: 'Tested & Validated', icon: 'check' as const },
+  { label: 'Full Documentation', icon: 'check' as const },
+  { label: 'Production-Grade Arch', icon: 'check' as const },
+];
 
-    useEffect(() => {
-        const serviceTimer = setInterval(() => {
-            setExiting(true);
-            setTimeout(() => {
-                setCurrentServiceIndex(prev => (prev + 1) % FLOATING_SERVICES.length);
-                setExiting(false);
-            }, 300); // fade out duration
-        }, 5000); // change every 5 seconds
-        return () => clearInterval(serviceTimer);
-    }, []);
-
-    // FIX: Corrected the useEffect for the logo carousel.
-    // The original code had an unclosed useEffect and an invalid setInterval call, causing multiple errors.
-    // The logic is now fixed to cycle logos every 4 seconds with a proper cleanup function.
-    useEffect(() => {
-        if (totalLogoPages <= 1) return; // Don't run carousel if not enough logos to paginate
-
-        const logoTimer = setInterval(() => {
-            setLogosExiting(true);
-            setTimeout(() => {
-                setClientLogoPage(prev => (prev + 1) % totalLogoPages);
-                setLogosExiting(false);
-            }, 400); // Animation duration
-        }, 4000); // change every 4 seconds
-        return () => clearInterval(logoTimer);
-    }, [totalLogoPages]);
-
-    const currentService = FLOATING_SERVICES[currentServiceIndex];
-    const logosToShow = TRUSTED_BY_CLIENTS.slice(
-        clientLogoPage * logosPerPage,
-        (clientLogoPage + 1) * logosPerPage
-    );
-
-    useEffect(() => {
-        const tickerInterval = setInterval(() => {
-            setLeadsCaptured(prev => prev + Math.floor(Math.random() * 3));
-        }, 4500); // update every 4.5 seconds
-        return () => clearInterval(tickerInterval);
-    }, []);
-
-    return (
-        <div className="hidden md:flex flex-col justify-center items-center gap-3 animate-slide-in-right w-full">
-
-            {/* 1. Dynamic Floating Services Card */}
-            <a
-                href={currentService.targetId}
-                onClick={(e) => { e.preventDefault(); navigate(currentService.targetId); }}
-                className="block w-full bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-gray-200 dark:border-white/10 rounded-2xl p-4 shadow-xl animate-float transition-all duration-300 group hover:shadow-primary/20 hover:border-primary/30 hover:animate-glow"
-            >
-                <div className={`transition-opacity duration-300 space-y-3 ${exiting ? 'opacity-0' : 'opacity-100'}`}>
-                    {/* Header */}
-                    <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 p-2 rounded-full">
-                            <Icon name={currentService.icon} className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-sm text-gray-900 dark:text-white">{currentService.name}</h4>
-                            <p className="text-xs text-gray-600 dark:text-white/80">{currentService.benefit}</p>
-                        </div>
-                    </div>
-                    
-                    {/* Divider */}
-                    <div className="w-full h-px bg-gray-200 dark:bg-white/10" />
-
-                    {/* Pricing & CTA */}
-                    <div className="flex justify-between items-center">
-                         <div>
-                            <p className="text-xs text-gray-600 dark:text-white/80">One-Time Setup</p>
-                            <p className="font-bold text-sm text-gray-900 dark:text-white">
-                                ${currentService.setupFeeRange.min.toLocaleString()} - ${currentService.setupFeeRange.max.toLocaleString()}
-                            </p>
-                         </div>
-                         <div className="text-xs font-bold text-primary group-hover:underline flex items-center gap-1">
-                            Explore
-                            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
-                         </div>
-                    </div>
-                </div>
-            </a>
-
-
-            {/* 2. Social Proof Mini-Block */}
-            <div className="w-full bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-gray-200 dark:border-white/10 rounded-2xl p-4 shadow-xl space-y-3">
-                <div className="flex items-center justify-center gap-1.5">
-                    <CheckCircleIcon className="h-5 w-5 text-green-500" />
-                    <p className="text-sm font-semibold text-gray-800 dark:text-white/90">Trusted by 50+ Businesses</p>
-                </div>
-                <div className={`grid grid-cols-4 gap-4 items-center justify-items-center py-2 transition-opacity duration-300 min-h-[32px] ${logosExiting ? 'opacity-0' : 'opacity-100'}`}>
-                    {logosToShow.map(client => (
-                        <div key={client.name} className="h-6 w-full flex items-center justify-center">
-                            <PartnerLogo name={client.name} domain={client.domain} />
-                        </div>
-                    ))}
-                </div>
-                <div className="border-t border-gray-200 dark:border-white/10 pt-3">
-                    <p className="text-xs font-semibold text-gray-800 dark:text-white/90 flex items-center justify-center gap-1.5">
-                        <WebIcon className="h-4 w-4" /> 
-                        Serving clients globally
-                    </p>
-                </div>
-            </div>
-
-            {/* 3. Offer/Value Proposition */}
-            <div className="w-full grid grid-cols-2 gap-3">
-                <button
-                    type="button"
-                    onClick={openCalendlyModal}
-                    aria-label="Book a free AI strategy session"
-                    className="group bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-primary/30 rounded-2xl p-4 shadow-xl text-center transition-all duration-300 transform hover:-translate-y-1 animate-glow flex flex-col items-center justify-center"
-                >
-                    <LightbulbIcon className="h-6 w-6 text-primary mx-auto mb-2 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">Free AI Strategy Session</p>
-                    <div className="mt-2 text-xs font-bold text-primary group-hover:underline flex items-center gap-1">
-                        Book Now
-                        <svg className="w-3 h-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
-                    </div>
-                </button>
-                <div className="bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-gray-200 dark:border-white/10 rounded-2xl p-3 shadow-xl group hover:border-primary/30 transition-all duration-300 hover:animate-glow flex flex-col h-full justify-center">
-                    <div className="space-y-1.5">
-                        <p className="text-xs font-semibold text-gray-800 dark:text-white/90 flex items-center gap-1.5"><CheckCircleIcon className="h-4 w-4 text-primary"/> One-Time Setup Fee</p>
-                        <p className="text-xs font-semibold text-gray-800 dark:text-white/90 flex items-center gap-1.5"><CheckCircleIcon className="h-4 w-4 text-primary"/> Monthly Maintenance</p>
-                        <p className="text-xs font-semibold text-gray-800 dark:text-white/90 flex items-center gap-1.5"><CheckCircleIcon className="h-4 w-4 text-primary"/> No hidden costs</p>
-                        <p className="text-xs font-semibold text-gray-800 dark:text-white/90 flex items-center gap-1.5"><CheckCircleIcon className="h-4 w-4 text-primary"/> No bloated retainers</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* 4. Interactive Element */}
-            <div className="w-full bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-gray-200 dark:border-white/10 rounded-2xl p-2 shadow-xl flex items-center justify-center">
-                 <p className="text-xs font-mono font-semibold text-gray-800 dark:text-white/90">
-                    <span className="text-green-500">● Live</span> | Leads captured this week: <span className="text-primary">{leadsCaptured}+</span>
-                </p>
-            </div>
-        </div>
-    );
-};
-
+const HERO_NUMBERS = [
+  { value: '72h', label: 'Landing page delivery' },
+  { value: '10×', label: 'Faster than traditional' },
+  { value: '0', label: 'Broken builds shipped' },
+  { value: '4', label: 'Markets: US · UK · UAE · AU' },
+];
 
 const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }) => {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-   const [loading, setLoading] = useState(false);
-   const [error, setError] = useState<string | null>(null);
-
-  const submitNewsletter = useMutation(api.forms.submitNewsletter);
-
-   // State for animated button text
-   const [buttonTextIndex, setButtonTextIndex] = useState(0);
-
-  const buttonTexts = useMemo(() => ["Subscribe", "Get AI Insights", "Stay Ahead"], []);
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const [taglineFading, setTaglineFading] = useState(false);
+  const [serviceIndex, setServiceIndex] = useState(0);
+  const [serviceExiting, setServiceExiting] = useState(false);
+  const [badgeVisible, setBadgeVisible] = useState(0);
+  const [numbersVisible, setNumbersVisible] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setButtonTextIndex(prev => (prev + 1) % buttonTexts.length);
-    }, 2500); // Change text every 2.5 seconds
+    const t = setInterval(() => {
+      setTaglineFading(true);
+      setTimeout(() => {
+        setTaglineIndex(i => (i + 1) % TAGLINES.length);
+        setTaglineFading(false);
+      }, 300);
+    }, 3500);
+    return () => clearInterval(t);
+  }, []);
 
-    return () => clearInterval(interval);
-  }, [buttonTexts.length]);
+  useEffect(() => {
+    if (badgeVisible >= QUALITY_BADGES.length) return;
+    const t = setTimeout(() => setBadgeVisible(v => v + 1), 300 + badgeVisible * 180);
+    return () => clearTimeout(t);
+  }, [badgeVisible]);
 
-  const currentButtonText = buttonTexts[buttonTextIndex];
+  useEffect(() => {
+    const t = setInterval(() => {
+      setServiceExiting(true);
+      setTimeout(() => {
+        setServiceIndex(i => (i + 1) % FLOATING_SERVICES.length);
+        setServiceExiting(false);
+      }, 300);
+    }, 4500);
+    return () => clearInterval(t);
+  }, []);
 
+  useEffect(() => {
+    const t = setTimeout(() => setNumbersVisible(true), 800);
+    return () => clearTimeout(t);
+  }, []);
 
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
-      setError("Please enter a valid email.");
-      return;
-    }
-    setLoading(true);
-    try {
-      await submitNewsletter({ email: email });
-      setSubmitted(true);
-      trackEvent('subscribe_newsletter', { section: 'hero' });
-      setEmail('');
-      setTimeout(() => setSubmitted(false), 5000);
-    } catch (err) {
-      setError("Could not subscribe. Please try again.");
-      console.error(err);
-    } finally {
-      setLoading(false);
+  const currentService = FLOATING_SERVICES[serviceIndex];
+
+  const handleCTA = (href: string, label: string) => {
+    trackEvent('hero_cta_click', { label });
+    if (label === 'Start a Project') {
+      openCalendlyModal();
+    } else {
+      navigate(href);
     }
   };
 
-  const taglines = React.useMemo(() => [
-    "Your business could be smarter. Let's **automate that!**",
-    "We build AI that **actually saves you money.**",
-    "Unlock your growth with **intelligent automation.**",
-    "Meet your new, tireless **AI workforce.**",
-    "Unleash **AI Agents**. Unlock **Growth**.",
-    "From Voicebots to Web Apps – We **Automate It All**."
-  ], []);
-
-  const [taglineIndex, setTaglineIndex] = useState(0);
-  const [subIndex, setSubIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [subtitle, setSubtitle] = useState('');
-  
-  const typingSpeed = 75;
-  const deletingSpeed = 40;
-  const pauseDuration = 1200;
-  const postDeletionPause = 300;
-
-  useEffect(() => {
-    const currentTagline = taglines[taglineIndex % taglines.length];
-
-    if (!isDeleting && subIndex < currentTagline.length) {
-      const timeout = setTimeout(() => {
-        setSubtitle(currentTagline.substring(0, subIndex + 1));
-        setSubIndex(subIndex + 1);
-      }, typingSpeed);
-      return () => clearTimeout(timeout);
-    }
-
-    if (!isDeleting && subIndex === currentTagline.length) {
-      const timeout = setTimeout(() => setIsDeleting(true), pauseDuration);
-      return () => clearTimeout(timeout);
-    }
-
-    if (isDeleting && subIndex > 0) {
-      const timeout = setTimeout(() => {
-        setSubtitle(currentTagline.substring(0, subIndex - 1));
-        setSubIndex(subIndex - 1);
-      }, deletingSpeed);
-      return () => clearTimeout(timeout);
-    }
-
-    if (isDeleting && subIndex === 0) {
-      const timeout = setTimeout(() => {
-        setIsDeleting(false);
-        setTaglineIndex(prevIndex => prevIndex + 1);
-      }, postDeletionPause);
-      return () => clearTimeout(timeout);
-    }
-  }, [subIndex, isDeleting, taglineIndex, taglines]);
-
   return (
-    <section id="home" className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-28 sm:pt-24 pb-40 lg:pb-32">
-        <div className="container mx-auto px-6 z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 items-center">
-                {/* Left Column: Main Content */}
-                <div className="text-center lg:text-left animate-slide-in-up md:col-span-1 lg:col-span-2">
-                    <div className="inline-flex items-center gap-2 py-1 px-3 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-full border-gray-200 dark:border-white/10 text-xs text-gray-800 dark:text-white/80 mb-4 animate-glow">
-                        <Icon name="zap" className="h-4 w-4 text-primary" />
-                        <span>Join the Community of Innovators</span>
-                    </div>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-pixel !leading-tight tracking-normal">
-                        <span className="bg-gradient-to-r from-gray-800 to-black bg-clip-text text-transparent dark:bg-gradient-to-r dark:from-brand-accent dark:via-white dark:to-brand-accent dark:animate-shimmer [background-size:200%_auto]">
-                        The Neural Core for Your Operations
-                        </span>
-                    </h1>
-                    <p className="mt-4 text-sm md:text-base text-gray-800 dark:text-white/90 font-bold min-h-6">
-                        <StyledText text={subtitle} />
-                        <span className="inline-block w-[3px] h-5 bg-primary ml-1 align-bottom animate-blink"></span>
-                    </p>
-                    
-                    <form onSubmit={handleSubscribe} className="mt-8 relative max-w-lg mx-auto lg:mx-0" role="form" aria-label="Newsletter subscription">
-                        <label htmlFor="hero-email" className="sr-only">Email address for newsletter subscription</label>
-                        <input 
-                            id="hero-email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="your.email@company.com"
-                            aria-label="Enter your email address"
-                            aria-required="true"
-                            aria-invalid={!!error}
-                            aria-describedby={error ? "hero-email-error" : undefined}
-                            className="w-full pl-5 pr-28 sm:pr-40 py-2 sm:py-3 text-sm rounded-full border border-black/10 bg-white/80 dark:bg-black/20 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-white/60 focus:ring-2 focus:ring-primary/50 focus:border-transparent transition dark:border-white/10 dark:focus:ring-white"
-                        />
-                        <button 
-                            type="submit" 
-                            disabled={loading || submitted}
-                            aria-label={loading ? "Subscribing to newsletter" : submitted ? "Successfully subscribed" : `${currentButtonText} to newsletter`}
-                            className="absolute top-1/2 right-1.5 -translate-y-1/2 bg-primary/90 text-white font-bold py-1.5 px-3 sm:py-2 sm:px-4 rounded-full hover:bg-primary transition-all transform hover:scale-105 disabled:bg-primary/50 disabled:scale-100 flex items-center justify-center min-w-[100px] sm:min-w-[145px] h-[80%] animate-glow overflow-hidden text-xs sm:text-sm"
-                        >
-                            {loading ? (
-                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                            ) : submitted ? (
-                                <CheckCircleIcon className="h-5 w-5" />
-                            ) : (
-                                <span key={buttonTextIndex} className="animate-fade-in-fast">
-                                    {currentButtonText}
-                                </span>
-                            )}
-                        </button>
-                    </form>
-                    {error && <p id="hero-email-error" className="text-red-400 text-xs mt-2" role="alert" aria-live="polite">{error}</p>}
-                    {submitted && <p className="text-green-500 dark:text-green-300 text-xs mt-2" role="status" aria-live="polite">Success! Thanks for subscribing.</p>}
-                      {/* NEW CTA Buttons */}
-                    <div className="mt-6 flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
-                      <button
-                          type="button"
-                          onClick={openCalendlyModal}
-                          aria-label="Get your free AI strategy consultation"
-                          className="text-center bg-primary text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full hover:bg-opacity-90 transition-all transform hover:scale-105 animate-glow"
-                      >
-                          Get Your Free AI Strategy
-                      </button>
-                      <button
-                          type="button"
-                          onClick={openCalendlyModal}
-                          aria-label="Book a free demo session"
-                          className="text-center bg-primary/20 border border-primary/50 text-gray-800 dark:text-white font-bold py-2 px-4 sm:py-2.5 sm:px-6 text-xs sm:text-sm rounded-full transition-all transform hover:scale-105 hover:bg-primary/30"
-                      >
-                          Book a Free Demo
-                      </button>
-                   </div>
-                </div>
+    <section
+      id="hero"
+      className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden"
+    >
+      {/* Radial corner glows */}
+      <div
+        className="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-15"
+        style={{ background: 'radial-gradient(circle, #FF5630 0%, transparent 70%)' }}
+      />
+      <div
+        className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full opacity-10"
+        style={{ background: 'radial-gradient(circle, #FF5630 0%, transparent 70%)' }}
+      />
 
-                {/* Middle Column: Empty Space */}
-                <div className="hidden lg:flex items-center justify-center lg:col-span-1">
-                </div>
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-                {/* Right Column: Cards */}
-                <div className="md:col-span-1 lg:col-span-2">
-                    <RightColumnContent navigate={navigate} openCalendlyModal={openCalendlyModal} />
-                </div>
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 self-start mb-6">
+              <span
+                className="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest border"
+                style={{
+                  background: 'rgba(255,86,48,0.1)',
+                  borderColor: 'rgba(255,86,48,0.3)',
+                  color: '#FF5630',
+                }}
+              >
+                Premium Software & Web Studio
+              </span>
             </div>
-      </div>
-      
-      {/* Bottom alignment container */}
-      <div className="absolute bottom-10 inset-x-0 z-20 px-24 hidden lg:flex items-baseline">
-        {/* Left: Follow us on */}
-        <div className="w-1/2 text-left animate-fade-in">
-            <h4 className="font-bold text-xs text-gray-600 dark:text-white/70 tracking-wider uppercase mb-2">Follow us on</h4>
-            <div className="flex items-center space-x-4">
-              {SOCIAL_LINKS.map(social => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block h-6 group"
-                  aria-label={`Follow us on ${social.name}`}
+
+            {/* H1 — NVRMND-style stacked massive */}
+            <h1
+              className="leading-[0.9] text-white mb-2"
+              style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
+            >
+              <span className="block text-6xl md:text-7xl xl:text-8xl">WE BUILD</span>
+              <span className="block text-6xl md:text-7xl xl:text-8xl">DIGITAL THAT</span>
+              <span
+                className="block text-6xl md:text-7xl xl:text-8xl"
+                style={{ color: '#FF5630', textShadow: '0 0 30px rgba(255,86,48,0.6)' }}
+              >
+                HITS DIFFERENT.
+              </span>
+            </h1>
+
+            {/* Cycling tagline */}
+            <p
+              className={`text-base md:text-lg text-white/50 mb-3 font-inter transition-opacity duration-300 min-h-[1.75rem] ${taglineFading ? 'opacity-0' : 'opacity-100'}`}
+            >
+              {TAGLINES[taglineIndex]}
+            </p>
+
+            {/* Numbers bar — inline, above CTAs */}
+            <div
+              className={`grid grid-cols-4 gap-0 mb-8 rounded-xl overflow-hidden border border-white/8 transition-all duration-700 ${numbersVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              style={{ background: 'rgba(255,255,255,0.03)' }}
+            >
+              {HERO_NUMBERS.map((n, i) => (
+                <div
+                  key={n.label}
+                  className={`flex flex-col items-center text-center py-3 px-2 ${i < HERO_NUMBERS.length - 1 ? 'border-r border-white/8' : ''}`}
                 >
-                  <Icon name={social.icon}/>
-                </a>
+                  <span
+                    className="text-xl md:text-2xl font-black font-montserrat text-[#FF5630]"
+                    style={{ textShadow: '0 0 12px rgba(255,86,48,0.5)' }}
+                  >
+                    {n.value}
+                  </span>
+                  <span className="mt-0.5 text-[9px] md:text-[10px] text-white/40 uppercase tracking-wider leading-tight">
+                    {n.label}
+                  </span>
+                </div>
               ))}
             </div>
-        </div>
 
-        {/* Right: Get in Touch */}
-        <div className="w-1/2 text-right animate-fade-in">
-            <h4 className="font-bold text-xs text-gray-600 dark:text-white/70 tracking-wider uppercase mb-2">Get in Touch</h4>
-            <a href="mailto:info@synaptixstudio.com" className="font-semibold text-sm text-gray-800 dark:text-white/90 hover:text-primary transition-colors flex items-center justify-end gap-2">
-                <Icon name="email" className="h-4 w-4" />
-                info@synaptixstudio.com
-            </a>
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-4 mb-8">
+              <button
+                onClick={() => handleCTA(CALENDLY_LINK, 'Start a Project')}
+                className="px-7 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+                style={{
+                  background: '#FF5630',
+                  boxShadow: '0 0 20px rgba(255,86,48,0.4)',
+                }}
+              >
+                Start a Project
+              </button>
+              <button
+                onClick={() => handleCTA('/#services', 'See Our Work')}
+                className="px-7 py-3.5 rounded-full font-semibold text-white/80 text-sm transition-all duration-200 hover:text-white hover:border-white/40"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.04)',
+                }}
+              >
+                See Our Work
+              </button>
+            </div>
+
+            {/* Value props */}
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { icon: 'zap' as const, label: 'Results, not responses' },
+                { icon: 'users' as const, label: 'Industry experts, AI-native' },
+                { icon: 'layout' as const, label: '3D + animation native' },
+                { icon: 'check' as const, label: 'Tested & verified every build' },
+              ].map(({ icon, label }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <Icon name={icon} className="w-4 h-4 text-[#FF5630] shrink-0" />
+                  <span className="text-xs text-white/50">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div className="hidden lg:flex flex-col gap-4">
+
+            {/* Quality card */}
+            <div
+              className="rounded-2xl p-6"
+              style={{
+                background: 'rgba(0,0,0,0.5)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-xs text-white/40 font-mono uppercase tracking-widest">Build quality report</span>
+              </div>
+              <p className="text-sm font-bold text-white mb-4">
+                Not vibe-coded. <span style={{ color: '#FF5630' }}>Engineering-grade.</span>
+              </p>
+              <div className="space-y-2.5">
+                {QUALITY_BADGES.map((badge, i) => (
+                  <div
+                    key={badge.label}
+                    className={`flex items-center gap-3 transition-all duration-500 ${i < badgeVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
+                  >
+                    <div
+                      className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                      style={{ background: 'rgba(74,222,128,0.15)', border: '1px solid rgba(74,222,128,0.3)' }}
+                    >
+                      <svg className="w-3 h-3 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-sm text-white/70">{badge.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Floating service card */}
+            <div
+              className="rounded-2xl p-5 transition-all duration-300 animate-float"
+              style={{
+                background: 'rgba(255,255,255,0.06)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255,255,255,0.1)',
+              }}
+            >
+              <div className={`transition-opacity duration-300 ${serviceExiting ? 'opacity-0' : 'opacity-100'}`}>
+                <div className="flex items-start gap-3">
+                  <div
+                    className="p-2.5 rounded-xl shrink-0"
+                    style={{ background: 'rgba(255,86,48,0.15)' }}
+                  >
+                    <Icon name={currentService.icon} className="w-5 h-5 text-[#FF5630]" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <h4 className="text-sm font-bold text-white">{currentService.name}</h4>
+                      <span
+                        className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                        style={{ background: 'rgba(255,86,48,0.15)', color: '#FF5630' }}
+                      >
+                        {currentService.badge}
+                      </span>
+                    </div>
+                    <p className="text-xs text-white/50 leading-relaxed">{currentService.benefit}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Live ticker */}
+            <div
+              className="flex items-center justify-between rounded-xl px-4 py-3"
+              style={{
+                background: 'rgba(255,86,48,0.06)',
+                border: '1px solid rgba(255,86,48,0.15)',
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-xs text-white/60 font-mono">Active builds this month</span>
+              </div>
+              <span className="text-sm font-bold text-[#FF5630]">12</span>
+            </div>
+
+          </div>
+
         </div>
       </div>
     </section>

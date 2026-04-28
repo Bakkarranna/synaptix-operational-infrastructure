@@ -1,312 +1,149 @@
-
-
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
+import { SERVICES_BENTO } from '../constants';
 import { useOnScreen } from '../hooks/useOnScreen';
-import StyledText from './StyledText';
-
-// ============================================
-// ANIMATED VISUALIZATION COMPONENTS
-// ============================================
-
-// Module 1: Voice Agent Waveform Animation
-const VoiceWaveform: React.FC<{ isHovered: boolean }> = ({ isHovered }) => {
-  const bars = 12;
-  return (
-    <div className="flex items-end justify-center gap-1 h-16 w-full">
-      {Array.from({ length: bars }).map((_, i) => (
-        <div
-          key={i}
-          className={`w-1.5 bg-gradient-to-t from-primary/60 to-primary rounded-full transition-all duration-300 ${isHovered ? 'animate-pulse' : ''}`}
-          style={{
-            height: `${20 + Math.sin(i * 0.8) * 30 + Math.random() * 20}%`,
-            animationDelay: `${i * 50}ms`,
-            animationDuration: isHovered ? '0.3s' : '0.8s',
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-// Module 2: Workflow Node Graph Animation
-const NodeGraph: React.FC<{ isHovered: boolean }> = ({ isHovered }) => {
-  const nodes = [
-    { x: 10, y: 50 },
-    { x: 35, y: 25 },
-    { x: 35, y: 75 },
-    { x: 60, y: 50 },
-    { x: 85, y: 35 },
-    { x: 85, y: 65 },
-  ];
-
-  const connections = [
-    [0, 1], [0, 2], [1, 3], [2, 3], [3, 4], [3, 5]
-  ];
-
-  return (
-    <div className="relative w-full h-20">
-      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
-        {/* Connection Lines */}
-        {connections.map(([from, to], i) => (
-          <line
-            key={`line-${i}`}
-            x1={nodes[from].x}
-            y1={nodes[from].y}
-            x2={nodes[to].x}
-            y2={nodes[to].y}
-            stroke="currentColor"
-            strokeWidth="0.8"
-            className={`text-primary/40 ${isHovered ? 'text-primary/80' : ''} transition-colors duration-300`}
-          />
-        ))}
-        {/* Animated Data Pulse */}
-        {isHovered && connections.map(([from, to], i) => (
-          <circle
-            key={`pulse-${i}`}
-            r="2"
-            fill="currentColor"
-            className="text-primary"
-          >
-            <animateMotion
-              dur={`${0.8 + i * 0.1}s`}
-              repeatCount="indefinite"
-              path={`M${nodes[from].x},${nodes[from].y} L${nodes[to].x},${nodes[to].y}`}
-            />
-          </circle>
-        ))}
-        {/* Nodes */}
-        {nodes.map((node, i) => (
-          <circle
-            key={`node-${i}`}
-            cx={node.x}
-            cy={node.y}
-            r={isHovered ? 5 : 4}
-            className={`fill-primary/80 ${isHovered ? 'fill-primary' : ''} transition-all duration-300`}
-          />
-        ))}
-      </svg>
-    </div>
-  );
-};
-
-// Module 3: Live Dashboard Counter
-const DashboardCounter: React.FC<{ isHovered: boolean }> = ({ isHovered }) => {
-  const [revenue, setRevenue] = useState(4127500);
-  const [hours, setHours] = useState(142850);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRevenue(prev => prev + Math.floor(Math.random() * 500));
-      setHours(prev => prev + Math.floor(Math.random() * 5));
-    }, isHovered ? 200 : 2000);
-    return () => clearInterval(interval);
-  }, [isHovered]);
-
-  const bars = [65, 78, 45, 89, 92, 70, 85];
-
-  return (
-    <div className="flex flex-col gap-3 w-full">
-      {/* Mini Bar Chart */}
-      <div className="flex items-end justify-between gap-1 h-10">
-        {bars.map((height, i) => (
-          <div
-            key={i}
-            className={`flex-1 bg-gradient-to-t from-primary/40 to-primary rounded-t transition-all duration-500 ${isHovered ? 'from-primary/60 to-primary' : ''}`}
-            style={{
-              height: `${height}%`,
-              transitionDelay: `${i * 30}ms`
-            }}
-          />
-        ))}
-      </div>
-      {/* Live Counter */}
-      <div className="flex justify-between text-xs font-mono">
-        <span className="text-primary">${(revenue / 1000000).toFixed(2)}M</span>
-        <span className="text-white/60">{hours.toLocaleString()} hrs</span>
-      </div>
-    </div>
-  );
-};
-
-// ============================================
-// BENTO CARD COMPONENT
-// ============================================
-
-interface BentoCardProps {
-  title: string;
-  subtitle: string;
-  features: string[];
-  visualization: 'waveform' | 'nodes' | 'dashboard';
-  className?: string;
-  index: number;
-}
-
-const BentoCard: React.FC<BentoCardProps> = ({ title, subtitle, features, visualization, className = '', index }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isVisible = useOnScreen(ref);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const renderVisualization = () => {
-    switch (visualization) {
-      case 'waveform':
-        return <VoiceWaveform isHovered={isHovered} />;
-      case 'nodes':
-        return <NodeGraph isHovered={isHovered} />;
-      case 'dashboard':
-        return <DashboardCounter isHovered={isHovered} />;
-    }
-  };
-
-  return (
-    <article
-      ref={ref}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`
-        group relative overflow-hidden
-        bg-black/40 dark:bg-black/60 backdrop-blur-xl
-        border border-white/10 hover:border-primary/40
-        rounded-2xl p-6
-        transition-all duration-500 ease-out
-        hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-        ${className}
-      `}
-      style={{ transitionDelay: `${index * 150}ms` }}
-    >
-      {/* Glow Effect on Hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
-
-      {/* Module Label */}
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-xs font-mono text-primary/80 uppercase tracking-widest">{title}</span>
-        <div className={`h-px flex-1 bg-gradient-to-r from-primary/30 to-transparent transition-all duration-300 ${isHovered ? 'from-primary/60' : ''}`} />
-      </div>
-
-      {/* Subtitle */}
-      <h3 className="text-lg sm:text-xl font-bold text-white mb-4 font-montserrat">
-        {subtitle}
-      </h3>
-
-      {/* Visualization Container */}
-      <div className="mb-6 p-4 bg-black/30 rounded-xl border border-white/5">
-        {renderVisualization()}
-      </div>
-
-      {/* Features List */}
-      <ul className="space-y-2">
-        {features.map((feature, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-white/70 group-hover:text-white/90 transition-colors duration-300">
-            <span className="text-primary mt-0.5 text-xs">▸</span>
-            <StyledText text={feature} />
-          </li>
-        ))}
-      </ul>
-
-      {/* Bottom Accent Line */}
-      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500`} />
-    </article>
-  );
-};
-
-// ============================================
-// MAIN SERVICES SECTION
-// ============================================
+import { Icon } from './Icon';
 
 const ServicesSection: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isSectionVisible = useOnScreen(sectionRef, '-100px');
+  const ref = useRef<HTMLDivElement>(null);
+  const isVisible = useOnScreen(ref);
+  const [hovered, setHovered] = useState<string | null>(null);
 
-  const modules = [
-    {
-      title: 'Module 01',
-      subtitle: '24/7 Lead Capture',
-      visualization: 'waveform' as const,
-      features: [
-        '**AI Voice Agents** qualify leads around the clock',
-        '**Omnichannel Chatbots** across Web, WhatsApp & Instagram',
-        '**Real-time CRM Sync** — every lead logged instantly',
-      ],
-    },
-    {
-      title: 'Module 02',
-      subtitle: 'Workflow Orchestration',
-      visualization: 'nodes' as const,
-      features: [
-        '**Automated Onboarding** for clients and team members',
-        '**Document Processing** — contracts, invoices, reports',
-        '**System Integration** — connect your entire tech stack',
-      ],
-    },
-    {
-      title: 'Module 03',
-      subtitle: 'Intelligence Layer',
-      visualization: 'dashboard' as const,
-      features: [
-        '**Live Dashboards** with real-time operational visibility',
-        '**Predictive ROI Models** forecast savings and growth',
-        '**Autonomous Optimization** — systems that self-improve',
-      ],
-    },
-  ];
+  const featured = SERVICES_BENTO.find(s => s.featured)!;
+  const rest = SERVICES_BENTO.filter(s => !s.featured);
 
   return (
     <section
-      ref={sectionRef}
       id="services"
-      className="py-20 sm:py-28 relative overflow-hidden"
-      aria-labelledby="services-heading"
+      ref={ref}
+      className={`py-20 md:py-28 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
     >
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-transparent pointer-events-none" />
-
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Header */}
-        <div
-          className={`text-center mb-16 transition-all duration-700 ease-out ${isSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          <p className="text-xs font-mono text-primary/80 uppercase tracking-[0.3em] mb-3">System Architecture</p>
-          <h2 id="services-heading" className="text-2xl sm:text-3xl lg:text-4xl font-bold font-montserrat text-white">
-            The Synaptix Loop
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-14">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF5630] mb-3">What We Build</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-montserrat text-white">
+            The Full Studio Stack
           </h2>
-          <p className="mt-4 text-sm md:text-base text-white/60 max-w-2xl mx-auto">
-            Three synchronized modules that form the <span className="text-primary font-semibold">autonomous core</span> of your operations.
+          <p className="mt-4 text-white/60 max-w-xl mx-auto text-sm md:text-base">
+            From cinematic landing pages to full-stack SaaS products. If it's digital and it matters, we build it.
           </p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-          {/* Module 1: Capture - Tall on mobile, standard on desktop */}
-          <BentoCard
-            {...modules[0]}
-            index={0}
-            className="lg:row-span-1"
+        {/* Bento grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+          {/* Featured card — spans 5 columns */}
+          <ServiceCard
+            service={featured}
+            isHovered={hovered === featured.id}
+            onMouseEnter={() => setHovered(featured.id)}
+            onMouseLeave={() => setHovered(null)}
+            className="md:col-span-5 md:row-span-2"
+            large
           />
 
-          {/* Module 2: Process - Standard */}
-          <BentoCard
-            {...modules[1]}
-            index={1}
-            className="lg:row-span-1"
-          />
-
-          {/* Module 3: Intelligence - Full width on tablet, standard on desktop */}
-          <BentoCard
-            {...modules[2]}
-            index={2}
-            className="md:col-span-2 lg:col-span-1"
-          />
+          {/* Rest — 2 per row in remaining 7 columns */}
+          {rest.map(service => (
+            <ServiceCard
+              key={service.id}
+              service={service}
+              isHovered={hovered === service.id}
+              onMouseEnter={() => setHovered(service.id)}
+              onMouseLeave={() => setHovered(null)}
+              className="md:col-span-7 lg:col-span-3 last:md:col-span-7 last:lg:col-span-4"
+            />
+          ))}
         </div>
 
-        {/* Bottom CTA Hint */}
-        <div className={`text-center mt-12 transition-all duration-700 delay-500 ${isSectionVisible ? 'opacity-100' : 'opacity-0'}`}>
-          <p className="text-xs text-white/40 font-mono">
-            ↓ See how it all connects ↓
-          </p>
-        </div>
+        <p className="text-center text-white/30 text-xs mt-8">
+          Custom scope? Book a 30-min call and we'll build your quote on the spot.
+        </p>
       </div>
     </section>
   );
 };
+
+interface ServiceCardProps {
+  service: typeof SERVICES_BENTO[0];
+  isHovered: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  className?: string;
+  large?: boolean;
+}
+
+const ServiceCard: React.FC<ServiceCardProps> = ({
+  service,
+  isHovered,
+  onMouseEnter,
+  onMouseLeave,
+  className = '',
+  large = false,
+}) => (
+  <div
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    className={`relative flex flex-col rounded-2xl p-6 transition-all duration-300 cursor-default ${className} ${
+      isHovered ? 'scale-[1.02]' : ''
+    }`}
+    style={{
+      background: isHovered
+        ? 'rgba(255,86,48,0.08)'
+        : 'rgba(255,255,255,0.04)',
+      backdropFilter: 'blur(16px)',
+      border: isHovered
+        ? '1px solid rgba(255,86,48,0.3)'
+        : '1px solid rgba(255,255,255,0.07)',
+      boxShadow: isHovered
+        ? '0 0 30px rgba(255,86,48,0.12)'
+        : 'none',
+      minHeight: large ? '280px' : '160px',
+    }}
+  >
+    {/* Icon */}
+    <div
+      className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors duration-300"
+      style={{
+        background: isHovered ? 'rgba(255,86,48,0.2)' : 'rgba(255,86,48,0.1)',
+      }}
+    >
+      <Icon name={service.icon} className="w-5 h-5 text-[#FF5630]" />
+    </div>
+
+    {/* Title */}
+    <div className="mb-2">
+      <h3 className={`font-bold font-montserrat text-white ${large ? 'text-xl' : 'text-base'}`}>
+        {service.title}
+      </h3>
+    </div>
+
+    {/* Description */}
+    <p className={`text-white/50 leading-relaxed flex-1 ${large ? 'text-sm' : 'text-xs'}`}>
+      {service.description}
+    </p>
+
+    {/* Tags */}
+    <div className="flex flex-wrap gap-1.5 mt-4">
+      {service.tags.map(tag => (
+        <span
+          key={tag}
+          className="text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider"
+          style={{
+            background: 'rgba(255,255,255,0.06)',
+            color: 'rgba(255,255,255,0.4)',
+            border: '1px solid rgba(255,255,255,0.08)',
+          }}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+
+    {/* Hover arrow */}
+    {isHovered && (
+      <div className="absolute top-4 right-4 text-[#FF5630] text-lg font-bold transition-opacity duration-200">
+        →
+      </div>
+    )}
+  </div>
+);
 
 export default ServicesSection;

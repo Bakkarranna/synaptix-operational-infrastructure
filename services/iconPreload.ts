@@ -1,5 +1,7 @@
 import { iconCacheService } from './iconCache';
-import { PARTNERS, TRUSTED_BY_CLIENTS, SOCIAL_LINKS } from '../constants';
+import { SOCIAL_LINKS } from '../constants';
+const PARTNERS: { domain: string }[] = [];
+const TRUSTED_BY_CLIENTS: { domain: string }[] = [];
 
 /**
  * Preload Service for Critical Icons

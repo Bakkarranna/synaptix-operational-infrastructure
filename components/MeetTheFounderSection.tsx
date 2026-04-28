@@ -33,7 +33,7 @@ const MeetTheFounderSection: React.FC = () => {
                         <div className="mt-6 text-center max-w-sm mx-auto">
                             <p className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white">{FOUNDER_STORY.name}</p>
                             <p className="text-sm sm:text-base text-gray-600 dark:text-white/80 mt-2 leading-relaxed">
-                                Founder & CEO at Synaptix Studio — building the operational infrastructure of the next decade, where autonomous systems drive enterprise growth.
+                                Founder & CEO at Synaptix Studio, leading a team of industry experts building premium digital products at agentic speed, with zero compromises on quality.
                             </p>
                         </div>
                     </div>

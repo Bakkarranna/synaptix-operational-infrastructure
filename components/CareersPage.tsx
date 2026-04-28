@@ -13,7 +13,7 @@ interface CareersPageProps {
 
 const WHO_WE_ARE_LOOKING_FOR = [
     "Knows how to **build cool things with AI** (even without code)",
-    "Can vibe-code (yes, that’s a thing) — you know how to figure it out",
+    "Can vibe-code (yes, that’s a thing), you know how to figure it out",
     "Dabbles in design, content, or automation tools",
     "Has basic knowledge of AI tools like ChatGPT, Midjourney, Zapier, Notion AI, etc.",
     "Loves experimenting, prototyping, shipping fast, and breaking limits",
@@ -47,7 +47,7 @@ const CareersPage: React.FC<CareersPageProps> = ({ navigate }) => {
                             Join the AI revolution. Build the future with us.
                         </p>
                         <p className="mt-6 text-base text-gray-700 dark:text-white/70 max-w-3xl mx-auto">
-                            At Synaptix Studio, we don’t just build tech — we build what’s next. We’re on a mission to empower small and medium businesses through smart, scalable, AI-powered systems. But behind every great tool is a great team — and that’s where you come in.
+                            At Synaptix Studio, we don’t just build tech, we build what’s next. We’re on a mission to empower small and medium businesses through smart, scalable, AI-powered systems. But behind every great tool is a great team, and that’s where you come in.
                         </p>
                          <p className="mt-4 text-base text-gray-700 dark:text-white/70 max-w-3xl mx-auto">
                            <StyledText text="We’re not looking for traditional techies. We’re hiring **creators, problem-solvers, AI tinkerers, digital thinkers**, and **future leaders**." />
@@ -119,7 +119,7 @@ const CareersPage: React.FC<CareersPageProps> = ({ navigate }) => {
                            We’re building a next-gen AI company with future leaders, not just employees.
                         </p>
                         <p className="mt-2 text-gray-600 dark:text-white/80 max-w-2xl mx-auto">
-                            Whether you're here for 3 months or 3 years — you’ll leave smarter, sharper, and more ready to lead than ever before.
+                            Whether you’re here for 3 months or 3 years, you’ll leave smarter, sharper, and more ready to lead than ever before.
                         </p>
                     </div>
                 </div>

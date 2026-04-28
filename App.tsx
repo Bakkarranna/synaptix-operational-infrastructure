@@ -6,8 +6,6 @@ import { BlogPost } from "./src/types"; // path to types in src
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import ServicesSection from './components/ServicesSection';
-import HowItWorksSection from './components/HowItWorksSection';
-import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import Background from './components/Background';
 import AboutSection from './components/AboutSection';
@@ -17,20 +15,26 @@ import ChatWidget from './components/ChatWidget';
 import LetsTalkSection from './components/LetsTalkSection';
 import ResourceCenterSection from './components/ResourceCenterSection';
 import TestimonialsSection from './components/TestimonialsSection';
-import PartnersSection from './components/PartnersSection';
-import TrustedBySection from './components/TrustedBySection';
-import { PRIVACY_POLICY_CONTENT, TERMS_OF_SERVICE_CONTENT, TESTIMONIALS, AI_STRATEGY_ARTICLES, PRICING_FAQS } from './constants';
+import ProofBar from './components/ProofBar';
+import ProcessSection from './components/ProcessSection';
+import BuildStandardSection from './components/BuildStandardSection';
+import WhyUsSection from './components/WhyUsSection';
+import PricingPreview from './components/PricingPreview';
+import FinalCTASection from './components/FinalCTASection';
+import { PRIVACY_POLICY_CONTENT, TERMS_OF_SERVICE_CONTENT, TESTIMONIALS, AI_STRATEGY_ARTICLES, PROJECT_FAQS } from './constants';
 import Preloader from './components/Preloader';
 import CookieConsentBanner from './components/CookieConsentBanner';
-import PricingSection from './components/PricingSection';
-import AILaunchpadSection from './components/AILaunchpadSection';
 import BlogPage from './components/BlogPage';
 import PartnerPage from './components/PartnerPage';
 import CareersPage from './components/CareersPage';
+import ContactPage from './components/ContactPage';
+import WorkPage from './components/WorkPage';
+import ServicesPage from './components/ServicesPage';
+import AboutPage from './components/AboutPage';
+import PricingPage from './components/PricingPage';
 import PasswordModal from './components/admin/PasswordModal';
 import BlogAdminDashboard from './components/admin/BlogAdminDashboard';
 import Sitemap from './components/Sitemap';
-// import { getBlogPosts, BlogPost } from './services/supabase'; // Removed
 import { trackPageView } from './services/analytics';
 import { useOnScreen } from './hooks/useOnScreen';
 import CalendlyModal from './components/CalendlyModal';
@@ -67,7 +71,7 @@ const FAQSection: React.FC = () => {
             Frequently Asked Questions
           </h2>
           <div className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-gray-900/10 dark:border-white/10 rounded-xl shadow-2xl p-6 sm:p-8">
-            {PRICING_FAQS.map((faq, index) => <AccordionItem key={index} faq={faq} />)}
+            {PROJECT_FAQS.map((faq, index) => <AccordionItem key={index} faq={faq} />)}
           </div>
         </div>
       </div>
@@ -86,17 +90,18 @@ interface MainContentProps {
 const MainContent: React.FC<MainContentProps> = ({ navigate, blogPosts, currentTestimonialIndex, onTestimonialDotClick, openCalendlyModal }) => (
   <main>
     <HeroSection navigate={navigate} openCalendlyModal={openCalendlyModal} />
+    <ProofBar />
     <ServicesSection />
-    <HowItWorksSection />
-    <PartnersSection />
+    <ProcessSection />
+    <BuildStandardSection />
+    <WhyUsSection />
     <TestimonialsSection currentIndex={currentTestimonialIndex} onDotClick={onTestimonialDotClick} />
-    <ContactSection />
-    <PricingSection navigate={navigate} openCalendlyModal={openCalendlyModal} />
+    <PricingPreview openCalendlyModal={openCalendlyModal} />
     <AboutSection navigate={navigate} />
     <MeetTheFounderSection />
     <ResourceCenterSection navigate={navigate} blogPosts={blogPosts} />
     <FAQSection />
-    <LetsTalkSection openCalendlyModal={openCalendlyModal} />
+    <FinalCTASection openCalendlyModal={openCalendlyModal} />
   </main>
 );
 
@@ -425,8 +430,8 @@ const App: React.FC = () => {
     const path = location.pathname;
 
     const defaultMeta = {
-      title: 'Synaptix Studio | Operational AI Infrastructure Partner',
-      description: "Build the autonomous core of your business. We engineer operational AI infrastructure for B2B and SaaS companies to eliminate manual friction and scale revenue."
+      title: 'Synaptix Studio | Premium AI-Forward Software & Web Studio',
+      description: "We build digital that hits different. Cinematic websites, web apps, mobile apps & software, engineered by AI agents, shipped at speed, priced from $3k."
     };
 
     const routeMeta: { [key: string]: { title: string, description: string } } = {
@@ -449,6 +454,26 @@ const App: React.FC = () => {
       '/careers': {
         title: 'Careers | Join Synaptix Studio',
         description: 'Build the future of AI with us. Explore remote internship opportunities at Synaptix Studio and join our mission to empower businesses with intelligent automation.'
+      },
+      '/contact': {
+        title: 'Start a Project | Synaptix Studio',
+        description: 'Tell us about your project. We build premium websites, web apps, mobile apps, and AI systems. Submit your brief and hear back within 24 hours.'
+      },
+      '/work': {
+        title: 'Our Work | Case Studies | Synaptix Studio',
+        description: 'See what Synaptix Studio has built. Case studies with real outcomes: Lighthouse scores, conversion rates, and raised rounds. Premium websites, SaaS, mobile apps, and AI systems.'
+      },
+      '/services': {
+        title: 'Services | Premium Web & Software Development | Synaptix Studio',
+        description: 'Custom website development, web app and SaaS development, mobile apps (iOS & Android), brand identity, landing pages, and AI agent systems. Delivered faster than traditional studios.'
+      },
+      '/about': {
+        title: 'About | Synaptix Studio: Premium AI-Forward Software Studio',
+        description: 'Synaptix Studio is a premium AI-forward software and web studio. Industry experts using the best AI tools to ship faster, without cutting corners on testing, security, or craft.'
+      },
+      '/pricing': {
+        title: 'Pricing | Transparent Web Development Pricing | Synaptix Studio',
+        description: 'Fixed-price web development. No hourly rates, no hidden fees. Landing pages from 72h delivery. Web apps, mobile apps, SaaS, AI systems, scoped individually, quoted in 48 hours.'
       }
     };
 
@@ -485,7 +510,7 @@ const App: React.FC = () => {
     // This effect should only run after the initial loading phase is complete.
     if (loading) return;
 
-    const validStaticPaths = ['/', '/privacy', '/terms', '/blog', '/partner', '/careers'];
+    const validStaticPaths = ['/', '/privacy', '/terms', '/blog', '/partner', '/careers', '/contact', '/work', '/services', '/about', '/pricing'];
     const currentPath = location.pathname;
 
     const isKnownStaticPath = validStaticPaths.includes(currentPath);
@@ -554,6 +579,11 @@ const App: React.FC = () => {
       case '/blog': return <BlogPage navigate={navigate} blogPosts={blogPosts} />;
       case '/partner': return <PartnerPage navigate={navigate} />;
       case '/careers': return <CareersPage navigate={navigate} />;
+      case '/contact': return <ContactPage navigate={navigate} />;
+      case '/work': return <WorkPage navigate={navigate} openCalendlyModal={openCalendlyModal} />;
+      case '/services': return <ServicesPage navigate={navigate} openCalendlyModal={openCalendlyModal} />;
+      case '/about': return <AboutPage navigate={navigate} openCalendlyModal={openCalendlyModal} />;
+      case '/pricing': return <PricingPage navigate={navigate} openCalendlyModal={openCalendlyModal} />;
       default:
         // By default, render nothing. The 404 useEffect will handle the redirect if needed.
         return null;
@@ -564,7 +594,7 @@ const App: React.FC = () => {
     <div className="relative animate-fade-in">
       <Background theme={theme} />
       <div className="relative z-10">
-        <Header navigate={navigate} theme={theme} toggleTheme={toggleTheme} />
+        <Header navigate={navigate} theme={theme} toggleTheme={toggleTheme} openCalendlyModal={openCalendlyModal} />
         {renderContent()}
         <Footer navigate={navigate} theme={theme} />
       </div>

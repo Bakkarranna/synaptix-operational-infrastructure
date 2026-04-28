@@ -46,8 +46,8 @@ const AboutSection: React.FC<AboutSectionProps> = ({ navigate }) => {
     { title: 'Adaptability', description: 'AI moves fast, and so do we. We keep our team and clients on the cutting edge of change.' },
   ];
 
-  const intro1 = "Synaptix Studio is an enterprise-grade AI infrastructure partner dedicated to building the autonomous core of modern businesses. By deploying scalable operational systems including **AI voice infrastructure, autonomous workflows, and custom enterprise applications**, we enable organizations to eliminate manual friction and scale without linear headcount growth.";
-  const intro2 = "We aren't just an external vendor. We're your **strategic infrastructure partner** — engineering the systems that make your business smarter, leaner, and infinitely more scalable.";
+  const intro1 = "Synaptix Studio is a **premium AI-forward software & web studio**, not an agency. We build the digital products that make your competitors nervous: cinematic websites, full-stack web apps, mobile applications, and SaaS platforms that ship at speed and hit the quality bar your market expects.";
+  const intro2 = "Our secret is agentic engineering. **Industry experts: full-stack engineers, AI-centric designers, and agentic systems architects**, working with the best AI tools, models, and design systems available. We compress months of traditional studio time into weeks, without cutting corners on testing, security, or craft. The tools your competitors use ship broken. We ship verified.";
 
 
   return (
@@ -91,7 +91,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ navigate }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-bold font-montserrat border-b border-primary/50 pb-3 mb-3 bg-gradient-to-r from-gray-800 to-black bg-clip-text text-transparent dark:text-transparent dark:bg-gradient-to-r dark:from-brand-accent dark:via-white dark:to-brand-accent dark:animate-shimmer [background-size:200%_auto]">Our Mission</h3>
             <p className="text-gray-600 dark:text-white/80 leading-relaxed text-sm">
-              To democratize AI automation for small and medium businesses by delivering intelligent solutions that streamline operations, reduce manual work, and create exceptional customer experiences — all while keeping innovation accessible and scalable.
+              To democratize AI automation for small and medium businesses by delivering intelligent solutions that streamline operations, reduce manual work, and create exceptional customer experiences, all while keeping innovation accessible and scalable.
             </p>
           </div>
           <div className="space-y-4 md:pl-12 md:border-l md:border-gray-200 dark:md:border-white/20">
@@ -108,7 +108,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ navigate }) => {
           style={{ transitionDelay: '400ms' }}
         >
           <h3 className="text-center text-xl md:text-2xl font-bold font-montserrat bg-gradient-to-r from-gray-800 to-black bg-clip-text text-transparent dark:text-transparent dark:bg-gradient-to-r dark:from-brand-accent dark:via-white dark:to-brand-accent dark:animate-shimmer [background-size:200%_auto]">Our Culture</h3>
-          <p className="text-center mt-4 text-sm md:text-base text-gray-600 dark:text-white/80 max-w-2xl mx-auto">At Synaptix Studio, culture isn't just a buzzword — it's our foundation for innovation and partnership:</p>
+          <p className="text-center mt-4 text-sm md:text-base text-gray-600 dark:text-white/80 max-w-2xl mx-auto">At Synaptix Studio, culture isn't just a buzzword, it's our foundation for innovation and partnership:</p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-12">
             {culturePoints.map((point, index) => (
               <CultureCard

@@ -37,6 +37,7 @@ vi.mock('../../components/Icon', () => ({
 describe('Header Component', () => {
   const mockNavigate = vi.fn()
   const mockToggleTheme = vi.fn()
+  const mockOpenCalendlyModal = vi.fn()
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -44,7 +45,7 @@ describe('Header Component', () => {
 
   it('renders header with logo', async () => {
     await act(async () => {
-      render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} />)
+      render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     })
     
     expect(screen.getByAltText(/synaptix studio logo/i)).toBeInTheDocument()
@@ -52,7 +53,7 @@ describe('Header Component', () => {
 
   it('displays navigation menu items', async () => {
     await act(async () => {
-      render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} />)
+      render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     })
     
     // Check for main navigation items (these are present in desktop view)
@@ -67,7 +68,7 @@ describe('Header Component', () => {
 
   it('has working theme toggle button', async () => {
     const user = userEvent.setup()
-    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} />)
+    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     
     const themeToggle = screen.getByLabelText(/switch to dark mode/i)
     await user.click(themeToggle)
@@ -76,7 +77,7 @@ describe('Header Component', () => {
   })
 
   it('displays mobile menu toggle', () => {
-    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} />)
+    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     
     const mobileMenuToggle = screen.getByRole('button', { name: /open navigation menu/i })
     expect(mobileMenuToggle).toBeInTheDocument()
@@ -84,7 +85,7 @@ describe('Header Component', () => {
 
   it('handles navigation clicks', async () => {
     const user = userEvent.setup()
-    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} />)
+    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     
     // Click on Services link
     const servicesLink = screen.getByText(/services/i)
@@ -94,13 +95,13 @@ describe('Header Component', () => {
   })
 
   it('shows correct theme indicator', () => {
-    const { rerender } = render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} />)
+    const { rerender } = render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     
     // Check light theme indicator
     expect(screen.getByLabelText(/switch to dark mode/i)).toBeInTheDocument()
     
     // Re-render with dark theme
-    rerender(<Header navigate={mockNavigate} theme="dark" toggleTheme={mockToggleTheme} />)
+    rerender(<Header navigate={mockNavigate} theme="dark" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     
     // Check dark theme indicator
     expect(screen.getByLabelText(/switch to light mode/i)).toBeInTheDocument()
@@ -114,7 +115,7 @@ describe('Header Component', () => {
       value: 375,
     })
 
-    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} />)
+    render(<Header navigate={mockNavigate} theme="light" toggleTheme={mockToggleTheme} openCalendlyModal={mockOpenCalendlyModal} />)
     
     // Mobile menu should be present
     const mobileMenuToggle = screen.getByRole('button', { name: /open navigation menu/i })

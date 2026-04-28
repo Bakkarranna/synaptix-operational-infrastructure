@@ -5,11 +5,11 @@ import { BlogPost } from './src/types';
 export const CALENDLY_LINK = '/#book-demo';
 
 export const NAV_LINKS = [
-  { href: '/#services', label: 'Services', icon: 'gear' as IconName },
-  { href: '/#custom-solutions', label: 'Industries', icon: 'building' as IconName },
-  { href: '/#about', label: 'About', icon: 'users' as IconName },
-  { href: '/#pricing', label: 'Pricing', icon: 'calculator' as IconName },
-  { href: '/#lets-talk', label: 'Contact', icon: 'email' as IconName },
+  { href: '/work', label: 'Work', icon: 'layout' as IconName },
+  { href: '/services', label: 'Services', icon: 'gear' as IconName },
+  { href: '/about', label: 'About', icon: 'users' as IconName },
+  { href: '/pricing', label: 'Pricing', icon: 'calculator' as IconName },
+  { href: '/contact', label: 'Contact', icon: 'email' as IconName },
 ];
 
 export const RESOURCES_LINKS = [
@@ -26,601 +26,269 @@ export const SOCIAL_LINKS = [
 ];
 
 export const CTA_BUTTONS = [
-  { text: 'Book a Free Discovery Call', href: CALENDLY_LINK, external: true },
-  { text: 'Get Your Process Mining Audit', href: '/#process-mining', external: false },
+  { text: 'Start a Project', href: CALENDLY_LINK, external: true },
+  { text: 'See Our Work', href: '/#services', external: false },
 ];
 
 export const FLOATING_SERVICES = [
   {
-    icon: 'phone' as IconName,
-    name: 'AI Voice Receptionist',
-    benefit: 'Answer every call with AI precision, 24/7.',
-    setupFeeRange: { min: 1200, max: 3000 },
-    targetId: '/#services'
-  },
-  {
-    icon: 'chat' as IconName,
-    name: 'Automated Lead Capture',
-    benefit: 'Never miss a lead on your website, day or night.',
-    setupFeeRange: { min: 800, max: 1800 },
-    targetId: '/#services'
-  },
-  {
-    icon: 'zap' as IconName,
-    name: 'Smart Workflow Automation',
-    benefit: 'Eliminate manual tasks and scale operations effortlessly.',
-    setupFeeRange: { min: 600, max: 1500 },
-    targetId: '/#services'
-  }
-];
-
-export const TRUSTED_BY_CLIENTS = [
-  { name: 'Mercury', domain: 'mercury.com' },
-  { name: 'Brex', domain: 'brex.com' },
-  { name: 'Ramp', domain: 'ramp.com' },
-  { name: 'Deel', domain: 'deel.com' },
-  { name: 'Gusto', domain: 'gusto.com' },
-  { name: 'Rippling', domain: 'rippling.com' },
-  { name: 'Vanta', domain: 'vanta.com' },
-  { name: 'Carta', domain: 'carta.com' },
-  { name: 'Pipe', domain: 'pipe.com' },
-  { name: 'Navan', domain: 'navan.com' },
-  { name: 'Pento', domain: 'pento.io' },
-  { name: 'Linear', domain: 'linear.app' },
-  { name: 'Pitch', domain: 'pitch.com' },
-  { name: 'Raycast', domain: 'raycast.com' },
-  { name: 'Clerk', domain: 'clerk.com' },
-  { name: 'Replit', domain: 'replit.com' },
-  { name: 'Loom', domain: 'loom.com' },
-  { name: 'Retool', domain: 'retool.com' },
-  { name: 'Plaid', domain: 'plaid.com' },
-  { name: 'Arc', domain: 'arc.tech' },
-];
-
-export const LAUNCHPAD_PERSONAS: { [key: string]: { title: string; icon: IconName; description: string; challenges: { title: string; description: string }[]; solutions: { title: string; description: string }[] } } = {
-  startup: {
-    title: 'Startup Founder',
-    icon: 'rocket',
-    description: "You're building the future and need to move fast. We provide the AI firepower to help you build, validate, and scale your MVP without a massive team.",
-    challenges: [
-      { title: 'Limited Resources', description: 'Need to achieve maximum impact with a lean budget and small team.' },
-      { title: 'Speed to Market', description: 'Validating your idea and launching an MVP before the competition is critical.' },
-      { title: 'Early Traction', description: 'Acquiring your first users and proving product-market fit is a constant grind.' },
-    ],
-    solutions: [
-      { title: 'AI-Powered MVP Development', description: 'Build and launch your core product idea with an intelligent, automated backend, saving months of development time.' },
-      { title: 'Automated Lead Nurturing', description: 'Create a 24/7 sales assistant that qualifies leads, books demos, and nurtures your first users.' },
-      { title: 'Customer Feedback Analysis', description: 'Use AI to instantly analyze user feedback from all channels, helping you iterate on your product faster.' },
-      { title: 'Content Generation Engine', description: 'Automate your initial content marketing to build an online presence while you focus on the product.' },
-    ],
-  },
-  business: {
-    title: 'Established Business',
-    icon: 'building',
-    description: "You have a proven model but face operational bottlenecks. We help you integrate AI to cut costs, boost efficiency, and unlock new levels of growth.",
-    challenges: [
-      { title: 'Operational Inefficiency', description: 'Repetitive manual tasks are slowing down your teams and increasing operational costs.' },
-      { title: 'Data Silos', description: 'Valuable customer and operational data is scattered across different, unconnected systems.' },
-      { title: 'Scaling Customer Support', description: 'Hiring more support staff is expensive and doesn\'t solve the root problem of repetitive inquiries.' },
-    ],
-    solutions: [
-      { title: 'Intelligent Process Automation (IPA)', description: 'We analyze your workflows and replace manual tasks in finance, HR, and operations with smart AI automations.' },
-      { title: 'AI-Powered Data Analysis', description: 'Unify your data sources and use AI to generate predictive insights for better business forecasting and strategy.' },
-      { title: '24/7 AI Customer Service Agents', description: 'Deploy AI agents that can handle up to 80% of customer inquiries, freeing up your human team for high-value issues.' },
-      { title: 'Custom Internal Tools', description: 'Build AI-powered dashboards and internal applications to give your team the specific tools they need to excel.' },
-    ],
-  },
-  solopreneur: {
-    title: 'Solopreneur / Entrepreneur',
-    icon: 'user',
-    description: "You're the CEO, the marketer, and the support team. We build you an 'AI team' that handles the admin, so you can focus on your genius.",
-    challenges: [
-      { title: 'Wearing Too Many Hats', description: 'You\'re bogged down in administrative tasks that take you away from your core, revenue-generating work.' },
-      { title: 'Inconsistent Marketing', description: 'Finding the time to consistently create content and engage with leads is a major struggle.' },
-      { title: 'Client Onboarding Bottlenecks', description: 'Manually onboarding every new client is time-consuming and creates a poor initial experience.' },
-    ],
-    solutions: [
-      { title: 'The "Automated Business" System', description: 'An end-to-end system that handles lead capture, scheduling, invoicing, and client onboarding automatically.' },
-      { title: 'AI Content Co-Pilot', description: 'A system that helps you brainstorm, write, and distribute your marketing content across all platforms.' },
-      { title: 'AI Personal Assistant', description: 'An AI that manages your calendar, summarizes your emails, and prepares you for your meetings.' },
-      { title: 'Personalized Sales Funnels', description: 'Create automated funnels that nurture leads with personalized content and guide them towards a purchase.' },
-    ],
-  },
-  web3: {
-    title: 'Web3 Innovator',
-    icon: 'cube',
-    description: "Community and automation are the backbone of Web3. We build the intelligent systems you need to grow your community and streamline your operations.",
-    challenges: [
-      { title: 'Community Management at Scale', description: 'Keeping thousands of members engaged and supported across Discord and Telegram is a 24/7 job.' },
-      { title: 'On-Chain Data Analysis', description: 'Extracting meaningful, actionable insights from complex on-chain data is a highly specialized skill.' },
-      { title: 'Security & Moderation', description: 'Protecting your community from scams, spam, and malicious actors is a constant battle.' },
-    ],
-    solutions: [
-      { title: 'AI Community Managers', description: 'Deploy AI bots in your Discord and Telegram that can answer questions, moderate discussions, and onboard new members 24/7.' },
-      { title: 'Automated Airdrop & Whitelist Systems', description: 'Create fair, secure, and automated workflows for managing airdrops and whitelist access for your community.' },
-      { title: 'On-Chain Alerting Systems', description: 'Build intelligent monitors that alert you to significant on-chain events, such as large wallet movements or smart contract interactions.' },
-      { title: 'Web3 Content & Education Bots', description: 'Create AI-powered bots that can educate your community about your project, explain complex Web3 concepts, and generate market updates.' },
-    ],
-  }
-};
-
-
-export const AI_TOOLS_NAV_LINKS: { href: string; label: string; icon: IconName }[] = [
-  { href: '#ai-agent-generator', label: 'Agent Architect', icon: 'users' },
-  { href: '#viral-content-strategist', label: 'Systems Docs', icon: 'sparkles' },
-  { href: '#ai-idea-generator', label: 'Automation Strategy', icon: 'lightbulb' },
-  { href: '#custom-solutions', label: 'Custom Systems', icon: 'cube' },
-  { href: '#roi-calculator', label: 'ROI Simulator', icon: 'calculator' },
-  { href: '#ai-ad-copy-generator', label: 'Intake Logic', icon: 'megaphone' },
-  { href: '#ai-subject-line-tester', label: 'Workflow Auditor', icon: 'inbox' },
-  { href: '#ai-website-auditor', label: 'Operational Audit', icon: 'file-search' },
-  { href: '#ai-knowledge-base-generator', label: 'Knowledge Base', icon: 'book-open' },
-];
-
-export const AGENT_TONES = ['Friendly', 'Professional', 'Empathetic', 'Sales-Driven', 'Concise', 'Witty', 'Calm'];
-export const AGENT_PURPOSES = ['Sales', 'Lead Qualification', 'Receptionist', 'Customer Support', 'FAQ Answering', 'Appointment Booking'];
-
-export const QUIZ_QUESTIONS = [
-  {
-    category: 'Marketing',
-    question: 'How do you currently generate most of your new leads?',
-    answers: [
-      'Primarily through referrals and word-of-mouth.',
-      'Inbound marketing (Direct traffic, organic).',
-      'Paid advertising (Google, Meta).',
-      'Manual outbound prospecting (cold calls, emails).',
-    ],
-  },
-  {
-    category: 'Sales',
-    question: 'Once you get a new lead, what is your follow-up process?',
-    answers: [
-      'We follow up manually when we have time.',
-      'We have a basic, automated email sequence.',
-      'We use a CRM to track and manage follow-ups.',
-      'We have a multi-channel, personalized follow-up system.',
-    ],
-  },
-  {
-    category: 'Operations',
-    question: 'How do you handle routine customer support inquiries?',
-    answers: [
-      'I (or my core team) handle all support personally.',
-      'We have a dedicated support person or team.',
-      'We use a simple FAQ page to deflect common questions.',
-      'We have a helpdesk system, but it\'s mostly manual.',
-    ],
-  },
-  {
-    category: 'Operations',
-    question: 'How do you handle your data reporting and analytics?',
-    answers: [
-      'We manually track everything in spreadsheets.',
-      'We have some basic dashboards, but they are often out of date.',
-      'We have a dedicated analyst who builds custom reports.',
-      'Our systems are fully automated with real-time ROI visibility.',
-    ],
-  },
-  {
-    category: 'Sales',
-    question: 'How do you onboard a new customer or client?',
-    answers: [
-      'It\'s a completely manual process involving emails and calls.',
-      'We have a checklist that we follow for each new client.',
-      'We use templates and some automation for key steps.',
-      'We have a fully automated onboarding sequence.',
-    ],
-  },
-  {
-    category: 'Operations',
-    question: 'How does your team handle repetitive administrative tasks (e.g., data entry, reporting)?',
-    answers: [
-      'It\'s a significant part of our daily workload.',
-      'We\'ve offloaded some tasks to a virtual assistant.',
-      'We use some tools to automate specific, small tasks.',
-      'We have integrated automation workflows connecting multiple apps.',
-    ],
-  },
-];
-
-
-export const CONTENT_TYPES: { name: string; icon: IconName }[] = [
-  { name: 'Tweet Thread', icon: 'x' },
-  { name: 'LinkedIn Post', icon: 'linkedin' },
-  { name: 'Instagram Caption', icon: 'instagram' },
-  { name: 'YouTube Description', icon: 'youtube' },
-  { name: 'Sales Email', icon: 'email' },
-  { name: 'Ad Copy', icon: 'file-text' },
-];
-
-export const AD_PLATFORMS = ['Facebook / Instagram', 'Google Ads', 'LinkedIn Ads'];
-export const CONTENT_LENGTHS = ['Short', 'Medium', 'Long'];
-export const TONES_OF_VOICE = ['Professional', 'Witty', 'Casual', 'Urgent', 'Inspirational', 'Authoritative'];
-export const HOOK_STYLES = ['Engaging', 'Controversial', 'Negative', 'Informative', 'Question-Based', 'Attention Grabbing'];
-
-export const CONTENT_WRITER_TYPES = [
-  'How-To Guide',
-  'Listicle',
-  'Case Study',
-  'Opinion Piece',
-  'Review',
-  'Comparison',
-];
-
-export const CONTENT_WRITER_TONES = [
-  'Informative',
-  'Conversational',
-  'Formal',
-  'Humorous',
-  'Persuasive',
-  'Authoritative',
-];
-
-export const INDUSTRIES = ['E-commerce', 'Healthcare', 'Real Estate', 'SaaS', 'Education', 'Marketing Agency', 'Local Service'];
-export const BUSINESS_SIZES = ['1-10 employees', '11-50 employees', '51-200 employees', '200+ employees'];
-export const PRIMARY_GOALS = ['Increase Revenue', 'Reduce Costs', 'Improve Customer Service', 'Boost Marketing'];
-
-export const YEARLY_DISCOUNT_PERCENTAGE = 23;
-
-export const CURRENCIES = {
-  USD: { symbol: '$', rate: 1 },
-  EUR: { symbol: '€', rate: 0.93 },
-  AED: { symbol: 'AED', rate: 3.67 },
-};
-
-export const CORE_SERVICES = [
-  {
-    id: 'chatbots',
-    title: 'AI Chatbots',
-    description: 'Web, WhatsApp, IG & Messenger bots.',
-    setupFeeRange: { min: 800, max: 1800 },
-    retainerFeeRange: { min: 150, max: 350 },
-    icon: 'chat' as IconName,
-  },
-  {
-    id: 'voice_agents',
-    title: 'AI Voice Agents',
-    description: '24/7 reception, outbound calls & workflows.',
-    setupFeeRange: { min: 1200, max: 3000 },
-    retainerFeeRange: { min: 300, max: 600 },
-    icon: 'phone' as IconName,
-  },
-  {
-    id: 'crm_portals',
-    title: 'AI CRM & Client Portals',
-    description: 'Manage leads, clients & data intelligently.',
-    setupFeeRange: { min: 1000, max: 2500 },
-    retainerFeeRange: { min: 200, max: 450 },
-    icon: 'users' as IconName,
-  },
-  {
-    id: 'workflows',
-    title: 'Automation Workflows',
-    description: 'Automate sales, onboarding & internal ops.',
-    setupFeeRange: { min: 600, max: 1500 },
-    retainerFeeRange: { min: 150, max: 300 },
-    icon: 'zap' as IconName,
-  },
-  {
-    id: 'web_tools',
-    title: 'Custom Web & AI Tools',
-    description: 'Dashboards, SaaS-like apps & lead tools.',
-    setupFeeRange: { min: 1500, max: 5000 },
-    retainerFeeRange: { min: 250, max: 700 },
     icon: 'layout' as IconName,
+    name: 'Premium Website',
+    benefit: 'Cinematic, animated, conversion-driven. Built to impress.',
+    badge: 'Tested & Validated',
+    targetId: '/#services'
   },
   {
-    id: 'outreach_systems',
-    title: 'AI Outreach Systems',
-    description: 'Automated email, call & social follow-ups.',
-    setupFeeRange: { min: 1200, max: 2800 },
-    retainerFeeRange: { min: 300, max: 600 },
-    icon: 'megaphone' as IconName,
+    icon: 'code' as IconName,
+    name: 'Web App / SaaS',
+    benefit: 'Ship your product at agentic speed. Full-stack, production-ready.',
+    badge: 'Production-Grade',
+    targetId: '/#services'
   },
   {
-    id: 'content_generators',
-    title: 'AI Content Generators',
-    description: 'Auto-create blogs, sales copy & social posts.',
-    setupFeeRange: { min: 700, max: 1500 },
-    retainerFeeRange: { min: 100, max: 300 },
+    icon: 'phone' as IconName,
+    name: 'Mobile App',
+    benefit: 'iOS & Android. Designed to impress, engineered to scale.',
+    badge: 'Native Performance',
+    targetId: '/#services'
+  },
+  {
+    icon: 'zap' as IconName,
+    name: 'AI Agent Systems',
+    benefit: 'Autonomous agents that run your ops, sales, and support 24/7.',
+    badge: 'Enterprise-Ready',
+    targetId: '/#services'
+  }
+];
+
+export const BUILD_QUALITY_TERMINAL = [
+  { text: '→ Scaffolding project architecture...', color: 'text-white/50' },
+  { text: '✓ Industry-standard structure locked', color: 'text-[#FF5630]' },
+  { text: '→ Running unit & integration tests...', color: 'text-white/50' },
+  { text: '✓ 247 tests passed, 0 failures', color: 'text-green-400' },
+  { text: '→ OWASP security scan...', color: 'text-white/50' },
+  { text: '✓ No vulnerabilities detected', color: 'text-green-400' },
+  { text: '→ Lighthouse performance audit...', color: 'text-white/50' },
+  { text: '✓ Score: 98/100, deploying to production', color: 'text-yellow-400' },
+];
+
+export const BUILD_QUALITY_POINTS = [
+  { icon: 'check' as IconName, title: 'Software Testing & Validation', desc: 'Unit tests, integration tests, E2E: every build is verified before it ships.' },
+  { icon: 'check' as IconName, title: 'OWASP Security Standards', desc: 'Every project audited for OWASP Top 10. No SQL injection, no XSS, no exposed secrets.' },
+  { icon: 'check' as IconName, title: 'Performance Engineering', desc: 'Lighthouse 95+ is a baseline, not a goal. Optimized assets, lazy loading, edge CDN.' },
+  { icon: 'check' as IconName, title: 'Architecture & Documentation', desc: 'Clean architecture, typed APIs, full handoff docs. Your team can maintain it after we leave.' },
+  { icon: 'check' as IconName, title: 'AI-Augmented, Human-Verified', desc: 'AI generates. Experienced engineers verify, review, and own every line that ships.' },
+];
+
+export const PROOF_STATS = [
+  { value: '72h', label: 'Landing page delivery' },
+  { value: '10×', label: 'Faster than traditional studios' },
+  { value: 'Zero', label: 'Broken builds shipped' },
+  { value: 'US · UK · UAE · AU', label: 'Markets served' },
+];
+
+export const SERVICES_BENTO = [
+  {
+    id: 'websites',
+    icon: 'layout' as IconName,
+    title: 'Premium Websites',
+    description: 'Cinematic, animated, conversion-engineered. The kind clients screenshot and send to their board.',
+    tags: ['3D Animation', 'GSAP', 'CRO'],
+    featured: true,
+  },
+  {
+    id: 'landing-pages',
+    icon: 'target' as IconName,
+    title: 'Landing Pages',
+    description: 'Campaign-ready pages that convert visitors into qualified leads, built and live in 72 hours.',
+    tags: ['72h Delivery', 'A/B Ready', 'SEO'],
+    featured: false,
+  },
+  {
+    id: 'web-apps',
+    icon: 'code' as IconName,
+    title: 'Web Apps & SaaS',
+    description: 'Full-stack products shipped at agentic speed. From auth to dashboard, production-ready.',
+    tags: ['React', 'Full-Stack', 'Scalable'],
+    featured: false,
+  },
+  {
+    id: 'mobile-apps',
+    icon: 'phone' as IconName,
+    title: 'Mobile Apps',
+    description: 'iOS & Android apps designed to impress and engineered to scale. Native performance, premium feel.',
+    tags: ['iOS', 'Android', 'React Native'],
+    featured: false,
+  },
+  {
+    id: 'brand-identity',
+    icon: 'sparkles' as IconName,
+    title: 'Brand Identity',
+    description: 'Visual identity systems that communicate premium before you say a word. Logo, design system, assets.',
+    tags: ['Logo', 'Design System', 'Assets'],
+    featured: false,
+  },
+  {
+    id: 'ai-systems',
+    icon: 'zap' as IconName,
+    title: 'AI Agent Systems',
+    description: 'Autonomous agents handling sales, support, and ops 24/7. Deploy the team that never sleeps.',
+    tags: ['Autonomous', 'Agents', 'Automation'],
+    featured: false,
+  },
+];
+
+export const PROCESS_STEPS = [
+  {
+    step: '01',
+    title: 'Discovery Call',
+    description: 'We get inside the brief in 60 minutes. Goals, audience, timeline, budget. No fluff.',
+    duration: 'Day 1',
+    icon: 'lightbulb' as IconName,
+  },
+  {
+    step: '02',
+    title: 'Design Sprint',
+    description: 'Wireframes, moodboard, and visual direction delivered fast. You approve before a line of code.',
+    duration: 'Days 2–4',
     icon: 'pencil' as IconName,
   },
   {
-    id: 'funnels',
-    title: 'AI Landing Pages & Funnels',
-    description: 'Conversion-optimized pages with AI copy.',
-    setupFeeRange: { min: 800, max: 2000 },
-    retainerFeeRange: { min: 150, max: 400 },
-    icon: 'target' as IconName,
-  },
-  {
-    id: 'kb_bots',
-    title: 'AI Training & Knowledge Base Bots',
-    description: 'Internal SOP bots & customer support trainers.',
-    setupFeeRange: { min: 1000, max: 2200 },
-    retainerFeeRange: { min: 200, max: 500 },
-    icon: 'book-open' as IconName,
-  },
-];
-
-export const ROI_HIGHLIGHTS: { [key: string]: { icon: IconName; title: string; description: string } } = {
-  chatbots: {
-    icon: 'chat',
-    title: '24/7 Customer Support',
-    description: 'Automate responses to common questions, freeing up your team and improving customer satisfaction.',
-  },
-  voice_agents: {
-    icon: 'phone',
-    title: 'Reduce Staffing Costs',
-    description: 'Let an AI handle inbound calls, qualify leads, and book appointments, reducing the need for a full-time receptionist.',
-  },
-  crm_portals: {
-    icon: 'users',
-    title: 'Centralize Client Data',
-    description: 'Give clients a self-serve portal to manage their projects and communication, reducing administrative overhead.',
-  },
-  workflows: {
-    icon: 'zap',
-    title: 'Eliminate Manual Tasks',
-    description: 'Automate data entry, reporting, and client onboarding to free up hundreds of employee hours per month.',
-  },
-  web_tools: {
-    icon: 'layout',
-    title: 'Increase Lead Generation',
-    description: 'Create engaging, interactive tools on your website that capture high-quality leads automatically.',
-  },
-  outreach_systems: {
-    icon: 'megaphone',
-    title: 'Scale Your Sales Outreach',
-    description: 'Automate personalized follow-ups across email and messaging channels to nurture more leads with zero manual effort.',
-  },
-  content_generators: {
-    icon: 'pencil',
-    title: 'Boost Content Velocity',
-    description: 'Generate high-quality operational manuals, documentation, and system reports in minutes, not hours.',
-  },
-  funnels: {
-    icon: 'target',
-    title: 'Improve Conversion Rates',
-    description: 'Build landing pages with AI-optimized copy and design to turn more visitors into customers.',
-  },
-  kb_bots: {
-    icon: 'book-open',
-    title: 'Streamline Employee Training',
-    description: 'Create an internal AI that can answer any question about your company\'s SOPs, saving time for senior staff.',
-  },
-  // Add-ons
-  voice_cloning: {
-    icon: 'microphone',
-    title: 'Brand Consistency',
-    description: 'Create a unique, consistent brand voice across all your automated voice interactions.'
-  },
-  multilingual_support: {
-    icon: 'web',
-    title: 'Global Reach',
-    description: 'Engage with a global audience by offering support in multiple languages, 24/7.'
-  },
-  advanced_analytics_dashboard: {
-    icon: 'chart-bar',
-    title: 'Data-Driven Decisions',
-    description: 'Get a real-time view of your AI\'s performance and its direct impact on your business KPIs.'
-  },
-  api_cost_buffer: {
-    icon: 'bolt',
-    title: 'Predictable Costs',
-    description: 'Avoid unexpected API bills with a usage buffer, ensuring your services run smoothly without interruption.'
-  },
-  dedicated_account_manager: {
-    icon: 'user',
-    title: 'Personalized Strategy',
-    description: 'Get a single point of contact for strategic advice, support, and proactive optimization.'
-  },
-  on_demand_updates: {
-    icon: 'gear',
-    title: 'Stay Agile',
-    description: 'Keep your AI systems up-to-date with a package of monthly updates for prompts, workflows, or logic.'
-  },
-  priority_support: {
-    icon: 'zap',
-    title: 'Mission-Critical Reliability',
-    description: 'Get near-instant support with a dedicated channel for urgent issues, ensuring maximum uptime.'
-  },
-  crm_integration_plus: {
-    icon: 'link',
-    title: 'Seamless Data Flow',
-    description: 'Enable deep, bi-directional syncs with platforms like Salesforce, ensuring data consistency across your entire stack.'
-  },
-  custom_branding: {
-    icon: 'layout',
-    title: 'Your Brand, Front & Center',
-    description: 'Remove all "Powered by Synaptix Studio" branding from chatbots and client portals for a seamless brand experience.'
-  }
-};
-
-export const ADD_ONS = [
-  {
-    id: 'voice_cloning',
-    title: 'Voice Cloning',
-    setupFee: 300,
-    monthlyFee: 40,
-  },
-  {
-    id: 'multilingual_support',
-    title: 'Multilingual Support',
-    setupFee: 200,
-    monthlyFee: 25,
-  },
-  {
-    id: 'advanced_analytics_dashboard',
-    title: 'Advanced Analytics Dashboard',
-    setupFee: 250,
-    monthlyFee: 35,
-  },
-  {
-    id: 'api_cost_buffer',
-    title: 'API Cost Buffer (starts at)',
-    setupFee: 0,
-    monthlyFee: 50,
-  },
-  {
-    id: 'dedicated_account_manager',
-    title: 'Dedicated Account Manager',
-    setupFee: 0,
-    monthlyFee: 120,
-  },
-  {
-    id: 'on_demand_updates',
-    title: 'On-Demand Updates (4/mo)',
-    setupFee: 0,
-    monthlyFee: 100,
-  },
-  {
-    id: 'priority_support',
-    title: 'Priority Support',
-    setupFee: 0,
-    monthlyFee: 150,
-  },
-  {
-    id: 'crm_integration_plus',
-    title: 'CRM Integration Plus',
-    setupFee: 400,
-    monthlyFee: 50,
-  },
-  {
-    id: 'custom_branding',
-    title: 'Custom Branding (White-Label)',
-    setupFee: 150,
-    monthlyFee: 20,
-  },
-];
-
-export const TRUST_POINTS = [
-  { text: 'Transparent, Modular Pricing', icon: 'check' as IconName },
-  { text: 'No Bloated Retainers or Hidden Fees', icon: 'check' as IconName },
-  { text: 'You Own Your IP and Automations', icon: 'check' as IconName },
-  { text: 'Dedicated Project Manager', icon: 'check' as IconName },
-];
-
-export const PRICING_FAQS = [
-  {
-    question: "What's the difference between the Setup Fee and the Monthly Retainer?",
-    answer: "The One-Time Setup Fee covers the initial design, development, and deployment of your custom solution. The Monthly Retainer covers ongoing costs like platform fees (e.g., OpenAI API, Twilio for voice), hosting, maintenance, monitoring, and dedicated support."
-  },
-  {
-    question: "Can I cancel my Monthly Retainer at any time?",
-    answer: "Yes, you can cancel your retainer with a 30-day notice. However, please note that canceling will deactivate the AI systems we manage for you, as the retainer covers essential operational costs."
-  },
-  {
-    question: "Do you offer any discounts?",
-    answer: `Yes! We offer a ${YEARLY_DISCOUNT_PERCENTAGE}% discount on the total retainer fee if you choose to pay annually. That's almost 3 months free!`
-  },
-  {
-    question: "What if I need a service not listed here?",
-    answer: "We specialize in custom solutions. If you have a specific need, book a discovery call! We love tackling unique challenges and can build a custom quote for your project."
-  },
-  {
-    question: "Are there any hidden costs or usage fees?",
-    answer: "No. Our model is designed for transparency. The monthly retainer covers a generous amount of usage (e.g., API calls, voice minutes). If your usage is projected to be exceptionally high, we'll discuss a custom retainer with you upfront. There are no surprise bills."
-  },
-  {
-    question: "Who owns the intellectual property (IP) of the custom solution?",
-    answer: "You do. Any custom code, workflows, or specific AI models built exclusively for your business are your intellectual property upon final payment. We retain rights only to our underlying proprietary tools and frameworks."
-  },
-  {
-    question: "How long does the initial setup and build process take?",
-    answer: "This varies by project complexity. A standard AI chatbot might take 2-4 weeks, while a complex custom web application could take 2-3 months. We provide a detailed project timeline after our initial discovery and strategy session."
-  },
-  {
-    question: "What kind of support is included in the monthly retainer?",
-    answer: "Our standard retainer includes email and chat support with a 24-hour response time, system monitoring, and bug fixes. We also offer 'Priority Support' as an add-on, which includes faster response times and scheduled strategy calls."
-  },
-  {
-    question: "Can I combine multiple services?",
-    answer: "Absolutely! Most of our clients combine several services to create a comprehensive automation system. Our pricing calculator is designed for this, and we offer better value for bundled projects. Book a call to discuss your ideal AI stack."
-  },
-  {
-    question: "What technology do you use?",
-    answer: "We use a combination of best-in-class technologies, including large language models from OpenAI and Google, automation platforms like Zapier and Make.com, and robust cloud infrastructure from providers like AWS and Vercel. We select the best tools for your specific needs."
-  }
-];
-
-// The Synaptix Loop: High-Ticket Operational Infrastructure Modules
-export const SERVICES = [
-  {
-    id: 'capture',
-    title: 'Module 1: Capture',
-    icon: 'phone' as IconName,
-    specialties: [
-      '**AI Voice Agents** qualify leads 24/7, no missed calls',
-      '**Intelligent Chatbots** across Web, WhatsApp & Instagram',
-      '**Lead Qualification Workflows** filter high-intent prospects',
-      '**Real-time CRM Updates** sync captured data instantly'
-    ]
-  },
-  {
-    id: 'process',
-    title: 'Module 2: Process',
-    icon: 'zap' as IconName,
-    specialties: [
-      '**Onboarding Automation:** Streamline team and client intake workflows',
-      '**Automated Billing & Support:** Eliminate manual back-office tasks',
-      '**Intelligent Document Processing:** Auto-generate contracts and reports',
-      '**System Integration:** Connect disparate tools into a unified ecosystem'
-    ]
-  },
-  {
-    id: 'intelligence',
-    title: 'Module 3: Intelligence',
-    icon: 'chart-bar' as IconName,
-    specialties: [
-      '**Operational Dashboards:** Real-time visibility into process efficiency',
-      '**Predictive ROI Models:** Forecast savings and revenue growth',
-      '**Performance Analytics:** Data-driven insights for strategic scaling',
-      '**Autonomous Optimization:** Systems that learn and improve over time'
-    ]
-  }
-];
-
-export const CUSTOM_SOLUTIONS = {
-  ecommerce: {
-    title: 'Retail & E-commerce',
-    icon: 'cart' as IconName,
-    description: "Build an **automation layer** that handles everything from inventory alerts to post-purchase support, allowing you to scale without adding headcount.",
-  },
-  saas: {
-    title: 'SaaS & Tech',
+    step: '03',
+    title: 'Agentic Build',
+    description: 'Our team of engineers and AI agents ship at speed. Daily updates. No black boxes.',
+    duration: 'Days 5–21',
     icon: 'code' as IconName,
-    description: "Deploy autonomous **user activation loops**, automate technical support, and build custom systems that reduce churn through pro-active AI engagement.",
-  },
-  agencies: {
-    title: 'Professional Services',
-    icon: 'users' as IconName,
-    description: "Transform your service delivery into a **productized engine**. Automate intake, reporting, and delivery workflows to maximize profit margins per client.",
-  },
-  real_estate: {
-    title: 'Property & Finance',
-    icon: 'building' as IconName,
-    description: "Deploy infrastructure that **qualifies lead portfolios 24/7**, automates transaction processing, and provides instant data at the point of decision.",
-  },
-};
-
-export const HOW_IT_WORKS_STEPS = [
-  {
-    title: '1. Process Mining & Audit',
-    icon: 'search' as IconName,
-    description: "We dive deep into your existing operations to identify **redundant workflows** and high-friction bottlenecks where automation will deliver the highest ROI.",
   },
   {
-    title: '2. Infrastructure Architecture',
-    icon: 'gear' as IconName,
-    description: "Our engineers design a custom **operational blueprint**. We build and integrate the systems into your current tech stack for a seamless, enterprise-grade deployment.",
-  },
-  {
-    title: '3. Scaling & Intelligence',
+    step: '04',
+    title: 'Launch & Hand-off',
+    description: 'QA, deploy, go live. You get the keys: code, docs, admin access. Fully yours.',
+    duration: 'Day 22+',
     icon: 'rocket' as IconName,
-    description: "We launch your systems and deploy **real-time monitoring dashboards**. We continuously optimize your infrastructure to ensure it scales alongside your revenue.",
   },
 ];
+
+export const WHY_US_ROWS = [
+  { label: 'Turnaround', traditional: '3–6 months', freelancer: '4–8 weeks', synaptix: '1–4 weeks' },
+  { label: 'Team', traditional: '8–20 people', freelancer: '1 generalist', synaptix: 'Industry experts, AI-native' },
+  { label: 'Quality bar', traditional: 'High but slow', freelancer: 'Variable', synaptix: 'Cinematic, 3D-native' },
+  { label: 'Software testing', traditional: 'Sometimes', freelancer: 'Rarely', synaptix: 'Every build, always' },
+  { label: 'Security', traditional: 'Basic audits', freelancer: 'Rarely', synaptix: 'OWASP-standard on every project' },
+  { label: 'Communication', traditional: 'Account manager layer', freelancer: 'Direct but unreliable', synaptix: 'Founder-led, daily updates' },
+  { label: 'AI-native', traditional: 'Bolted on', freelancer: 'Rarely', synaptix: 'Core to every project' },
+];
+
+export const PRICING_PREVIEW_TIERS: { id: string; title: string; from: null; description: string; turnaround: string; highlight: boolean }[] = [
+  {
+    id: 'landing',
+    title: 'Landing Page',
+    from: null,
+    description: 'Animated, CRO-optimized, live in 72 hours.',
+    turnaround: '72h',
+    highlight: false,
+  },
+  {
+    id: 'website',
+    title: 'Premium Website',
+    from: null,
+    description: 'Multi-page, 3D animations, full brand integration.',
+    turnaround: '2–3 weeks',
+    highlight: false,
+  },
+  {
+    id: 'webapp',
+    title: 'Web App / SaaS',
+    from: null,
+    description: 'Full-stack product, auth, dashboard, production-ready.',
+    turnaround: '4–8 weeks',
+    highlight: true,
+  },
+  {
+    id: 'mobile',
+    title: 'Mobile App',
+    from: null,
+    description: 'iOS & Android, native performance, premium UX.',
+    turnaround: '6–10 weeks',
+    highlight: false,
+  },
+  {
+    id: 'enterprise',
+    title: 'Custom / Enterprise',
+    from: null,
+    description: 'Complex platforms, multi-system integrations, custom scope.',
+    turnaround: 'Custom',
+    highlight: false,
+  },
+];
+
+export const YEARLY_DISCOUNT_PERCENTAGE = 23;
+
+// Legacy stubs: kept so AI-tools and admin components don't break at import time
+export const TRUSTED_BY_CLIENTS: { name: string; domain: string }[] = [];
+export const AI_TOOLS_NAV_LINKS: { href: string; label: string; icon: IconName }[] = [];
+export const AGENT_TONES: string[] = ['Friendly', 'Professional', 'Empathetic', 'Sales-Driven', 'Concise', 'Witty', 'Calm'];
+export const AGENT_PURPOSES: string[] = ['Sales', 'Lead Qualification', 'Receptionist', 'Customer Support', 'FAQ Answering', 'Appointment Booking'];
+export const QUIZ_QUESTIONS: { category: string; question: string; answers: string[] }[] = [];
+export const CONTENT_TYPES: { name: string; icon: IconName }[] = [
+  { name: 'Tweet Thread', icon: 'x' as IconName },
+  { name: 'LinkedIn Post', icon: 'linkedin' as IconName },
+  { name: 'Sales Email', icon: 'email' as IconName },
+];
+export const CONTENT_LENGTHS = ['Short', 'Medium', 'Long'];
+export const TONES_OF_VOICE = ['Professional', 'Witty', 'Casual', 'Urgent', 'Inspirational', 'Authoritative'];
+export const HOOK_STYLES = ['Engaging', 'Informative', 'Question-Based'];
+export const CONTENT_WRITER_TYPES = ['How-To Guide', 'Listicle', 'Case Study', 'Opinion Piece'];
+export const CONTENT_WRITER_TONES = ['Informative', 'Conversational', 'Formal', 'Persuasive'];
+export const AD_PLATFORMS = ['Facebook / Instagram', 'Google Ads', 'LinkedIn Ads'];
+export const INDUSTRIES = ['E-commerce', 'Healthcare', 'Real Estate', 'SaaS', 'Education'];
+export const BUSINESS_SIZES = ['1-10 employees', '11-50 employees', '51-200 employees', '200+ employees'];
+export const PRIMARY_GOALS = ['Increase Revenue', 'Reduce Costs', 'Improve Customer Service', 'Boost Marketing'];
+export const CURRENCIES = { USD: { symbol: '$', rate: 1 }, EUR: { symbol: '€', rate: 0.93 }, AED: { symbol: 'AED', rate: 3.67 } };
+export const CORE_SERVICES: never[] = [];
+export const ADD_ONS: never[] = [];
+export const ROI_HIGHLIGHTS: Record<string, { icon: IconName; title: string; description: string }> = {};
+export const TRUST_POINTS: { text: string; icon: IconName }[] = [];
+export const CUSTOM_SOLUTIONS: Record<string, { title: string; icon: IconName; description: string }> = {};
+export const HOW_IT_WORKS_STEPS: { title: string; icon: IconName; description: string }[] = [];
+export const LAUNCHPAD_PERSONAS: Record<string, { title: string; icon: IconName; description: string; challenges: { title: string; description: string }[]; solutions: { title: string; description: string }[] }> = {};
+
+export const PROJECT_FAQS = [
+  {
+    question: 'How fast can you actually deliver?',
+    answer: 'Landing pages in 72 hours. Standard websites in 2–3 weeks. Web apps in 4–8 weeks depending on scope. We give you a locked timeline before we start. No scope creep, no surprises.',
+  },
+  {
+    question: 'How is this different from tools like Lovable or Bolt?',
+    answer: 'Tools like Lovable and Bolt generate code fast, but they skip software engineering fundamentals: testing, validation, security audits, performance optimization, and proper architecture. The result is broken logic, security holes, and apps that collapse under real users. We use AI as a force-multiplier on top of real engineering discipline: industry standards, full test coverage, OWASP security, and production-grade architecture. Same speed, none of the technical debt.',
+  },
+  {
+    question: 'Do I own everything you build?',
+    answer: 'Completely. All code, design files, and assets are yours on final payment. We hand over GitHub access, Figma files, admin credentials: everything.',
+  },
+  {
+    question: 'What makes you faster than a traditional studio?',
+    answer: 'Our team uses agentic AI engineering workflows: scaffolding, code generation, QA, and deployment are all partially automated. The same quality that takes a traditional studio 3 months takes us 3 weeks.',
+  },
+  {
+    question: 'Can you work with an existing brand or design?',
+    answer: 'Absolutely. Send us your brand guidelines, existing assets, or just a reference board and we build to match or elevate your existing visual identity.',
+  },
+  {
+    question: 'Do you offer ongoing support after launch?',
+    answer: 'Yes. We offer optional monthly maintenance and support retainers. We can also hand over the codebase for your internal team to maintain. Your call.',
+  },
+  {
+    question: 'What markets do you serve?',
+    answer: 'We work with clients across the US, UK, UAE, and Australia. All projects are handled in English and delivered remotely with no timezone friction.',
+  },
+  {
+    question: 'What if I have a project not listed in your services?',
+    answer: 'Book a discovery call. If it involves building something digital (a tool, a platform, a workflow), we have almost certainly built something like it. Custom quotes for custom scopes.',
+  },
+];
+
+export const PRICING_FAQS = PROJECT_FAQS;
 
 export const TESTIMONIALS = [
   {
@@ -660,13 +328,13 @@ export const FOUNDER_STORY = {
   title: 'Founder & CEO',
   imageUrl: 'https://iili.io/KMA9J94.png',
   story: [
-    'Every idea starts with a challenge: **"How can we make business truly autonomous?"**',
-    'For me, that question became a journey. From my early days solving complex operational friction in e-commerce to building enterprise-grade **AI infrastructure**, I\'ve always been driven by one thing — engineering impact.',
-    'Over the years, I explored countless industries, but I saw a systemic flaw: businesses were drowning in manual work while amazing AI remained locked in a bubble. The real power wasn\'t in the AI tools themselves, but in how **custom infrastructure could automate the entire core of a business**.',
-    'That vision became Synaptix Studio.',
-    'We aren\'t an agency. We are an **infrastructure partner**. We build the neural core that allows B2B and SaaS companies to scale without the anchor of human overhead. Today, we\'re building the future of autonomous operations.'
+    'I started Synaptix Studio with one belief: **digital should be impossible to ignore.**',
+    'After years watching businesses settle for mediocre websites and slow studios, I saw the real gap: not just in speed or price, but in **engineering discipline**. The AI builder wave made it worse. Tools that generate code fast but skip testing, skip security, skip architecture. Founders shipping broken products and calling it done.',
+    'So I built something different. A studio of **industry experts: full-stack agentic engineers, AI-centric designers, and systems architects**, all working with the most advanced AI tools, models, and workflows available. We move at agentic speed without compromising on the fundamentals that make software actually work.',
+    'Every project we take on is tested, validated, security-audited, and production-grade. Not because a client asks. **Because that\'s the only way we know how to build.**',
+    'We aren\'t an agency. We\'re a **premium software & web studio**, and this website is our best work right now.'
   ],
-  quote: 'We don\'t just automate tasks. We build the **infrastructure of the modern enterprise**.'
+  quote: 'We build digital that hits different. **Every project is the portfolio.**'
 };
 
 export const PARTNERS = [

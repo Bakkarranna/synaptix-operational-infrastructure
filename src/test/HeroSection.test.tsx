@@ -59,16 +59,16 @@ vi.mock('../../constants', () => ({
   FLOATING_SERVICES: [
     {
       icon: 'phone',
-      name: 'AI Voice Receptionist',
-      benefit: 'Answer every call with AI precision, 24/7.',
-      setupFeeRange: { min: 1200, max: 3000 },
+      name: 'Premium Website',
+      benefit: 'Cinematic, animated, conversion-driven. Built to impress.',
+      badge: 'Tested & Validated',
       targetId: '/#services'
     },
     {
-      icon: 'chat',
-      name: 'Automated Lead Capture',
-      benefit: 'Never miss a lead on your website, day or night.',
-      setupFeeRange: { min: 800, max: 1800 },
+      icon: 'code',
+      name: 'Web App / SaaS',
+      benefit: 'Ship your product at agentic speed. Full-stack, production-ready.',
+      badge: 'Production-Grade',
       targetId: '/#services'
     }
   ],

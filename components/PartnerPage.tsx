@@ -45,7 +45,7 @@ const PartnerPage: React.FC<PartnerPageProps> = ({ navigate }) => {
                 Earn commissions. Empower businesses. Grow together.
               </p>
               <p className="mt-6 text-base text-gray-700 dark:text-white/70 max-w-3xl mx-auto">
-                At Synaptix Studio, we believe automation should be for everyone — and if you believe the same, we want to work with you. Whether you’re a creator, consultant, freelancer, or someone who just knows a few business owners, you can start earning by simply referring people to us.
+                At Synaptix Studio, we believe automation should be for everyone, and if you believe the same, we want to work with you. Whether you’re a creator, consultant, freelancer, or someone who just knows a few business owners, you can start earning by simply referring people to us.
               </p>
             </div>
 
@@ -111,7 +111,7 @@ const PartnerPage: React.FC<PartnerPageProps> = ({ navigate }) => {
                       </ul>
                   </div>
                   <div className="space-y-4 flex-grow">
-                      <p className="text-gray-700 dark:text-white/90 font-semibold flex items-center gap-2"><Icon name="users" className="h-5 w-5 text-primary" /> No need for content or links — just introduce us.</p>
+                      <p className="text-gray-700 dark:text-white/90 font-semibold flex items-center gap-2"><Icon name="users" className="h-5 w-5 text-primary" /> No need for content or links, just introduce us.</p>
                   </div>
                   <a href="#refer" onClick={handleReferralClick} className="mt-8 w-full block text-center bg-white/30 dark:bg-black/30 backdrop-blur-sm border border-gray-900/10 dark:border-white/20 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-full hover:bg-white/50 dark:hover:bg-black/50 transition-all transform hover:scale-105 animate-glow">
                       Send a Referral
@@ -161,7 +161,7 @@ const PartnerPage: React.FC<PartnerPageProps> = ({ navigate }) => {
             </div>
             
             <div className="text-center">
-                <h2 className="text-3xl font-bold font-montserrat text-gray-900 dark:text-white flex items-center justify-center gap-3"><Icon name="users" className="h-8 w-8 text-primary" /> Let’s Build Smarter Businesses — Together.</h2>
+                <h2 className="text-3xl font-bold font-montserrat text-gray-900 dark:text-white flex items-center justify-center gap-3"><Icon name="users" className="h-8 w-8 text-primary" /> Let’s Build Smarter Businesses Together.</h2>
                 <p className="mt-4 text-gray-600 dark:text-white/80">
                   Questions? Email us at <a href="mailto:info@synaptixstudio.com" className="text-primary hover:underline">info@synaptixstudio.com</a> or DM us on <a href="https://www.linkedin.com/company/synaptix-studio" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LinkedIn</a>.
                 </p>
