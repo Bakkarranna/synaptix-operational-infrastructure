@@ -1,7 +1,5 @@
 
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { useQuery } from "convex/react";
-import { api } from "./convex/_generated/api";
 import { BlogPost } from "./src/types"; // path to types in src
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -208,59 +206,18 @@ const App: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState({ pathname: '/', hash: '' });
-  // Convex Query
-  const convexPostsRaw = useQuery(api.blog.getPosts);
-
   const blogPosts = useMemo(() => {
-    const dbPosts = (convexPostsRaw || []).map((p: any) => ({
-      ...p,
-      id: p._id, // Map _id to id
-      // Map external_links to externalLinks if necessary, though schema defines external_links
-      // Frontend uses externalLinks.
-      externalLinks: p.external_links,
-      // Ensure keywords is string if frontend expects string, but schema has array?
-      // Schema: keywords: v.optional(v.array(v.string()))
-      // Frontend/Supabase interface: keywords?: string;
-      // We might need to join keys if frontend expects string.
-      // Let's check Supabase implementation... it did `keywords: post.keywords || ''`.
-      // If schema stores array, we join it.
-      keywords: Array.isArray(p.keywords) ? p.keywords.join(', ') : (p.keywords || ''),
-
-      // Sanitizing externalLinks like Supabase service did? 
-      // Schema: v.array(v.string()) -> Wait, Supabase service had `externalLinks: {platform, url, text}[]`.
-      // Convex Schema: `external_links: v.optional(v.array(v.string()))` -> Wait.
-      // User's prompt for schema: "external_links (optional)". It didn't specify type detail other than optional.
-      // But usually user meant matching existing structure?
-      // Supabase `sanitizePost` parsed JSON.
-      // If Convex stores strings, we might have issues if we need objects.
-      // Let's assume for now we just pass it through or fix schema later if needed.
-      // Actually, looking at `blog.ts`, I defined `external_links: v.optional(v.array(v.string()))`.
-      // But `BlogPost` type has `externalLinks?: { platform: string; url: string; text: string }[];`.
-      // Array of strings != Array of objects.
-      // I probably made a mistake in schema definition assuming strings vs objects.
-      // BUT, let's proceed with mapping best effort.
-    })) as BlogPost[];
-
-    const dbSlugs = new Set(dbPosts.map(p => p.slug));
-
-    // Filter static posts
-    const newStaticPosts = AI_STRATEGY_ARTICLES.filter(p => !dbSlugs.has(p.slug));
-
-    // Combine
-    const allPosts = [...newStaticPosts, ...dbPosts];
-
-    // Sort
-    allPosts.sort((a, b) => {
+    const posts = [...AI_STRATEGY_ARTICLES];
+    posts.sort((a, b) => {
       const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
       const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
       return dateB - dateA;
     });
+    return posts;
+  }, []);
 
-    return allPosts;
-  }, [convexPostsRaw]);
-
-  const blogFetchStatus = convexPostsRaw === undefined ? 'loading' : 'success';
-  const blogLoadingError = null; // Convex handles errors via boundary usually, or we assume success for now.
+  const blogFetchStatus = 'success';
+  const blogLoadingError = null;
 
   // Admin state
   const [showAdminLogin, setShowAdminLogin] = useState(false);
