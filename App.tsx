@@ -34,6 +34,9 @@ import PasswordModal from './components/admin/PasswordModal';
 import BlogAdminDashboard from './components/admin/BlogAdminDashboard';
 import Sitemap from './components/Sitemap';
 import { trackPageView } from './services/analytics';
+import { useOnScreen } from './hooks/useOnScreen';
+import CalendlyModal from './components/CalendlyModal';
+import ArticlePage from './components/ArticlePage';
 
 class SitemapBoundary extends React.Component<{ children: React.ReactNode }, { errored: boolean }> {
   state = { errored: false };
@@ -45,8 +48,26 @@ class SitemapBoundary extends React.Component<{ children: React.ReactNode }, { e
     return this.props.children;
   }
 }
-import { useOnScreen } from './hooks/useOnScreen';
-import CalendlyModal from './components/CalendlyModal';
+
+class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, { error: Error | null }> {
+  state = { error: null };
+  static getDerivedStateFromError(error: Error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{ padding: '2rem', fontFamily: 'monospace', background: '#0a0a0a', color: '#ff5630', minHeight: '100vh' }}>
+          <h1 style={{ color: '#fff', marginBottom: '1rem' }}>Runtime Error</h1>
+          <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontSize: '14px' }}>
+            {(this.state.error as Error).message}
+            {'\n\n'}
+            {(this.state.error as Error).stack}
+          </pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const AccordionItem: React.FC<{ faq: { question: string; answer: string; } }> = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -574,6 +595,7 @@ const App: React.FC<AppProps> = ({ convexPostsRaw }) => {
   };
 
   return (
+    <RootErrorBoundary>
     <div className="relative animate-fade-in">
       <Background theme={theme} />
       <div className="relative z-10">
@@ -597,6 +619,7 @@ const App: React.FC<AppProps> = ({ convexPostsRaw }) => {
         }}
       />
     </div>
+    </RootErrorBoundary>
   );
 };
 
