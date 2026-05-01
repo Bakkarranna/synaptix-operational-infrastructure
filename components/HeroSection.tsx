@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import StyledText from './StyledText';
 import { trackEvent } from '../services/analytics';
 import { useMutation } from "convex/react";
@@ -7,6 +7,7 @@ import { api } from "../convex/_generated/api";
 import { SOCIAL_LINKS, FLOATING_SERVICES, TRUSTED_BY_CLIENTS, CALENDLY_LINK } from '../constants';
 import { Icon, SendIcon, CheckCircleIcon, GiftIcon, LightbulbIcon, BoltIcon, WebIcon } from './Icon';
 import PartnerLogo from './PartnerLogo';
+import TerminalConsole from './TerminalConsole';
 
 interface HeroSectionProps {
   navigate: (path: string) => void;
@@ -26,6 +27,29 @@ const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate, openC
     const logosPerPage = 4;
     const totalLogoPages = Math.ceil(TRUSTED_BY_CLIENTS.length / logosPerPage);
     const [leadsCaptured, setLeadsCaptured] = useState(127);
+    
+    // Terminal Sequence State
+    const [terminalSequence, setTerminalSequence] = useState(0);
+    const [terminalVisible, setTerminalVisible] = useState(false);
+    
+    const terminalLines = useMemo(() => [
+        { label: 'INITIALIZING MASTER_AGENT.JSON...', color: 'text-gray-400' },
+        { label: 'LOADED MODULE: HAIL_DAMAGE_APPOINTMENTS...', color: 'text-primary' },
+        { label: 'CONNECTING TO HUBSPOT_CHATBOT API...', color: 'text-blue-400' },
+        { label: 'EXECUTING WISE_INVOICES_WORKFLOW...', color: 'text-green-400' },
+        { label: 'TASK: DETECTED UNPAID INVOICE #9920', color: 'text-yellow-400' },
+        { label: 'ACTION: AUTO-DRAFTING PAYMENT VIA WISE...', color: 'text-purple-400' },
+        { label: 'STATUS: 140ms LATENCY. SYSTEM OPTIMIZED.', color: 'text-green-400' }
+    ], []);
+
+    useEffect(() => {
+        if (terminalVisible) {
+            const sequenceInterval = setInterval(() => {
+                setTerminalSequence(prev => (prev + 1) % terminalLines.length);
+            }, 2500);
+            return () => clearInterval(sequenceInterval);
+        }
+    }, [terminalVisible]);
 
     useEffect(() => {
         const serviceTimer = setInterval(() => {
@@ -86,10 +110,19 @@ const RightColumnContent: React.FC<RightColumnContentProps> = ({ navigate, openC
                             <h4 className="font-bold text-sm text-gray-900 dark:text-white">{currentService.name}</h4>
                             <p className="text-xs text-gray-600 dark:text-white/80">{currentService.benefit}</p>
                         </div>
-                    </div>
-                    
+                          </div>
+
                     {/* Divider */}
                     <div className="w-full h-px bg-gray-200 dark:bg-white/10" />
+
+                    {/* Terminal Console */}
+                    <div className="bg-gray-900 border border-white/10 rounded-lg p-4 mb-4 font-mono text-xs">
+                        {terminalLines.map((line, index) => (
+                            <div key={index} className="flex items-center gap-2 mb-1">
+                                <span className="text-gray-500">{terminalSequence % terminalLines.length} › {line.label}</span>
+                            </div>
+                        ))}
+                    </div>
 
                     {/* Pricing & CTA */}
                     <div className="flex justify-between items-center">

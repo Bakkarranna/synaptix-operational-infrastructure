@@ -7,6 +7,8 @@ import MarkdownRenderer from './MarkdownRenderer';
 import { AGENT_TONES, AGENT_PURPOSES, LOADING_MESSAGES } from '../constants';
 import { trackEvent } from '../services/analytics';
 import DynamicLoader from './DynamicLoader';
+import { AIVoiceInput } from './AIVoiceInput';
+import GenerationProgress from './GenerationProgress';
 
 type AgentType = 'chatbot' | 'voice';
 
@@ -107,7 +109,7 @@ const ChatbotDemo: React.FC<{ result: AgentResult }> = ({ result }) => {
                 {messages.map((msg, index) => (
                     <div key={index} className={`flex items-start gap-2 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
                         {msg.sender === 'ai' && <UserIcon className="h-6 w-6 text-primary flex-shrink-0" />}
-                        <div className={`max-w-[85%] rounded-2xl px-3 py-2 ${msg.sender === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-white/30 dark:bg-white/10 text-gray-800 dark:text-white rounded-bl-none'}`}>
+                        <div className={`max-w-[85%] rounded-2xl px-4 py-2 ${msg.sender === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-white/30 dark:bg-white/10 text-gray-800 dark:text-white rounded-bl-none'}`}>
                             <MarkdownRenderer content={msg.text} />
                         </div>
                     </div>
@@ -183,9 +185,9 @@ const VoiceAgentDemo: React.FC<{ result: AgentResult }> = ({ result }) => {
             <h4 className="font-bold text-lg text-gray-900 dark:text-white font-montserrat">{result.agentName}</h4>
             <p className="text-sm text-gray-600 dark:text-white/70 mb-6">{result.voiceDescription}</p>
             <p className="flex-grow text-gray-800 dark:text-white/90 text-lg">{agentResponse}</p>
-            <button onClick={handleListen} className={`px-8 py-4 rounded-full font-bold text-white transition-colors ${isListening ? 'bg-red-500' : 'bg-primary'}`}>
-                {isListening ? 'Listening...' : 'Tap to Speak'}
-            </button>
+            <div className="flex items-center justify-center">
+              <AIVoiceInput onStart={() => {}} onStop={() => {}} className="w-56 h-56" />
+            </div>
         </div>
     );
 };
@@ -258,47 +260,7 @@ const VoiceAgentSimulation: React.FC<{ result: AgentResult }> = ({ result }) => 
     );
 };
 
-const BlueprintDisplay: React.FC<{ result: AgentResult }> = ({ result }) => {
-    const [copied, setCopied] = useState(false);
-    const handleCopy = () => {
-        navigator.clipboard.writeText(result.systemPrompt);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    return (
-        <div className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-6 space-y-4">
-            <h4 className="font-bold text-lg text-gray-900 dark:text-white font-montserrat">Agent Blueprint</h4>
-            <div className="space-y-4 text-sm">
-                <p><strong className="text-gray-800 dark:text-white/90">Agent Name:</strong> <span className="text-gray-600 dark:text-white/80">{result.agentName}</span></p>
-                {result.voiceDescription && <p><strong className="text-gray-800 dark:text-white/90">Voice:</strong> <span className="text-gray-600 dark:text-white/80">{result.voiceDescription}</span></p>}
-                
-                <div>
-                    <div className="flex justify-between items-center mb-2">
-                        <label className="block font-bold text-gray-800 dark:text-white">System Prompt</label>
-                        <button onClick={handleCopy} className="text-xs font-semibold p-2 rounded-md transition-all flex items-center gap-1 bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-white/70">
-                            {copied ? <CheckIcon className="h-4 w-4 text-green-500"/> : <ClipboardIcon className="h-4 w-4"/>}
-                            {copied ? 'Copied!' : 'Copy'}
-                        </button>
-                    </div>
-                    <pre className="w-full bg-black/5 dark:bg-black/50 border border-gray-200 dark:border-white/20 rounded-md p-3 font-mono text-xs whitespace-pre-wrap max-h-60 overflow-y-auto">{result.systemPrompt}</pre>
-                </div>
-
-                <div>
-                    <h5 className="font-bold text-gray-800 dark:text-white">Sample Interactions</h5>
-                    <div className="mt-2 space-y-2">
-                        {result.sampleInteractions.map((interaction, i) => (
-                            <div key={i} className="p-2 bg-black/5 dark:bg-white/5 rounded-md text-xs">
-                                <p><span className="font-bold text-primary">User:</span> <span className="text-gray-700 dark:text-white/80">{interaction.user}</span></p>
-                                <p><span className="font-bold">Agent:</span> <span className="text-gray-700 dark:text-white/80">{interaction.agent}</span></p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
+// BlueprintDisplay removed per UI simplification
 
 
 const AIAgentGeneratorSection: React.FC = () => {
@@ -308,9 +270,13 @@ const AIAgentGeneratorSection: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [selectedTones, setSelectedTones] = useState<string[]>([]);
     const [selectedPurposes, setSelectedPurposes] = useState<string[]>([]);
+    const [autoGenerateKB, setAutoGenerateKB] = useState(true);
 
     const [result, setResult] = useState<AgentResult | null>(null);
     const [loading, setLoading] = useState(false);
+    const [kbLoading, setKbLoading] = useState(false);
+    const [kbProgress, setKbProgress] = useState('');
+    const [generatedKB, setGeneratedKB] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isVoiceApiSupported, setIsVoiceApiSupported] = useState(true);
     const [trainingText, setTrainingText] = useState('');
@@ -358,10 +324,67 @@ const AIAgentGeneratorSection: React.FC = () => {
         setTrainingText('');
     };
 
+    const generateKnowledgeBase = async (url: string): Promise<string> => {
+        setKbProgress('Initializing knowledge base generator...');
+        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+        
+        const systemInstruction = `You are an expert AI business analyst. Your task is to crawl a given website URL, analyze its content, and generate a comprehensive, structured Knowledge Base document in Markdown format.
+
+        **YOUR TASK & OUTPUT FORMAT:**
+        Your output MUST be a single, valid markdown document following this exact structure. Do not include any text, preamble, or explanation outside this structure.
+
+        # Knowledge Base for [CompanyName]
+
+        ## Summary
+        [A concise, one-paragraph summary of the business.]
+
+        ### Metadata
+        - **CompanyName:** [Company Name]
+        - **ToneOfVoice:** [e.g., Professional, Friendly, Technical]
+        - **PrimaryServices:** [Comma-separated list of key services/products]
+
+        ---
+
+        ## [Logical Section 1, e.g., "Core Services"]
+        ### [Article 1 Title, e.g., "AI Chatbot Development"]
+        [Detailed content for this article - be very thorough, include pricing, processes, benefits, etc.]
+        #### FAQs
+        - **Q:** [A relevant question]
+        - **A:** [A clear answer]
+
+        ## [Logical Section 2, e.g., "About Us"]
+        ### [Article 2 Title, e.g., "Our Mission"]
+        [Detailed content for this article.]
+
+        ## [Logical Section 3, e.g., "Pricing & Packages"]
+        ### [Article Title]
+        [Detailed pricing information]
+
+        ## [Logical Section 4, e.g., "Contact & Support"]
+        ### [Article Title]
+        [Contact details, support information, etc.]`;
+
+        setKbProgress('Analyzing website content...');
+        
+        const userPrompt = `Generate a comprehensive knowledge base from the website at this URL: ${url}. Be very thorough - extract all services, pricing, company information, FAQs, and any other relevant content. The more detailed the knowledge base, the better the AI agent will perform.`;
+        
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: userPrompt,
+            config: {
+                systemInstruction,
+                tools: [{ googleSearch: {} }],
+            }
+        });
+
+        setKbProgress('Building knowledge base structure...');
+        return response.text;
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!businessDetails.trim() && !file) {
-            setError('Please provide your business details or upload a document.');
+        if (!businessDetails.trim() && !file && !websiteUrl) {
+            setError('Please provide your business details, upload a document, or enter a website URL.');
             return;
         }
 
@@ -373,6 +396,28 @@ const AIAgentGeneratorSection: React.FC = () => {
         try {
             // FIX: Replaced `import.meta.env.VITE_GEMINI_API_KEY` with `import.meta.env.VITE_GEMINI_API_KEY` to align with coding guidelines and fix environment variable access errors.
             const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+
+            // Step 1: Auto-generate knowledge base from website URL if provided and auto-generate is enabled
+            let knowledgeBaseContent = businessDetails;
+            
+            if (websiteUrl && autoGenerateKB) {
+                setKbLoading(true);
+                setKbProgress('🔍 Scraping website content...');
+                try {
+                    const kbContent = await generateKnowledgeBase(websiteUrl);
+                    setGeneratedKB(kbContent);
+                    knowledgeBaseContent = kbContent + (businessDetails ? '\n\n---\n\n**Additional Business Details:**\n' + businessDetails : '');
+                    setKbProgress('✅ Knowledge base generated successfully!');
+                } catch (kbError) {
+                    console.error('Knowledge base generation failed:', kbError);
+                    setKbProgress('⚠️ Could not auto-generate KB, using manual input');
+                    // Fall back to manual business details if KB generation fails
+                } finally {
+                    setKbLoading(false);
+                }
+            }
+
+            // Step 2: Generate the AI Agent using the knowledge base
              const systemInstruction = `You are an AI Agent Architect at Synaptix Studio. Your task is to design a complete personality and operational blueprint for a bespoke AI agent (voice or chatbot) based on client specifications. Your output MUST be a single, valid JSON object, and nothing else.
 
             The JSON object must contain:
@@ -387,10 +432,12 @@ const AIAgentGeneratorSection: React.FC = () => {
             
             let userPrompt = `Design an AI agent with the following specifications:
             - Agent Type: ${agentType}
-            - Business Details: ${businessDetails}
-            - Website URL (for context): ${websiteUrl || 'Not provided'}
+            - Business Knowledge Base: ${knowledgeBaseContent || 'Not provided'}
+            - Website URL: ${websiteUrl || 'Not provided'}
             - Desired Tones: ${selectedTones.join(', ') || 'neutral'}
-            - Key Purposes: ${selectedPurposes.join(', ') || 'general assistance'}`;
+            - Key Purposes: ${selectedPurposes.join(', ') || 'general assistance'}
+            
+            IMPORTANT: The knowledge base contains comprehensive information about the business extracted from their website. Use this information to create a highly knowledgeable and accurate AI agent that can answer questions about the business, its services, pricing, and more.`;
             
             const contentParts: any[] = [{ text: userPrompt }];
 
@@ -416,11 +463,12 @@ const AIAgentGeneratorSection: React.FC = () => {
             const rawText = response.text;
             const cleanedJsonString = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
             setResult(JSON.parse(cleanedJsonString));
-            trackEvent('generate_ai_agent', { agent_type: agentType });
+            trackEvent('generate_ai_agent', { agent_type: agentType, kb_generated: !!generatedKB });
 
         } catch (err) {
-            console.error(err);
-            setError("Sorry, we couldn't generate your AI agent demo. Please try different inputs or simplify your request.");
+            console.error('AI Agent Generation Error:', err);
+            const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+            setError(`Sorry, we couldn't generate your AI agent demo. Error: ${errorMessage}. Please try again.`);
         } finally {
             setLoading(false);
         }
@@ -448,10 +496,15 @@ const AIAgentGeneratorSection: React.FC = () => {
                                     <button type="button" onClick={() => setAgentType('chatbot')} className={`px-4 py-2 rounded-md font-semibold transition-colors text-gray-800 dark:text-white ${agentType === 'chatbot' ? 'bg-primary/20 border border-primary/50' : 'hover:bg-black/10 dark:hover:bg-white/10'}`}>Chatbot</button>
                                     <button type="button" onClick={() => setAgentType('voice')} className={`px-4 py-2 rounded-md font-semibold transition-colors text-gray-800 dark:text-white ${agentType === 'voice' ? 'bg-primary/20 border border-primary/50' : 'hover:bg-black/10 dark:hover:bg-white/10'}`}>Voice Agent</button>
                                 </div>
+                                
+                                <div>
+                                  <label htmlFor="websiteUrl" className="block text-sm font-bold text-gray-800 dark:text-white mb-2">Website URL (for analysis)</label>
+                                  <input id="websiteUrl" type="url" value={websiteUrl} onChange={e => setWebsiteUrl(e.target.value)} placeholder="https://example.com" className="w-full px-4 py-2 rounded-lg border border-black/10 bg-white/80 dark:bg-black/30 backdrop-blur-sm text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/50 dark:focus:ring-white focus:border-transparent transition" />
+                                </div>
                             </div>
 
                             <div>
-                               <label htmlFor="businessDetails" className="block text-sm font-bold text-gray-800 dark:text-white mb-2">Business Details & Knowledge Base *</label>
+                                <label htmlFor="businessDetails" className="block text-sm font-bold text-gray-800 dark:text-white mb-2">Business Details & Knowledge Base</label>
                                <textarea id="businessDetails" rows={4} value={businessDetails} onChange={e => setBusinessDetails(e.target.value)} placeholder="Paste your generated Knowledge Base here, or describe your business, what you sell, and any key information..." className="w-full px-4 py-2 rounded-lg border border-black/10 bg-white/80 dark:bg-black/30 backdrop-blur-sm text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/50 dark:focus:ring-white focus:border-transparent transition resize-none" />
                             </div>
 
@@ -465,20 +518,51 @@ const AIAgentGeneratorSection: React.FC = () => {
                                 {file && <button type="button" onClick={() => setFile(null)} className="text-xs text-red-400 hover:underline mt-2 flex items-center gap-1 mx-auto"><XCircleIcon className="h-3 w-3" /> Remove file</button>}
                             </div>
                             
-                             <div>
-                                <label htmlFor="websiteUrl" className="block text-sm font-bold text-gray-800 dark:text-white mb-2">Website URL (for analysis)</label>
-                                <input id="websiteUrl" type="url" value={websiteUrl} onChange={e => setWebsiteUrl(e.target.value)} placeholder="https://example.com" className="w-full px-4 py-2 rounded-lg border border-black/10 bg-white/80 dark:bg-black/30 backdrop-blur-sm text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/50 dark:focus:ring-white focus:border-transparent transition" />
-                            </div>
+                                
+
+                            
 
                             <div>
-                                <label className="block text-sm font-bold text-gray-800 dark:text-white mb-2">Agent Tone</label>
+                                <label className="block text-sm font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <span>Agent Tone</span>
+                                    <span className="text-xs text-gray-500">(Select All)</span>
+                                    <input
+                                      type="checkbox"
+                                      className="ml-2 align-middle"
+                                      checked={selectedTones.length === AGENT_TONES.length}
+                                      onChange={(e) => {
+                                        const checked = e.target.checked;
+                                        if (checked) {
+                                          setSelectedTones([...AGENT_TONES]);
+                                        } else {
+                                          setSelectedTones([]);
+                                        }
+                                      }}
+                                    />
+                                  </label>
                                 <div className="flex flex-wrap gap-2">
                                     {AGENT_TONES.map(t => <button key={t} type="button" onClick={() => handleToggle(t, selectedTones, setSelectedTones)} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border ${selectedTones.includes(t) ? 'bg-primary/20 border-primary/50 text-primary dark:text-white' : 'bg-black/5 dark:bg-white/10 border-transparent hover:bg-black/10 dark:hover:bg-white/20 text-gray-700 dark:text-white/80'}`}>{t}</button>)}
                                 </div>
                             </div>
                             
                             <div>
-                                <label className="block text-sm font-bold text-gray-800 dark:text-white mb-2">Agent Purpose</label>
+                                <label className="block text-sm font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <span>Agent Purpose</span>
+                                    <span className="text-xs text-gray-500">(Select All)</span>
+                                    <input
+                                      type="checkbox"
+                                      className="ml-2 align-middle"
+                                      checked={selectedPurposes.length === AGENT_PURPOSES.length}
+                                      onChange={(e) => {
+                                        const checked = e.target.checked;
+                                        if (checked) {
+                                          setSelectedPurposes([...AGENT_PURPOSES]);
+                                        } else {
+                                          setSelectedPurposes([]);
+                                        }
+                                      }}
+                                    />
+                                  </label>
                                 <div className="flex flex-wrap gap-2">
                                     {AGENT_PURPOSES.map(p => <button key={p} type="button" onClick={() => handleToggle(p, selectedPurposes, setSelectedPurposes)} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border ${selectedPurposes.includes(p) ? 'bg-primary/20 border-primary/50 text-primary dark:text-white' : 'bg-black/5 dark:bg-white/10 border-transparent hover:bg-black/10 dark:hover:bg-white/20 text-gray-700 dark:text-white/80'}`}>{p}</button>)}
                                 </div>
@@ -489,49 +573,53 @@ const AIAgentGeneratorSection: React.FC = () => {
                             <div className="pt-2">
                                 <button type="submit" disabled={loading} className="w-full bg-primary/20 border border-primary/50 text-primary dark:text-white font-bold py-3 px-8 text-lg rounded-full hover:bg-primary/30 transition-all transform hover:scale-105 animate-glow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
                                     <UsersIcon className="h-5 w-5 mr-2" />
-                                    {loading ? 'Generating...' : 'Generate Demo Agent'}
+                                    {loading ? (websiteUrl && autoGenerateKB ? 'Generating KB & Agent...' : 'Generating...') : 'Generate Demo Agent'}
                                 </button>
                             </div>
                         </form>
                     </div>
                     {/* Results */}
                     <div className="animate-fade-in-fast">
-                        {loading && <DynamicLoader messages={LOADING_MESSAGES.AGENT} className="mt-8" />}
+                        {loading && (
+                            <GenerationProgress isGenerating={loading} />
+                        )}
                         {!loading && result && (
                            <div className="space-y-8">
+                                {/* Generated Knowledge Base Display */}
+                                {generatedKB && (
+                                    <div className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-green-500/30 rounded-xl p-6">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                            <h4 className="font-bold text-lg text-gray-900 dark:text-white font-montserrat">Knowledge Base Generated</h4>
+                                        </div>
+                                        <p className="text-sm text-gray-600 dark:text-white/70 mb-4">
+                                            We've automatically scraped your website and built a comprehensive knowledge base to train your AI agent. 
+                                            The agent now knows about your services, pricing, company info, and more.
+                                        </p>
+                                        <details className="group">
+                                            <summary className="cursor-pointer text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
+                                                View Generated Knowledge Base
+                                            </summary>
+                                            <div className="mt-3 max-h-64 overflow-y-auto bg-black/30 dark:bg-black/50 rounded-lg p-4">
+                                                <pre className="text-xs text-gray-300 whitespace-pre-wrap font-mono">{generatedKB}</pre>
+                                            </div>
+                                        </details>
+                                    </div>
+                                )}
+
                                 {/* Live Demo Section */}
                                 <div>
-                                    {result.agentType === 'chatbot' ? (
+                        {result.agentType === 'chatbot' ? (
                                         <ChatbotDemo result={result} />
-                                    ) : isVoiceApiSupported ? (
-                                        <VoiceAgentDemo result={result} />
                                     ) : (
-                                        <VoiceAgentSimulation result={result} />
+                                        <>
+                                            {isVoiceApiSupported ? <VoiceAgentDemo result={result} /> : <VoiceAgentSimulation result={result} />}
+                                            <AIVoiceInput onStart={() => {}} onStop={() => {}} />
+                                        </>
                                     )}
                                 </div>
 
-                                {/* Live Training Section */}
-                                <div className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-6 space-y-4">
-                                    <h4 className="font-bold text-lg text-gray-900 dark:text-white font-montserrat">Live Training</h4>
-                                    <p className="text-sm text-gray-600 dark:text-white/70">Add new information to the agent's knowledge base. The agent in the demo will immediately learn it and reset for testing.</p>
-                                    <textarea
-                                        value={trainingText}
-                                        onChange={(e) => setTrainingText(e.target.value)}
-                                        rows={5}
-                                        placeholder="e.g., 'We are running a 25% off sale this week for all new customers.'"
-                                        className="w-full px-4 py-2 rounded-lg border border-black/10 bg-white/80 dark:bg-black/30 backdrop-blur-sm text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/50 dark:focus:ring-white focus:border-transparent transition resize-none"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={handleTrainAgent}
-                                        disabled={!trainingText.trim()}
-                                        className="w-full bg-primary/20 border border-primary/50 text-primary dark:text-white font-bold py-2 rounded-full hover:bg-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                                        Train Agent
-                                    </button>
-                                </div>
-                                
-                                {/* Blueprint Section */}
-                                <BlueprintDisplay result={result} />
+                                {/* Live Training and Agent Blueprint sections removed per new design */}
                             </div>
                         )}
                         {!loading && !result && (

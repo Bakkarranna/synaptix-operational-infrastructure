@@ -5,8 +5,8 @@ import { api } from "./convex/_generated/api";
 import { BlogPost } from "./src/types"; // path to types in src
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import ServicesSection from './components/ServicesSection';
-import HowItWorksSection from './components/HowItWorksSection';
+import ProjectVault from './components/ProjectVault';
+import TerminalConsole from './components/TerminalConsole';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import Background from './components/Background';
@@ -22,8 +22,6 @@ import TrustedBySection from './components/TrustedBySection';
 import { PRIVACY_POLICY_CONTENT, TERMS_OF_SERVICE_CONTENT, TESTIMONIALS, AI_STRATEGY_ARTICLES, PRICING_FAQS } from './constants';
 import Preloader from './components/Preloader';
 import CookieConsentBanner from './components/CookieConsentBanner';
-import PricingSection from './components/PricingSection';
-import AILaunchpadSection from './components/AILaunchpadSection';
 import BlogPage from './components/BlogPage';
 import PartnerPage from './components/PartnerPage';
 import CareersPage from './components/CareersPage';
@@ -86,12 +84,8 @@ interface MainContentProps {
 const MainContent: React.FC<MainContentProps> = ({ navigate, blogPosts, currentTestimonialIndex, onTestimonialDotClick, openCalendlyModal }) => (
   <main>
     <HeroSection navigate={navigate} openCalendlyModal={openCalendlyModal} />
-    <ServicesSection />
-    <HowItWorksSection />
     <PartnersSection />
     <TestimonialsSection currentIndex={currentTestimonialIndex} onDotClick={onTestimonialDotClick} />
-    <ContactSection />
-    <PricingSection navigate={navigate} openCalendlyModal={openCalendlyModal} />
     <AboutSection navigate={navigate} />
     <MeetTheFounderSection />
     <ResourceCenterSection navigate={navigate} blogPosts={blogPosts} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AIContentSparkSection from '../AIContentSparkSection';
 import AIIdeaGeneratorSection from '../AIIdeaGeneratorSection';
 import ROICalculatorSection from '../ROICalculatorSection';
@@ -30,19 +30,19 @@ const AIAdminDashboard: React.FC<AIAdminDashboardProps> = ({ theme }) => {
       case '#viral-content-strategist':
         return <AIContentSparkSection />;
       case '#ai-idea-generator':
-        return <AIIdeaGeneratorSection />;
+        return <AIIdeaGeneratorSection navigate={(path: string) => window.location.hash = path} />;
       case '#custom-solutions':
-        return <CustomSolutionsSection />;
+        return <CustomSolutionsSection navigate={(path: string) => window.location.hash = path} />;
       case '#roi-calculator':
-        return <ROICalculatorSection />;
+        return <ROICalculatorSection navigate={(path: string) => window.location.hash = path} />;
       case '#ai-ad-copy-generator':
         return <AIAdCopyGeneratorSection />;
       case '#ai-subject-line-tester':
         return <AIEmailSubjectLineTesterSection />;
       case '#ai-website-auditor':
-        return <AIWebsiteAuditorSection />;
+        return <AIWebsiteAuditorSection navigate={(path: string) => window.location.hash = path} />;
       case '#ai-knowledge-base-generator':
-        return <AIKnowledgeBaseGeneratorSection />;
+        return <AIKnowledgeBaseGeneratorSection navigate={(path: string) => window.location.hash = path} />;
       default:
         return <AIAgentGeneratorSection />;
     }

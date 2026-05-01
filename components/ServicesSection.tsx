@@ -226,6 +226,8 @@ const ServicesSection: React.FC = () => {
         '**AI Voice Agents** qualify leads around the clock',
         '**Omnichannel Chatbots** across Web, WhatsApp & Instagram',
         '**Real-time CRM Sync** — every lead logged instantly',
+        '**Powered by Appointment_Agent** for instant scheduling',
+        '**Integrated with HubSpot_Chatbot** — AI-driven conversations',
       ],
     },
     {
@@ -233,9 +235,11 @@ const ServicesSection: React.FC = () => {
       subtitle: 'Workflow Orchestration',
       visualization: 'nodes' as const,
       features: [
-        '**Automated Onboarding** for clients and team members',
-        '**Document Processing** — contracts, invoices, reports',
-        '**System Integration** — connect your entire tech stack',
+        '**Powered by Wise_Invoices** for automated billing',
+        '**Hail_Damage_Appointments** for insurance claims',
+        '**Master_Agent** orchestration layer',
+        '**Telegram_Task_Creation** automation workflow',
+        '**Meeting_Reminder_Dynamic** smart scheduling',
       ],
     },
     {
@@ -243,9 +247,9 @@ const ServicesSection: React.FC = () => {
       subtitle: 'Intelligence Layer',
       visualization: 'dashboard' as const,
       features: [
-        '**Live Dashboards** with real-time operational visibility',
-        '**Predictive ROI Models** forecast savings and growth',
-        '**Autonomous Optimization** — systems that self-improve',
+        '**Roofbot_Webhook_v2** for instant responses',
+        '**Live System Monitoring** with real-time metrics',
+        '**Autonomous Decision Engine** — AI-driven choices',
       ],
     },
   ];
