@@ -18,7 +18,7 @@ const ProofBar: React.FC = () => {
               >
                 {stat.value}
               </span>
-              <span className="mt-1 text-xs md:text-sm text-white/60 font-inter uppercase tracking-wider">
+              <span className="mt-1 text-xs md:text-sm text-gray-900/60 dark:text-white/60 font-inter uppercase tracking-wider">
                 {stat.label}
               </span>
             </div>

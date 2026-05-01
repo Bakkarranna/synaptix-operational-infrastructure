@@ -87,12 +87,12 @@ const BuildStandardSection: React.FC = () => {
                 <div className="w-3 h-3 rounded-full bg-red-500/60" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
                 <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                <span className="ml-3 text-white/25 text-xs font-mono">synaptix-quality-check.sh</span>
+                <span className="ml-3 text-gray-900/25 dark:text-white/25 text-xs font-mono">synaptix-quality-check.sh</span>
               </div>
 
               {/* Terminal body */}
               <div className="p-6 font-mono text-xs space-y-2 min-h-[260px]">
-                <div className="text-white/30 mb-4">$ ./verify --full-suite --owasp --lighthouse</div>
+                <div className="text-gray-900/30 dark:text-white/30 mb-4">$ ./verify --full-suite --owasp --lighthouse</div>
                 {BUILD_QUALITY_TERMINAL.slice(0, terminalStep).map((line, i) => (
                   <div
                     key={i}
@@ -160,7 +160,7 @@ const BuildStandardSection: React.FC = () => {
                 }}
               >
                 <p className="text-xs font-bold uppercase tracking-widest text-[#FF5630]">Synaptix Studio</p>
-                <p className="text-[10px] text-[#FF5630]/50 mt-0.5">Engineering-grade</p>
+                <p className="text-[10px] text-[#CC4526]/50 dark:text-[#FF5630]/50 mt-0.5">Engineering-grade</p>
               </div>
             </div>
 
@@ -207,14 +207,14 @@ const BuildStandardSection: React.FC = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-xs text-white/70 leading-tight">{row.ours}</span>
+                    <span className="text-xs text-gray-900/70 dark:text-white/70 leading-tight">{row.ours}</span>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Bottom note */}
-            <p className="mt-6 text-center text-xs text-white/30">
+            <p className="mt-6 text-center text-xs text-gray-900/30 dark:text-white/30">
               Same AI speed, none of the technical debt.
             </p>
           </div>

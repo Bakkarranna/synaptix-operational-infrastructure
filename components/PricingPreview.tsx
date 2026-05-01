@@ -71,7 +71,7 @@ const PricingPreview: React.FC<PricingPreviewProps> = ({ openCalendlyModal }) =>
                   {tier.title}
                 </h3>
 
-                <p className="text-white/50 dark:text-white/50 text-gray-500 text-xs leading-relaxed mb-4 flex-1">
+                <p className="text-gray-900/50 dark:text-white/50 dark:text-white/50 text-gray-500 text-xs leading-relaxed mb-4 flex-1">
                   {tier.description}
                 </p>
 
@@ -82,7 +82,7 @@ const PricingPreview: React.FC<PricingPreviewProps> = ({ openCalendlyModal }) =>
                       <svg className="w-3 h-3 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-[11px] text-white/50 dark:text-white/50 text-gray-500">{item}</span>
+                      <span className="text-[11px] text-gray-900/50 dark:text-white/50 dark:text-white/50 text-gray-500">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -115,7 +115,7 @@ const PricingPreview: React.FC<PricingPreviewProps> = ({ openCalendlyModal }) =>
           </p>
           <button
             onClick={openCalendlyModal}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold text-white transition-all duration-200 hover:scale-105 active:scale-95"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold text-gray-900 dark:text-white transition-all duration-200 hover:scale-105 active:scale-95"
             style={{
               background: 'rgba(255,86,48,0.12)',
               border: '1px solid rgba(255,86,48,0.3)',

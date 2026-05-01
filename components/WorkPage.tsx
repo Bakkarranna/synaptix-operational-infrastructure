@@ -138,13 +138,13 @@ const WorkPage: React.FC<WorkPageProps> = ({ navigate, openCalendlyModal }) => {
               Selected Work
             </span>
             <h1
-              className="text-6xl md:text-7xl xl:text-8xl text-white leading-[0.9] mb-6"
+              className="text-6xl md:text-7xl xl:text-8xl text-gray-900 dark:text-white leading-[0.9] mb-6"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               WORK THAT<br />
               <span style={{ color: '#FF5630', textShadow: '0 0 30px rgba(255,86,48,0.5)' }}>SELLS ITSELF.</span>
             </h1>
-            <p className="text-base md:text-lg text-white/50 max-w-2xl leading-relaxed">
+            <p className="text-base md:text-lg text-gray-900/50 dark:text-white/50 max-w-2xl leading-relaxed">
               Every project is tested, verified, and built to outperform. These are the results. Lighthouse scores, conversion rates, and raised rounds. Not vibes.
             </p>
           </div>
@@ -215,7 +215,7 @@ const WorkPage: React.FC<WorkPageProps> = ({ navigate, openCalendlyModal }) => {
                   {/* Client name */}
                   <div className="absolute bottom-4 left-4">
                     <p
-                      className="text-2xl text-white"
+                      className="text-2xl text-gray-900 dark:text-white"
                       style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.05em' }}
                     >
                       {study.client}
@@ -225,10 +225,10 @@ const WorkPage: React.FC<WorkPageProps> = ({ navigate, openCalendlyModal }) => {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h2 className="text-base font-bold font-montserrat text-white mb-2 leading-snug">
+                  <h2 className="text-base font-bold font-montserrat text-gray-900 dark:text-white mb-2 leading-snug">
                     {study.headline}
                   </h2>
-                  <p className="text-xs text-white/50 leading-relaxed mb-4">
+                  <p className="text-xs text-gray-900/50 dark:text-white/50 leading-relaxed mb-4">
                     {study.description}
                   </p>
 
@@ -253,7 +253,7 @@ const WorkPage: React.FC<WorkPageProps> = ({ navigate, openCalendlyModal }) => {
                     {study.tech.map(t => (
                       <span
                         key={t}
-                        className="text-[10px] px-2 py-0.5 rounded font-mono text-white/35"
+                        className="text-[10px] px-2 py-0.5 rounded font-mono text-gray-900/35 dark:text-white/35"
                         style={{ background: 'rgba(255,255,255,0.04)' }}
                       >
                         {t}
@@ -266,7 +266,7 @@ const WorkPage: React.FC<WorkPageProps> = ({ navigate, openCalendlyModal }) => {
           </div>
 
           {filtered.length === 0 && (
-            <div className="text-center py-24 text-white/30 text-sm">
+            <div className="text-center py-24 text-gray-900/30 dark:text-white/30 text-sm">
               No projects in this category yet.
             </div>
           )}
@@ -284,25 +284,25 @@ const WorkPage: React.FC<WorkPageProps> = ({ navigate, openCalendlyModal }) => {
             }}
           >
             <h2
-              className="text-4xl md:text-5xl text-white mb-4"
+              className="text-4xl md:text-5xl text-gray-900 dark:text-white mb-4"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               YOUR PROJECT NEXT?
             </h2>
-            <p className="text-white/50 text-sm mb-8 max-w-xl mx-auto">
+            <p className="text-gray-900/50 dark:text-white/50 text-sm mb-8 max-w-xl mx-auto">
               Every case study above started with a 30-minute call. Tell us what you're building.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <button
                 onClick={openCalendlyModal}
-                className="px-8 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+                className="px-8 py-3.5 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
                 style={{ background: '#FF5630', boxShadow: '0 0 20px rgba(255,86,48,0.4)' }}
               >
                 Book a Discovery Call
               </button>
               <button
                 onClick={() => navigate('/contact')}
-                className="px-8 py-3.5 rounded-full font-semibold text-white/70 text-sm hover:text-white transition-colors duration-200"
+                className="px-8 py-3.5 rounded-full font-semibold text-gray-900/70 dark:text-white/70 text-sm hover:text-gray-900 dark:text-white transition-colors duration-200"
                 style={{ border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.04)' }}
               >
                 Send a Brief

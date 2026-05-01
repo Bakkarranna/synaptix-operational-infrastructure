@@ -36,11 +36,11 @@
     <!-- Theme initialization script -->
     <script>
       (function() {
-        // Set dark theme only if explicitly saved in localStorage, otherwise default to light.
-        if (localStorage.getItem('theme') === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
+        // Set light theme only if explicitly saved in localStorage, otherwise default to dark.
+        if (localStorage.getItem('theme') === 'light') {
           document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
         }
       })();
     </script>

@@ -201,7 +201,7 @@ const AIEmailSubjectLineTesterSection: React.FC = () => {
                         )}
                         {!loading && !result && (
                             <div className="flex flex-col items-center justify-center text-center bg-white/20 dark:bg-black/20 backdrop-blur-md border-2 border-dashed border-gray-200 dark:border-white/10 rounded-xl p-8 h-full min-h-[320px]">
-                                <InboxIcon className="h-16 w-16 text-gray-300 dark:text-white/20 mb-4" />
+                                <InboxIcon className="h-16 w-16 text-gray-700 dark:text-gray-300 dark:text-white/20 mb-4" />
                                 <h3 className="text-xl font-bold text-gray-700 dark:text-white/80 font-montserrat">Your Analysis Appears Here</h3>
                                 <p className="text-gray-500 dark:text-white/50 mt-2">Enter a subject line to see how it scores.</p>
                             </div>

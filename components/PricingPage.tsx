@@ -170,9 +170,9 @@ const FaqItem: React.FC<{ faq: { q: string; a: string } }> = ({ faq }) => {
         onClick={() => setOpen(o => !o)}
         className="w-full flex justify-between items-center text-left py-5 gap-4"
       >
-        <span className="text-sm font-semibold text-white leading-snug">{faq.q}</span>
+        <span className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{faq.q}</span>
         <span
-          className="text-lg shrink-0 transition-transform duration-300 text-white/30"
+          className="text-lg shrink-0 transition-transform duration-300 text-gray-900/30 dark:text-white/30"
           style={{ transform: open ? 'rotate(45deg)' : 'rotate(0deg)' }}
         >
           +
@@ -182,7 +182,7 @@ const FaqItem: React.FC<{ faq: { q: string; a: string } }> = ({ faq }) => {
         className="overflow-hidden transition-all duration-300"
         style={{ maxHeight: open ? '300px' : '0px' }}
       >
-        <p className="text-sm text-white/55 leading-relaxed pb-5">{faq.a}</p>
+        <p className="text-sm text-gray-900/55 dark:text-white/55 leading-relaxed pb-5">{faq.a}</p>
       </div>
     </div>
   );
@@ -223,17 +223,17 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
               Transparent Pricing
             </span>
             <h1
-              className="text-6xl md:text-7xl xl:text-8xl text-white leading-[0.9] mb-6"
+              className="text-6xl md:text-7xl xl:text-8xl text-gray-900 dark:text-white leading-[0.9] mb-6"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               SCOPED RIGHT.<br />
               <span style={{ color: '#FF5630', textShadow: '0 0 30px rgba(255,86,48,0.5)' }}>PRICED FAIR.</span>
             </h1>
-            <p className="text-base md:text-lg text-white/50 max-w-2xl leading-relaxed mb-6">
+            <p className="text-base md:text-lg text-gray-900/50 dark:text-white/50 max-w-2xl leading-relaxed mb-6">
               No hourly rates. No hidden fees. Every project is scoped as a fixed investment. You know the number before we start, and it doesn't change.
             </p>
             <div
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs text-white/50"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs text-gray-900/50 dark:text-white/50"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
             >
               <svg className="w-3.5 h-3.5 text-[#FF5630]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,8 +273,8 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
                 >
                   {s.step}
                 </div>
-                <h3 className="text-sm font-bold text-white mb-2">{s.title}</h3>
-                <p className="text-xs text-white/45 leading-relaxed">{s.body}</p>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2">{s.title}</h3>
+                <p className="text-xs text-gray-900/45 dark:text-white/45 leading-relaxed">{s.body}</p>
               </div>
             ))}
           </div>
@@ -286,7 +286,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
         <div className="container mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-bold uppercase tracking-widest text-[#FF5630] mb-3">Project Types</p>
-            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-white">
+            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900 dark:text-white">
               Every project, scoped right.
             </h2>
           </div>
@@ -311,11 +311,11 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
                       {tier.badge}
                     </span>
                   )}
-                  <h3 className="text-lg font-bold font-montserrat text-white mb-1">{tier.title}</h3>
+                  <h3 className="text-lg font-bold font-montserrat text-gray-900 dark:text-white mb-1">{tier.title}</h3>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xs font-mono text-[#FF5630]">⚡ {tier.turnaround}</span>
                   </div>
-                  <p className="text-xs text-white/50 leading-relaxed">{tier.description}</p>
+                  <p className="text-xs text-gray-900/50 dark:text-white/50 leading-relaxed">{tier.description}</p>
                 </div>
 
                 {/* Divider */}
@@ -323,14 +323,14 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
 
                 {/* Includes */}
                 <div className="px-6 py-4 flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/25 mb-3">What's included</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-900/25 dark:text-white/25 mb-3">What's included</p>
                   <div className="space-y-2">
                     {tier.includes.map(item => (
                       <div key={item} className="flex items-start gap-2.5">
                         <svg className="w-3.5 h-3.5 text-[#FF5630] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="text-xs text-white/60 leading-snug">{item}</span>
+                        <span className="text-xs text-gray-900/60 dark:text-white/60 leading-snug">{item}</span>
                       </div>
                     ))}
                   </div>
@@ -367,7 +367,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
             style={{ background: 'rgba(74,222,128,0.04)', border: '1px solid rgba(74,222,128,0.12)' }}
           >
             <p className="text-xs font-bold uppercase tracking-widest text-green-400 mb-2">Included on every project</p>
-            <h2 className="text-xl font-bold font-montserrat text-white mb-6">
+            <h2 className="text-xl font-bold font-montserrat text-gray-900 dark:text-white mb-6">
               These aren't add-ons. They're the minimum.
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -381,7 +381,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <span className="text-sm text-white/70">{item}</span>
+                  <span className="text-sm text-gray-900/70 dark:text-white/70">{item}</span>
                 </div>
               ))}
             </div>
@@ -397,7 +397,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
         <div className="container mx-auto max-w-3xl">
           <div className="text-center mb-10">
             <p className="text-xs font-bold uppercase tracking-widest text-[#FF5630] mb-3">FAQ</p>
-            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-white">
+            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900 dark:text-white">
               Questions you'd ask before booking.
             </h2>
           </div>
@@ -420,25 +420,25 @@ const PricingPage: React.FC<PricingPageProps> = ({ navigate, openCalendlyModal }
             style={{ background: 'rgba(255,86,48,0.05)', border: '1px solid rgba(255,86,48,0.15)' }}
           >
             <h2
-              className="text-4xl md:text-5xl text-white mb-4"
+              className="text-4xl md:text-5xl text-gray-900 dark:text-white mb-4"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               GET YOUR FIXED QUOTE.
             </h2>
-            <p className="text-white/50 text-sm mb-8 max-w-lg mx-auto">
+            <p className="text-gray-900/50 dark:text-white/50 text-sm mb-8 max-w-lg mx-auto">
               30-minute call. Detailed proposal in 48 hours. Fixed price, no surprises.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <button
                 onClick={openCalendlyModal}
-                className="px-10 py-4 rounded-full font-semibold text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                className="px-10 py-4 rounded-full font-semibold text-gray-900 dark:text-white transition-all duration-200 hover:scale-105 active:scale-95"
                 style={{ background: '#FF5630', boxShadow: '0 0 24px rgba(255,86,48,0.45)' }}
               >
                 Book Free Discovery Call
               </button>
               <button
                 onClick={() => navigate('/contact')}
-                className="px-10 py-4 rounded-full font-semibold text-white/60 hover:text-white transition-colors"
+                className="px-10 py-4 rounded-full font-semibold text-gray-900/60 dark:text-white/60 hover:text-gray-900 dark:text-white transition-colors"
                 style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)' }}
               >
                 Send a Brief Instead

@@ -39,12 +39,12 @@ const UserVoiceMessage: React.FC<{ message: Message; messageRef: React.RefObject
         {message.audioUrl && <audio src={message.audioUrl} controls className="w-full h-10" />}
         <button
           onClick={() => setShowTranscript(s => !s)}
-          className="text-xs font-semibold text-white/80 hover:text-white underline"
+          className="text-xs font-semibold text-gray-900/80 dark:text-white/80 hover:text-gray-900 dark:text-white underline"
         >
           {showTranscript ? 'Hide Transcription' : 'View Transcription'}
         </button>
         {showTranscript && (
-          <div className="text-sm text-white/90 pt-2 border-t border-white/20 mt-2">
+          <div className="text-sm text-gray-900/90 dark:text-white/90 pt-2 border-t border-white/20 mt-2">
             <MarkdownRenderer content={message.text} />
           </div>
         )}
@@ -352,7 +352,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
                 <p className="text-xs text-gray-500 dark:text-white/60">Your AI Automation Guide</p>
               </div>
             </div>
-            <button onClick={handleToggleMute} className="text-gray-500 dark:text-white/70 hover:text-gray-800 dark:hover:text-white p-1">
+            <button onClick={handleToggleMute} className="text-gray-500 dark:text-white/70 hover:text-gray-800 dark:hover:text-gray-900 dark:text-white p-1">
               {isMuted ? <VolumeOffIcon className="h-5 w-5" /> : <VolumeUpIcon className="h-5 w-5" />}
             </button>
           </div>
@@ -430,7 +430,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ navigate, theme, blogPosts, ope
                 disabled={isLoading}
               />
               {isRecording ? (
-                <button type="button" onClick={stopRecording} className="bg-red-500 text-white p-3 rounded-lg animate-pulse">
+                <button type="button" onClick={stopRecording} className="bg-red-500 text-gray-900 dark:text-white p-3 rounded-lg animate-pulse">
                   <MicrophoneIcon className="h-5 w-5" />
                 </button>
               ) : (

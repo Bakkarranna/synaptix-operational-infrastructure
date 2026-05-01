@@ -185,7 +185,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate, openCalendlyM
                                                 <div className="hidden md:grid md:grid-cols-[auto_minmax(0,3fr)_minmax(0,1.5fr)_minmax(0,1.5fr)] items-center px-4 py-4 text-sm md:gap-x-4">
                                                     <div className="w-12 flex justify-center">
                                                         <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all duration-200 ${isSelected ? 'bg-primary border-primary' : 'bg-transparent border-gray-400 dark:border-white/50'}`}>
-                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-white" />}
+                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-gray-900 dark:text-white" />}
                                                         </div>
                                                     </div>
                                                     <div>
@@ -204,7 +204,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate, openCalendlyM
                                                 <div className="md:hidden p-3 flex items-center gap-3">
                                                     <div className="flex-shrink-0">
                                                         <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all duration-200 ${isSelected ? 'bg-primary border-primary' : 'bg-transparent border-gray-400 dark:border-white/50'}`}>
-                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-white" />}
+                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-gray-900 dark:text-white" />}
                                                         </div>
                                                     </div>
                                                     <div className="flex-grow flex items-center gap-3">
@@ -247,7 +247,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate, openCalendlyM
                                                 <div className="hidden md:grid md:grid-cols-[auto_minmax(0,3fr)_minmax(0,1.5fr)_minmax(0,1.5fr)] items-center px-4 py-4 text-sm md:gap-x-4">
                                                     <div className="w-12 flex justify-center">
                                                         <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all duration-200 ${isSelected ? 'bg-primary border-primary' : 'bg-transparent border-gray-400 dark:border-white/50'}`}>
-                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-white" />}
+                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-gray-900 dark:text-white" />}
                                                         </div>
                                                     </div>
                                                     <div className="font-medium text-gray-900 dark:text-white">{addon.title}</div>
@@ -258,7 +258,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({ navigate, openCalendlyM
                                                 <div className="md:hidden p-3 flex items-center gap-3">
                                                     <div className="flex-shrink-0">
                                                         <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all duration-200 ${isSelected ? 'bg-primary border-primary' : 'bg-transparent border-gray-400 dark:border-white/50'}`}>
-                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-white" />}
+                                                            {isSelected && <CheckIcon className="w-3.5 h-3.5 text-gray-900 dark:text-white" />}
                                                         </div>
                                                     </div>
                                                     <div className="flex-grow">

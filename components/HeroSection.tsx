@@ -121,7 +121,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
 
             {/* H1 — NVRMND-style stacked massive */}
             <h1
-              className="leading-[0.9] text-white mb-2"
+              className="leading-[0.9] text-gray-900 dark:text-white mb-2"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               <span className="block text-6xl md:text-7xl xl:text-8xl">WE BUILD</span>
@@ -157,7 +157,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                   >
                     {n.value}
                   </span>
-                  <span className="mt-0.5 text-[9px] md:text-[10px] text-white/40 uppercase tracking-wider leading-tight">
+                  <span className="mt-0.5 text-[9px] md:text-[10px] text-gray-900/40 dark:text-white/40 uppercase tracking-wider leading-tight">
                     {n.label}
                   </span>
                 </div>
@@ -168,7 +168,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
             <div className="flex flex-wrap gap-4 mb-8">
               <button
                 onClick={() => handleCTA(CALENDLY_LINK, 'Start a Project')}
-                className="px-7 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+                className="px-7 py-3.5 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
                 style={{
                   background: '#FF5630',
                   boxShadow: '0 0 20px rgba(255,86,48,0.4)',
@@ -178,7 +178,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
               </button>
               <button
                 onClick={() => handleCTA('/#services', 'See Our Work')}
-                className="px-7 py-3.5 rounded-full font-semibold text-white/80 text-sm transition-all duration-200 hover:text-white hover:border-white/40"
+                className="px-7 py-3.5 rounded-full font-semibold text-gray-900/80 dark:text-white/80 text-sm transition-all duration-200 hover:text-gray-900 dark:text-white hover:border-white/40"
                 style={{
                   border: '1px solid rgba(255,255,255,0.15)',
                   background: 'rgba(255,255,255,0.04)',
@@ -198,7 +198,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
               ].map(({ icon, label }) => (
                 <div key={label} className="flex items-center gap-2">
                   <Icon name={icon} className="w-4 h-4 text-[#FF5630] shrink-0" />
-                  <span className="text-xs text-white/50">{label}</span>
+                  <span className="text-xs text-gray-900/50 dark:text-white/50">{label}</span>
                 </div>
               ))}
             </div>
@@ -218,9 +218,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
             >
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-xs text-white/40 font-mono uppercase tracking-widest">Build quality report</span>
+                <span className="text-xs text-gray-900/40 dark:text-white/40 font-mono uppercase tracking-widest">Build quality report</span>
               </div>
-              <p className="text-sm font-bold text-white mb-4">
+              <p className="text-sm font-bold text-gray-900 dark:text-white mb-4">
                 Not vibe-coded. <span style={{ color: '#FF5630' }}>Engineering-grade.</span>
               </p>
               <div className="space-y-2.5">
@@ -237,7 +237,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-sm text-white/70">{badge.label}</span>
+                    <span className="text-sm text-gray-900/70 dark:text-white/70">{badge.label}</span>
                   </div>
                 ))}
               </div>
@@ -262,7 +262,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <h4 className="text-sm font-bold text-white">{currentService.name}</h4>
+                      <h4 className="text-sm font-bold text-gray-900 dark:text-white">{currentService.name}</h4>
                       <span
                         className="text-xs font-semibold px-2 py-0.5 rounded-full"
                         style={{ background: 'rgba(255,86,48,0.15)', color: '#FF5630' }}
@@ -270,7 +270,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
                         {currentService.badge}
                       </span>
                     </div>
-                    <p className="text-xs text-white/50 leading-relaxed">{currentService.benefit}</p>
+                    <p className="text-xs text-gray-900/50 dark:text-white/50 leading-relaxed">{currentService.benefit}</p>
                   </div>
                 </div>
               </div>
@@ -286,7 +286,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
             >
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-xs text-white/60 font-mono">Active builds this month</span>
+                <span className="text-xs text-gray-900/60 dark:text-white/60 font-mono">Active builds this month</span>
               </div>
               <span className="text-sm font-bold text-[#FF5630]">12</span>
             </div>

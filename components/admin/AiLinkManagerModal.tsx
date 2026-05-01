@@ -467,7 +467,7 @@ const AiLinkManagerModal: React.FC<AiLinkManagerModalProps> = ({ isOpen, onClose
                         <Icon name="link" className="h-6 w-6 text-primary" />
                         <h2 className="text-xl font-bold truncate pr-4 text-gray-900 dark:text-white">Link Hub for "{post.title}"</h2>
                     </div>
-                    <button onClick={onClose} className="text-gray-500 dark:text-white/70 hover:text-gray-900 dark:hover:text-white"><Icon name="close" className="h-6 w-6" /></button>
+                    <button onClick={onClose} className="text-gray-500 dark:text-white/70 hover:text-gray-900 dark:hover:text-gray-900 dark:text-white"><Icon name="close" className="h-6 w-6" /></button>
                 </header>
 
                 <main className="p-6 space-y-4 overflow-y-auto custom-scrollbar">

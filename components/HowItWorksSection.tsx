@@ -20,7 +20,7 @@ const Step: React.FC<{ step: typeof HOW_IT_WORKS_STEPS[0]; index: number }> = ({
                 <div className="relative flex items-center justify-center w-24 h-24 rounded-full bg-white/50 dark:bg-black/50 border-4 border-gray-200 dark:border-white/10 transition-transform duration-300 group-hover:scale-105">
                     <div className="absolute w-3 h-3 bg-white dark:bg-brand-dark rounded-full border-2 border-primary"></div>
                     <div className="relative z-10 p-3 bg-primary rounded-full shadow-lg">
-                        <Icon name={step.icon} className="h-10 w-10 text-white transition-transform duration-300 group-hover:rotate-12" />
+                        <Icon name={step.icon} className="h-10 w-10 text-gray-900 dark:text-white transition-transform duration-300 group-hover:rotate-12" />
                     </div>
                 </div>
             </div>

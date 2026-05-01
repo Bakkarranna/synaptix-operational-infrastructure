@@ -20,10 +20,10 @@ const ServicesSection: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-14">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF5630] mb-3">What We Build</p>
-          <h2 className="text-3xl md:text-4xl font-bold font-montserrat text-white">
+          <h2 className="text-3xl md:text-4xl font-bold font-montserrat text-gray-900 dark:text-white">
             The Full Studio Stack
           </h2>
-          <p className="mt-4 text-white/60 max-w-xl mx-auto text-sm md:text-base">
+          <p className="mt-4 text-gray-900/60 dark:text-white/60 max-w-xl mx-auto text-sm md:text-base">
             From cinematic landing pages to full-stack SaaS products. If it's digital and it matters, we build it.
           </p>
         </div>
@@ -53,7 +53,7 @@ const ServicesSection: React.FC = () => {
           ))}
         </div>
 
-        <p className="text-center text-white/30 text-xs mt-8">
+        <p className="text-center text-gray-900/30 dark:text-white/30 text-xs mt-8">
           Custom scope? Book a 30-min call and we'll build your quote on the spot.
         </p>
       </div>

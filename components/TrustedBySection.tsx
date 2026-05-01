@@ -129,7 +129,7 @@ const TrustedBySection: React.FC = () => {
                                         <span className="text-sm font-semibold text-gray-700 dark:text-white/80 uppercase tracking-wider">
                                             {metric.label}
                                         </span>
-                                        <Icon name="arrow-right" className="h-5 w-5 text-gray-400" />
+                                        <Icon name="arrow-right" className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                                     </div>
                                 </div>
 

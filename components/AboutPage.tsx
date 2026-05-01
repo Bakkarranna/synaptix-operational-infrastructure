@@ -107,13 +107,13 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
               About Synaptix Studio
             </span>
             <h1
-              className="text-6xl md:text-7xl xl:text-8xl text-white leading-[0.9] mb-6"
+              className="text-6xl md:text-7xl xl:text-8xl text-gray-900 dark:text-white leading-[0.9] mb-6"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               NOT AN AGENCY.<br />
               <span style={{ color: '#FF5630', textShadow: '0 0 30px rgba(255,86,48,0.5)' }}>A STUDIO THAT SHIPS.</span>
             </h1>
-            <p className="text-base md:text-lg text-white/55 max-w-2xl leading-relaxed">
+            <p className="text-base md:text-lg text-gray-900/55 dark:text-white/55 max-w-2xl leading-relaxed">
               Synaptix Studio is a premium AI-forward software and web studio. We build the digital products that make your competitors nervous, engineered by industry experts, accelerated by AI, shipped at a speed traditional studios can't match.
             </p>
           </div>
@@ -141,7 +141,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
                 >
                   {counters[i]}{s.suffix}
                 </span>
-                <span className="mt-2 text-xs text-white/40 uppercase tracking-wider">{s.label}</span>
+                <span className="mt-2 text-xs text-gray-900/40 dark:text-white/40 uppercase tracking-wider">{s.label}</span>
               </div>
             ))}
           </div>
@@ -154,10 +154,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-[#FF5630] mb-3">The Story</p>
-              <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-white mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900 dark:text-white mb-6">
                 Built from frustration with how digital gets made.
               </h2>
-              <div className="space-y-4 text-sm text-white/60 leading-relaxed">
+              <div className="space-y-4 text-sm text-gray-900/60 dark:text-white/60 leading-relaxed">
                 <p>
                   I started Synaptix Studio after watching founders (smart, funded, ambitious people) settle for mediocre digital. Not because they didn't care. Because every option was broken. Traditional agencies were slow and expensive. Freelancers were unpredictable. AI builders shipped fast but shipped broken.
                 </p>
@@ -173,14 +173,14 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
               </div>
               <div className="mt-8 flex items-center gap-4">
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-montserrat text-white shrink-0"
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-montserrat text-gray-900 dark:text-white shrink-0"
                   style={{ background: 'linear-gradient(135deg, #FF5630 0%, #ff7a59 100%)', boxShadow: '0 0 20px rgba(255,86,48,0.4)' }}
                 >
                   A
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white">Muhammad Abubakar Siddique</p>
-                  <p className="text-xs text-white/40">Founder & CEO, Synaptix Studio</p>
+                  <p className="text-sm font-bold text-gray-900 dark:text-white">Muhammad Abubakar Siddique</p>
+                  <p className="text-xs text-gray-900/40 dark:text-white/40">Founder & CEO, Synaptix Studio</p>
                 </div>
               </div>
             </div>
@@ -201,8 +201,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
                   }}
                 >
                   <div className="text-2xl mb-3">{v.icon}</div>
-                  <h3 className="text-sm font-bold font-montserrat text-white mb-2">{v.title}</h3>
-                  <p className="text-xs text-white/50 leading-relaxed">{v.body}</p>
+                  <h3 className="text-sm font-bold font-montserrat text-gray-900 dark:text-white mb-2">{v.title}</h3>
+                  <p className="text-xs text-gray-900/50 dark:text-white/50 leading-relaxed">{v.body}</p>
                 </div>
               ))}
             </div>
@@ -218,10 +218,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
         <div className="container mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-bold uppercase tracking-widest text-[#FF5630] mb-3">The Team</p>
-            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900 dark:text-white mb-4">
               Industry experts. AI-native.
             </h2>
-            <p className="text-sm text-white/50 max-w-xl mx-auto">
+            <p className="text-sm text-gray-900/50 dark:text-white/50 max-w-xl mx-auto">
               No generalists. No juniors learning on your project. Every person on your build is a specialist, working with the best AI tools available.
             </p>
           </div>
@@ -245,8 +245,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white mb-1">{r.title}</p>
-                  <p className="text-xs text-white/50 leading-relaxed">{r.desc}</p>
+                  <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">{r.title}</p>
+                  <p className="text-xs text-gray-900/50 dark:text-white/50 leading-relaxed">{r.desc}</p>
                 </div>
               </div>
             ))}
@@ -262,7 +262,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
         <div className="container mx-auto">
           <div className="text-center mb-8">
             <p className="text-xs font-bold uppercase tracking-widest text-[#FF5630] mb-3">Tools & Tech</p>
-            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-white">
+            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900 dark:text-white">
               Best-in-class stack. Every project.
             </h2>
           </div>
@@ -295,20 +295,20 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
             style={{ background: 'rgba(255,86,48,0.04)', border: '1px solid rgba(255,86,48,0.12)' }}
           >
             <p className="text-xs font-bold uppercase tracking-widest text-[#FF5630] mb-4">Why It Matters</p>
-            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-white mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900 dark:text-white mb-6">
               The tools your competitors use ship broken. We ship verified.
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-white/55">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-900/55 dark:text-white/55">
               <div>
-                <p className="font-bold text-white mb-2">What AI builders skip</p>
+                <p className="font-bold text-gray-900 dark:text-white mb-2">What AI builders skip</p>
                 <p>Testing. Security audits. Error handling. Documentation. Accessibility. Performance tuning. Clean architecture. The fundamentals that determine whether software actually works in production.</p>
               </div>
               <div>
-                <p className="font-bold text-white mb-2">What we do instead</p>
+                <p className="font-bold text-gray-900 dark:text-white mb-2">What we do instead</p>
                 <p>Full test suites. OWASP security on every project. Lighthouse 95+ as a baseline. Clean architecture with typed APIs. Full handoff documentation. Everything a professional product requires.</p>
               </div>
               <div>
-                <p className="font-bold text-white mb-2">The result</p>
+                <p className="font-bold text-gray-900 dark:text-white mb-2">The result</p>
                 <p>Software that works. Products that impress investors. Websites that convert. Systems that run at 2am without breaking. Digital that actually justifies what you paid for it.</p>
               </div>
             </div>
@@ -324,25 +324,25 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate, openCalendlyModal }) =>
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)' }}
           >
             <h2
-              className="text-4xl md:text-5xl text-white mb-4"
+              className="text-4xl md:text-5xl text-gray-900 dark:text-white mb-4"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               READY TO BUILD WITH US?
             </h2>
-            <p className="text-white/50 text-sm mb-8 max-w-lg mx-auto">
+            <p className="text-gray-900/50 dark:text-white/50 text-sm mb-8 max-w-lg mx-auto">
               30 minutes. No pitch decks. Just a real conversation about what you're building and how we can help.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <button
                 onClick={openCalendlyModal}
-                className="px-8 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+                className="px-8 py-3.5 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
                 style={{ background: '#FF5630', boxShadow: '0 0 20px rgba(255,86,48,0.4)' }}
               >
                 Book a Discovery Call
               </button>
               <button
                 onClick={() => navigate('/work')}
-                className="px-8 py-3.5 rounded-full font-semibold text-white/60 text-sm hover:text-white transition-colors"
+                className="px-8 py-3.5 rounded-full font-semibold text-gray-900/60 dark:text-white/60 text-sm hover:text-gray-900 dark:text-white transition-colors"
                 style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)' }}
               >
                 See Our Work

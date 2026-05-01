@@ -33,20 +33,20 @@ const FinalCTASection: React.FC<FinalCTASectionProps> = ({ openCalendlyModal }) 
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF5630] mb-4">Let's Build</p>
 
             <h2
-              className="text-4xl md:text-6xl font-bold text-white mb-4"
+              className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               READY TO HIT DIFFERENT?
             </h2>
 
-            <p className="text-white/60 max-w-xl mx-auto mb-10 text-sm md:text-base">
+            <p className="text-gray-900/60 dark:text-white/60 max-w-xl mx-auto mb-10 text-sm md:text-base">
               Book a 30-minute discovery call. Tell us what you're building. We'll tell you exactly what it will take, how long, and what it will cost.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={openCalendlyModal}
-                className="px-8 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105"
+                className="px-8 py-3.5 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105"
                 style={{
                   background: '#FF5630',
                   boxShadow: '0 0 20px rgba(255,86,48,0.5)',
@@ -56,7 +56,7 @@ const FinalCTASection: React.FC<FinalCTASectionProps> = ({ openCalendlyModal }) 
               </button>
               <a
                 href="mailto:hello@synaptixstudio.com"
-                className="px-8 py-3.5 rounded-full font-semibold text-white/80 text-sm transition-all duration-200 hover:text-white"
+                className="px-8 py-3.5 rounded-full font-semibold text-gray-900/80 dark:text-white/80 text-sm transition-all duration-200 hover:text-gray-900 dark:text-white"
                 style={{
                   border: '1px solid rgba(255,255,255,0.15)',
                   background: 'rgba(255,255,255,0.05)',
@@ -66,7 +66,7 @@ const FinalCTASection: React.FC<FinalCTASectionProps> = ({ openCalendlyModal }) 
               </a>
             </div>
 
-            <p className="mt-8 text-white/25 text-xs">
+            <p className="mt-8 text-gray-900/25 dark:text-white/25 text-xs">
               No pitch decks. No long discovery questionnaires. Just a real conversation.
             </p>
           </div>

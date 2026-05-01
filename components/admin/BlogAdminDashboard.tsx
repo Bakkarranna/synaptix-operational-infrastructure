@@ -723,7 +723,7 @@ const PerformanceOptimizerView: React.FC<PerformanceOptimizerViewProps> = ({ all
                 ) : (
                     <div className="flex items-center justify-center h-full bg-gray-50 dark:bg-black/20 border-2 border-dashed border-gray-300 dark:border-white/20 rounded-xl text-center p-8">
                         <div>
-                            <Icon name="chart-bar" className="h-12 w-12 mx-auto text-gray-400 dark:text-white/30" />
+                            <Icon name="chart-bar" className="h-12 w-12 mx-auto text-gray-600 dark:text-gray-400 dark:text-white/30" />
                             <h3 className="mt-2 text-lg font-bold text-gray-700 dark:text-white/80">Select an Article</h3>
                             <p className="mt-1 text-sm text-gray-500 dark:text-white/60">Choose an article from the left to view its performance data and optimization opportunities.</p>
                         </div>
@@ -884,7 +884,7 @@ const BlogAdminDashboard: React.FC<BlogAdminDashboardProps> = ({ initialPosts, o
                                                     <button onClick={() => handleEdit(post)} className="font-semibold text-blue-400 hover:text-blue-300">Edit</button>
                                                     <button
                                                         onClick={() => handleCopyContent(post)}
-                                                        className="font-semibold text-gray-500 hover:text-gray-400"
+                                                        className="font-semibold text-gray-500 hover:text-gray-600 dark:text-gray-400"
                                                     >
                                                         {copiedPostId === String(post.id) ? 'Copied!' : 'Copy'}
                                                     </button>

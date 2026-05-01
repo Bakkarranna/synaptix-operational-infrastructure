@@ -54,8 +54,8 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ isOpen, onClose, onSucces
         onClick={(e) => e.stopPropagation()}
       >
         <Icon name="zap" className="h-10 w-10 text-primary mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-white mb-2">Admin Access</h2>
-        <p className="text-white/60 mb-6">Enter the password to manage blog content.</p>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Admin Access</h2>
+        <p className="text-gray-900/60 dark:text-white/60 mb-6">Enter the password to manage blog content.</p>
         
         <form onSubmit={handleSubmit}>
           <input
@@ -72,7 +72,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ isOpen, onClose, onSucces
               }
             }}
             placeholder="Password"
-            className="w-full text-center px-4 py-3 rounded-lg border border-white/20 bg-white/10 text-white placeholder-white/60 focus:ring-2 focus:ring-primary focus:border-transparent transition"
+            className="w-full text-center px-4 py-3 rounded-lg border border-white/20 bg-white/10 text-gray-900 dark:text-white placeholder-white/60 focus:ring-2 focus:ring-primary focus:border-transparent transition"
             autoFocus
           />
           {error && <p className="text-red-400 text-sm mt-2">{error}</p>}

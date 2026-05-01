@@ -119,22 +119,22 @@ const ServiceCard: React.FC<{ service: ServiceBlock; index: number; navigate: (p
           </span>
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-white mb-3">
+        <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900 dark:text-white mb-3">
           {service.title}
         </h2>
         <p className="text-sm font-semibold mb-4" style={{ color: service.accentColor }}>
           {service.tagline}
         </p>
-        <p className="text-sm text-white/55 leading-relaxed mb-8">
+        <p className="text-sm text-gray-900/55 dark:text-white/55 leading-relaxed mb-8">
           {service.description}
         </p>
 
         {/* Who it's for */}
         <div className="mb-8">
-          <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-3">Who it's for</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-900/30 dark:text-white/30 mb-3">Who it's for</p>
           <div className="space-y-2">
             {service.whoFor.map((w, i) => (
-              <div key={i} className="flex gap-3 text-sm text-white/60 leading-relaxed">
+              <div key={i} className="flex gap-3 text-sm text-gray-900/60 dark:text-white/60 leading-relaxed">
                 <span style={{ color: service.accentColor }} className="shrink-0 mt-0.5">→</span>
                 {w}
               </div>
@@ -145,14 +145,14 @@ const ServiceCard: React.FC<{ service: ServiceBlock; index: number; navigate: (p
         <div className="flex flex-wrap gap-3">
           <button
             onClick={openCalendlyModal}
-            className="px-6 py-3 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+            className="px-6 py-3 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
             style={{ background: service.accentColor, boxShadow: `0 0 16px ${service.accentColor}40` }}
           >
             Get a Quote
           </button>
           <button
             onClick={() => navigate('/contact')}
-            className="px-6 py-3 rounded-full font-semibold text-white/60 text-sm hover:text-white transition-colors"
+            className="px-6 py-3 rounded-full font-semibold text-gray-900/60 dark:text-white/60 text-sm hover:text-gray-900 dark:text-white transition-colors"
             style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)' }}
           >
             Send Brief
@@ -167,7 +167,7 @@ const ServiceCard: React.FC<{ service: ServiceBlock; index: number; navigate: (p
           className="rounded-2xl p-6 mb-4"
           style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">What's delivered</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-900/30 dark:text-white/30 mb-4">What's delivered</p>
           <div className="space-y-2.5">
             {service.deliverables.map((d, i) => (
               <div key={i} className="flex items-center gap-3">
@@ -179,7 +179,7 @@ const ServiceCard: React.FC<{ service: ServiceBlock; index: number; navigate: (p
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <span className="text-sm text-white/70">{d}</span>
+                <span className="text-sm text-gray-900/70 dark:text-white/70">{d}</span>
               </div>
             ))}
           </div>
@@ -190,12 +190,12 @@ const ServiceCard: React.FC<{ service: ServiceBlock; index: number; navigate: (p
           className="rounded-2xl px-5 py-4"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
         >
-          <p className="text-xs font-bold uppercase tracking-widest text-white/25 mb-3">Tech stack</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-900/25 dark:text-white/25 mb-3">Tech stack</p>
           <div className="flex flex-wrap gap-2">
             {service.tech.map(t => (
               <span
                 key={t}
-                className="text-xs font-mono px-3 py-1 rounded-md text-white/45"
+                className="text-xs font-mono px-3 py-1 rounded-md text-gray-900/45 dark:text-white/45"
                 style={{ background: 'rgba(255,255,255,0.04)' }}
               >
                 {t}
@@ -234,13 +234,13 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, openCalendlyModal
               Full Studio Stack
             </span>
             <h1
-              className="text-6xl md:text-7xl xl:text-8xl text-white leading-[0.9] mb-6"
+              className="text-6xl md:text-7xl xl:text-8xl text-gray-900 dark:text-white leading-[0.9] mb-6"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               ONE STUDIO.<br />
               <span style={{ color: '#FF5630', textShadow: '0 0 30px rgba(255,86,48,0.5)' }}>EVERY DIGITAL NEED.</span>
             </h1>
-            <p className="text-base md:text-lg text-white/50 max-w-2xl leading-relaxed mb-10">
+            <p className="text-base md:text-lg text-gray-900/50 dark:text-white/50 max-w-2xl leading-relaxed mb-10">
               Synaptix Studio builds premium websites, web apps, mobile apps, SaaS platforms, brand identities, and AI agent systems, all under one roof, all to the same engineering standard.
             </p>
 
@@ -250,7 +250,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, openCalendlyModal
                 <a
                   key={s.id}
                   href={`#${s.id}`}
-                  className="px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 hover:text-white"
+                  className="px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 hover:text-gray-900 dark:text-white"
                   style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.1)' }}
                   onClick={e => { e.preventDefault(); document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
                 >
@@ -269,8 +269,8 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, openCalendlyModal
             className="rounded-2xl px-6 py-5 max-w-4xl"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
           >
-            <p className="text-xs text-white/35 leading-relaxed">
-              <strong className="text-white/50">Synaptix Studio</strong> is a premium AI-forward software and web studio serving clients in the US, UK, UAE, and Australia. Services include custom website design and development, web application and SaaS development, mobile app development (iOS and Android), brand identity systems, landing page development, and AI agent system design. All projects include full test coverage, OWASP security auditing, and Lighthouse performance optimization. Turnaround times range from 72 hours (landing pages) to 10 weeks (mobile apps). Projects are scoped individually. Book a discovery call to receive a custom quote.
+            <p className="text-xs text-gray-900/35 dark:text-white/35 leading-relaxed">
+              <strong className="text-gray-900/50 dark:text-white/50">Synaptix Studio</strong> is a premium AI-forward software and web studio serving clients in the US, UK, UAE, and Australia. Services include custom website design and development, web application and SaaS development, mobile app development (iOS and Android), brand identity systems, landing page development, and AI agent system design. All projects include full test coverage, OWASP security auditing, and Lighthouse performance optimization. Turnaround times range from 72 hours (landing pages) to 10 weeks (mobile apps). Projects are scoped individually. Book a discovery call to receive a custom quote.
             </p>
           </div>
         </div>
@@ -299,17 +299,17 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ navigate, openCalendlyModal
             style={{ background: 'rgba(255,86,48,0.05)', border: '1px solid rgba(255,86,48,0.15)' }}
           >
             <h2
-              className="text-4xl md:text-5xl text-white mb-4"
+              className="text-4xl md:text-5xl text-gray-900 dark:text-white mb-4"
               style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
             >
               NOT SURE WHICH SERVICE FITS?
             </h2>
-            <p className="text-white/50 text-sm mb-8 max-w-lg mx-auto">
+            <p className="text-gray-900/50 dark:text-white/50 text-sm mb-8 max-w-lg mx-auto">
               30 minutes. Tell us what you're building. We'll tell you exactly what scope, timeline, and investment it takes.
             </p>
             <button
               onClick={openCalendlyModal}
-              className="px-10 py-4 rounded-full font-semibold text-white transition-all duration-200 hover:scale-105 active:scale-95"
+              className="px-10 py-4 rounded-full font-semibold text-gray-900 dark:text-white transition-all duration-200 hover:scale-105 active:scale-95"
               style={{ background: '#FF5630', boxShadow: '0 0 24px rgba(255,86,48,0.45)' }}
             >
               Book Free Discovery Call

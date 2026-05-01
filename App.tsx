@@ -216,20 +216,20 @@ const updateMetaTags = (title: string, description: string, path: string, imageU
 const getInitialTheme = (): 'light' | 'dark' => {
   // Guard against SSR or environments without window/localStorage
   if (typeof window === 'undefined' || !window.localStorage) {
-    return 'light';
+    return 'dark';
   }
 
   try {
-    // Default to light mode unless the user has explicitly saved 'dark' in localStorage.
+    // Default to dark mode unless the user has explicitly saved 'light' in localStorage.
     const storedPrefs = window.localStorage.getItem('theme');
-    if (storedPrefs === 'dark') {
-      return 'dark';
+    if (storedPrefs === 'light') {
+      return 'light';
     }
   } catch (e) {
     console.error("Could not access localStorage to get theme.", e);
   }
 
-  return 'light';
+  return 'dark';
 };
 
 

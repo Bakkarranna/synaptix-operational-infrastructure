@@ -127,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({ navigate, theme, toggleTheme, openCalen
                       key={link.href}
                       href={link.href}
                       onClick={(e) => handleLinkClick(e, link.href)}
-                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-800 dark:text-white/85 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/8 transition-all duration-150 text-sm"
+                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-800 dark:text-white/85 hover:text-gray-900 dark:hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/8 transition-all duration-150 text-sm"
                       role="menuitem"
                     >
                       <Icon name={link.icon} className="h-4 w-4 text-[#FF5630] shrink-0" aria-hidden="true" />
@@ -204,7 +204,7 @@ const Header: React.FC<HeaderProps> = ({ navigate, theme, toggleTheme, openCalen
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-800 dark:text-white/85 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/8 transition-all duration-150"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-800 dark:text-white/85 hover:text-gray-900 dark:hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/8 transition-all duration-150"
                   role="menuitem"
                 >
                   <Icon name={link.icon} className="h-4 w-4 text-[#FF5630] shrink-0" aria-hidden="true" />

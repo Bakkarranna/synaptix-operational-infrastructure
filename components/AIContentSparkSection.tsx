@@ -231,7 +231,7 @@ ${generatedContent?.hashtags.map(h => `#${h}`).join(' ')}`;
                         )}
                         {!loading && !generatedContent && (
                              <div className="flex flex-col items-center justify-center text-center bg-white/20 dark:bg-black/20 backdrop-blur-md border-2 border-dashed border-gray-200 dark:border-white/10 rounded-xl p-8 h-full min-h-[320px]">
-                                <SparklesIcon className="h-16 w-16 text-gray-300 dark:text-white/20 mb-4" />
+                                <SparklesIcon className="h-16 w-16 text-gray-700 dark:text-gray-300 dark:text-white/20 mb-4" />
                                 <h3 className="text-xl font-bold text-gray-700 dark:text-white/80 font-montserrat">Your Content Awaits</h3>
                                 <p className="text-gray-500 dark:text-white/50 mt-2">Fill out the brief on the left and let our AI work its magic.</p>
                             </div>
@@ -266,7 +266,7 @@ const EditableField: React.FC<EditableFieldProps> = ({ label, value, onChange, i
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white/20 dark:bg-black/20 backdrop-blur-sm text-gray-900 dark:text-white/90 focus:ring-2 focus:ring-primary dark:focus:ring-white focus:border-transparent transition-colors hover:bg-white/30 dark:hover:bg-black/30"
                     rows={isTextarea ? 5 : undefined}
                 />
-                <EditIcon className="absolute top-2 right-2 h-4 w-4 text-gray-400 dark:text-white/30 group-hover:text-gray-500 dark:group-hover:text-white/60 transition-colors" />
+                <EditIcon className="absolute top-2 right-2 h-4 w-4 text-gray-600 dark:text-gray-400 dark:text-white/30 group-hover:text-gray-500 dark:group-hover:text-gray-900/60 dark:text-white/60 transition-colors" />
             </div>
         </div>
     )

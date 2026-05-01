@@ -14,11 +14,11 @@ const ProcessSection: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-14">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF5630] mb-3">How It Works</p>
-          <h2 className="text-3xl md:text-4xl font-bold font-montserrat text-white">
+          <h2 className="text-3xl md:text-4xl font-bold font-montserrat text-gray-900 dark:text-white">
             From Brief to Live<br />
             <span className="text-[#FF5630]">in Weeks, Not Months</span>
           </h2>
-          <p className="mt-4 text-white/60 max-w-xl mx-auto text-sm md:text-base">
+          <p className="mt-4 text-gray-900/60 dark:text-white/60 max-w-xl mx-auto text-sm md:text-base">
             Our agentic engineering workflow compresses months of traditional studio time into days. No black boxes, no scope creep.
           </p>
         </div>
@@ -66,14 +66,14 @@ const ProcessSection: React.FC = () => {
                     border: '1px solid rgba(255,255,255,0.08)',
                   }}
                 >
-                  <div className="text-xs font-mono text-[#FF5630]/70 mb-1">{step.duration}</div>
-                  <h3 className="text-base font-bold font-montserrat text-white mb-2">{step.title}</h3>
-                  <p className="text-white/55 text-xs leading-relaxed">{step.description}</p>
+                  <div className="text-xs font-mono text-[#CC4526]/70 dark:text-[#FF5630]/70 mb-1">{step.duration}</div>
+                  <h3 className="text-base font-bold font-montserrat text-gray-900 dark:text-white mb-2">{step.title}</h3>
+                  <p className="text-gray-900/55 dark:text-white/55 text-xs leading-relaxed">{step.description}</p>
                 </div>
 
                 {/* Arrow between steps (mobile only) */}
                 {i < PROCESS_STEPS.length - 1 && (
-                  <div className="md:hidden text-white/20 text-2xl mt-4 mb-0">↓</div>
+                  <div className="md:hidden text-gray-900/20 dark:text-white/20 text-2xl mt-4 mb-0">↓</div>
                 )}
               </div>
             ))}

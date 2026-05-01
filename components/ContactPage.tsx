@@ -115,17 +115,17 @@ const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
             </svg>
           </div>
           <h1
-            className="text-5xl md:text-6xl text-white mb-4"
+            className="text-5xl md:text-6xl text-gray-900 dark:text-white mb-4"
             style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
           >
             WE'VE GOT IT.
           </h1>
-          <p className="text-white/60 mb-8 leading-relaxed">
+          <p className="text-gray-900/60 dark:text-white/60 mb-8 leading-relaxed">
             Your brief is in. We'll review it and come back to you within 24 hours with a proper response, not a template.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="px-8 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+            className="px-8 py-3.5 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
             style={{ background: '#FF5630', boxShadow: '0 0 20px rgba(255,86,48,0.4)' }}
           >
             Back to Home
@@ -148,13 +148,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
             Project Intake
           </span>
           <h1
-            className="text-5xl md:text-6xl text-white leading-[0.95] mb-3"
+            className="text-5xl md:text-6xl text-gray-900 dark:text-white leading-[0.95] mb-3"
             style={{ fontFamily: "'VT323', monospace", letterSpacing: '0.02em' }}
           >
             LET'S BUILD<br />
             <span style={{ color: '#FF5630', textShadow: '0 0 24px rgba(255,86,48,0.5)' }}>SOMETHING REAL.</span>
           </h1>
-          <p className="text-white/50 text-sm">
+          <p className="text-gray-900/50 dark:text-white/50 text-sm">
             Answer a few questions so we understand your project. We read every submission personally.
           </p>
         </div>
@@ -360,7 +360,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
                 <button
                   type="button"
                   onClick={() => { setError(''); setStep(1); }}
-                  className="px-6 py-3 rounded-full text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+                  className="px-6 py-3 rounded-full text-sm font-semibold text-gray-900/60 dark:text-white/60 hover:text-gray-900 dark:text-white transition-colors duration-200"
                   style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)' }}
                 >
                   ← Back
@@ -371,7 +371,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="px-8 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95 ml-auto"
+                  className="px-8 py-3.5 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95 ml-auto"
                   style={{ background: '#FF5630', boxShadow: '0 0 20px rgba(255,86,48,0.4)' }}
                 >
                   Continue →
@@ -379,7 +379,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
               ) : (
                 <button
                   type="submit"
-                  className="px-8 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+                  className="px-8 py-3.5 rounded-full font-semibold text-gray-900 dark:text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95"
                   style={{ background: '#FF5630', boxShadow: '0 0 20px rgba(255,86,48,0.4)' }}
                 >
                   Submit Brief
@@ -389,7 +389,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
           </div>
         </form>
 
-        <p className="mt-6 text-center text-xs text-white/25">
+        <p className="mt-6 text-center text-xs text-gray-900/25 dark:text-white/25">
           We respond within 24 hours. No sales pitch, no auto-replies.
         </p>
       </div>
@@ -399,10 +399,10 @@ const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
 
 const Field: React.FC<{ label: string; htmlFor: string; children: React.ReactNode }> = ({ label, htmlFor, children }) => (
   <div>
-    <label htmlFor={htmlFor} className="block text-xs font-semibold text-white/60 uppercase tracking-widest mb-2">
+    <label htmlFor={htmlFor} className="block text-xs font-semibold text-gray-900/60 dark:text-white/60 uppercase tracking-widest mb-2">
       {label}
     </label>
-    <div className="[&_input]:bg-white/5 [&_input]:border [&_input]:border-white/10 [&_input]:rounded-xl [&_input]:px-4 [&_input]:py-3 [&_input]:text-sm [&_input]:text-white [&_input]:placeholder-white/25 [&_input]:outline-none [&_input]:focus:border-[#FF5630]/50 [&_input]:transition-colors [&_input]:duration-200 [&_textarea]:bg-white/5 [&_textarea]:border [&_textarea]:border-white/10 [&_textarea]:rounded-xl [&_textarea]:px-4 [&_textarea]:py-3 [&_textarea]:text-sm [&_textarea]:text-white [&_textarea]:placeholder-white/25 [&_textarea]:outline-none [&_textarea]:focus:border-[#FF5630]/50 [&_textarea]:transition-colors [&_textarea]:duration-200 [&_textarea]:w-full">
+    <div className="[&_input]:bg-white/5 [&_input]:border [&_input]:border-white/10 [&_input]:rounded-xl [&_input]:px-4 [&_input]:py-3 [&_input]:text-sm [&_input]:text-gray-900 dark:text-white [&_input]:placeholder-white/25 [&_input]:outline-none [&_input]:focus:border-[#FF5630]/50 [&_input]:transition-colors [&_input]:duration-200 [&_textarea]:bg-white/5 [&_textarea]:border [&_textarea]:border-white/10 [&_textarea]:rounded-xl [&_textarea]:px-4 [&_textarea]:py-3 [&_textarea]:text-sm [&_textarea]:text-gray-900 dark:text-white [&_textarea]:placeholder-white/25 [&_textarea]:outline-none [&_textarea]:focus:border-[#FF5630]/50 [&_textarea]:transition-colors [&_textarea]:duration-200 [&_textarea]:w-full">
       {children}
     </div>
   </div>

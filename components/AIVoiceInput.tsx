@@ -107,7 +107,7 @@ export function AIVoiceInput({
               style={{ animationDuration: "3s" }}
             />
           ) : (
-            <MicIconFallback className="w-8 h-8 text-white" />
+            <MicIconFallback className="w-8 h-8 text-gray-900 dark:text-white" />
           )}
         </button>
 

@@ -920,7 +920,7 @@ const BlogEditorModal: React.FC<BlogEditorModalProps> = ({ isOpen, onClose, onSa
                 <div className="bg-white dark:bg-brand-dark border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl w-full max-w-6xl m-4 relative animate-slide-in-up-fast flex flex-col h-[90vh]" onClick={(e) => e.stopPropagation()}>
                     <header className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-between items-center flex-shrink-0 text-gray-900 dark:text-white">
                         <h2 className="text-xl font-bold">{post?.id ? 'Edit Post' : 'Create New Post'}</h2>
-                        <button onClick={onClose} className="text-gray-500 dark:text-white/70 hover:text-gray-900 dark:hover:text-white"><Icon name="close" className="h-6 w-6" /></button>
+                        <button onClick={onClose} className="text-gray-500 dark:text-white/70 hover:text-gray-900 dark:hover:text-gray-900 dark:text-white"><Icon name="close" className="h-6 w-6" /></button>
                     </header>
 
                     {view === 'writer' ? (
