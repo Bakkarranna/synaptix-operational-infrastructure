@@ -1,0 +1,613 @@
+{
+  "communities": {
+    "0": [
+      "components_icon_tsx",
+      "icon_arrowrighticon",
+      "icon_bolticon",
+      "icon_bookopenicon",
+      "icon_buildingicon",
+      "icon_calculatoricon",
+      "icon_carticon",
+      "icon_chartbaricon",
+      "icon_chatbubbleicon",
+      "icon_chaticon",
+      "icon_checkcircleicon",
+      "icon_checkicon",
+      "icon_clipboardicon",
+      "icon_clipboardlisticon",
+      "icon_closeicon",
+      "icon_codeicon",
+      "icon_cubeicon",
+      "icon_downloadicon",
+      "icon_editicon",
+      "icon_emailicon",
+      "icon_filesearchicon",
+      "icon_filetexticon",
+      "icon_gearicon",
+      "icon_gifticon",
+      "icon_icon",
+      "icon_inboxicon",
+      "icon_instagramicon",
+      "icon_keyicon",
+      "icon_layouticon",
+      "icon_lightbulbicon",
+      "icon_linkedinicon",
+      "icon_linkicon",
+      "icon_mediumicon",
+      "icon_megaphoneicon",
+      "icon_microphoneicon",
+      "icon_moonicon",
+      "icon_pencilicon",
+      "icon_phoneicon",
+      "icon_quoteicon",
+      "icon_rocketicon",
+      "icon_searchicon",
+      "icon_sendicon",
+      "icon_sparklesicon",
+      "icon_sunicon",
+      "icon_targeticon",
+      "icon_trophyicon",
+      "icon_uploadicon",
+      "icon_usericon",
+      "icon_usersicon",
+      "icon_volumeofficon",
+      "icon_volumeupicon",
+      "icon_webicon",
+      "icon_xcircleicon",
+      "icon_xicon",
+      "icon_youtubeicon",
+      "icon_zapicon"
+    ],
+    "1": [
+      "blogadmindashboard_cleanupaicontent",
+      "blogadmindashboard_gettimeago",
+      "blogadmindashboard_handleanalyze",
+      "blogadmindashboard_handlebriefchange",
+      "blogadmindashboard_handlecopycontent",
+      "blogadmindashboard_handlecreatenew",
+      "blogadmindashboard_handledelete",
+      "blogadmindashboard_handleedit",
+      "blogadmindashboard_handlegenerate",
+      "blogadmindashboard_handlegeneratefrombrief",
+      "blogadmindashboard_handlegeneratemeta",
+      "blogadmindashboard_handlegeneratestrategy",
+      "blogadmindashboard_handlepreview",
+      "blogadmindashboard_handlesave",
+      "blogadmindashboard_handlesuggestseo",
+      "blogadmindashboard_handletoggle",
+      "blogadmindashboard_onanalysiscomplete",
+      "blogadmindashboard_parsefrontmatter",
+      "components_admin_blogadmindashboard_tsx"
+    ],
+    "2": [
+      "ailinkmanagermodal_accordion",
+      "ailinkmanagermodal_fetchexternalsuggestions",
+      "ailinkmanagermodal_fetchsuggestions",
+      "ailinkmanagermodal_handleapplyall",
+      "ailinkmanagermodal_handleapplysuggestion",
+      "ailinkmanagermodal_handledeletelink",
+      "ailinkmanagermodal_handlefinalizeandsave",
+      "ailinkmanagermodal_handleupdatelink",
+      "ailinkmanagermodal_searchwithbrave",
+      "ailinkmanagermodal_suggestioncard",
+      "components_admin_ailinkmanagermodal_tsx"
+    ],
+    "3": [
+      "components_admin_tableeditormodal_tsx",
+      "tableeditormodal_addcolumn",
+      "tableeditormodal_addrow",
+      "tableeditormodal_handlecellchange",
+      "tableeditormodal_handleheaderchange",
+      "tableeditormodal_handleupdate",
+      "tableeditormodal_parsemarkdown",
+      "tableeditormodal_removecolumn",
+      "tableeditormodal_removerow",
+      "tableeditormodal_serializetomarkdown"
+    ],
+    "4": [
+      "blogeditormodal_cleanupaicontent",
+      "blogeditormodal_handlebriefchange",
+      "blogeditormodal_handlegenerate",
+      "blogeditormodal_if",
+      "blogeditormodal_parsefrontmatter",
+      "blogeditormodal_setisgeneratingkeywords",
+      "blogeditormodal_setselection",
+      "components_admin_blogeditormodal_tsx"
+    ],
+    "5": [
+      "aiagentgeneratorsection_chatbotdemo",
+      "aiagentgeneratorsection_filetobase64",
+      "aiagentgeneratorsection_generateknowledgebase",
+      "aiagentgeneratorsection_handlefilechange",
+      "aiagentgeneratorsection_handlesubmit",
+      "aiagentgeneratorsection_handletoggle",
+      "aiagentgeneratorsection_handletrainagent",
+      "components_aiagentgeneratorsection_tsx"
+    ],
+    "6": [
+      "chatwidget_handlenavaction",
+      "chatwidget_handletogglemute",
+      "chatwidget_sendmessage",
+      "chatwidget_speak",
+      "chatwidget_startrecording",
+      "chatwidget_stoprecording",
+      "components_chatwidget_tsx"
+    ],
+    "7": [
+      "aiquizsection_generatereport",
+      "aiquizsection_handleanswer",
+      "aiquizsection_handlectaclick",
+      "aiquizsection_restartquiz",
+      "aiquizsection_skeletonloader",
+      "components_aiquizsection_tsx"
+    ],
+    "8": [
+      "aivoiceinput_cn",
+      "aivoiceinput_formattime",
+      "aivoiceinput_handleclick",
+      "aivoiceinput_miciconfallback",
+      "aivoiceinput_runanimation",
+      "components_aivoiceinput_tsx"
+    ],
+    "9": [
+      "components_contactsection_tsx",
+      "contactsection_handlecopy",
+      "contactsection_handledownload",
+      "contactsection_handleinputchange",
+      "contactsection_handlesubmit"
+    ],
+    "10": [
+      "aiideageneratorsection_handlectaclick",
+      "aiideageneratorsection_handlesubmit",
+      "aiideageneratorsection_ideacard",
+      "components_aiideageneratorsection_tsx"
+    ],
+    "11": [
+      "aiwebsiteauditorsection_handlectaclick",
+      "aiwebsiteauditorsection_handledownload",
+      "aiwebsiteauditorsection_handlesubmit",
+      "components_aiwebsiteauditorsection_tsx"
+    ],
+    "12": [
+      "components_generationprogress_tsx",
+      "generationprogress_getstatusbadge",
+      "generationprogress_getstatusicon",
+      "generationprogress_toggletask"
+    ],
+    "13": [
+      "components_header_tsx",
+      "header_handleclickoutside",
+      "header_handlehomeclick",
+      "header_handlelinkclick"
+    ],
+    "14": [
+      "components_interactivenetwork_tsx",
+      "interactivenetwork_geticonsizeclasses",
+      "interactivenetwork_handlenodeclick",
+      "interactivenetwork_tooltip"
+    ],
+    "15": [
+      "components_letstalksection_tsx",
+      "letstalksection_handlebookdemoclick",
+      "letstalksection_handleinputchange",
+      "letstalksection_handlesubmit"
+    ],
+    "16": [
+      "components_roicalculatorsection_tsx",
+      "roicalculatorsection_animatednumber",
+      "roicalculatorsection_handlectaclick",
+      "roicalculatorsection_handlesubmit"
+    ],
+    "17": [
+      "aboutsection_culturecard",
+      "aboutsection_handlelinkclick",
+      "components_aboutsection_tsx"
+    ],
+    "18": [
+      "affiliateapplicationform_handleinputchange",
+      "affiliateapplicationform_handlesubmit",
+      "components_affiliateapplicationform_tsx"
+    ],
+    "19": [
+      "aiadcopygeneratorsection_adcard",
+      "aiadcopygeneratorsection_handlesubmit",
+      "components_aiadcopygeneratorsection_tsx"
+    ],
+    "20": [
+      "aicontentsparksection_handlecopy",
+      "aicontentsparksection_handlegenerate",
+      "components_aicontentsparksection_tsx"
+    ],
+    "21": [
+      "aiemailsubjectlinetestersection_handlesubmit",
+      "aiemailsubjectlinetestersection_suggestionitem",
+      "components_aiemailsubjectlinetestersection_tsx"
+    ],
+    "22": [
+      "blogpage_blogcard",
+      "blogpage_featuredblogcard",
+      "components_blogpage_tsx"
+    ],
+    "23": [
+      "components_footer_tsx",
+      "footer_handlelinkclick",
+      "footer_handlesubscribe"
+    ],
+    "24": [
+      "components_internshipapplicationform_tsx",
+      "internshipapplicationform_handleinputchange",
+      "internshipapplicationform_handlesubmit"
+    ],
+    "25": [
+      "components_partnerpage_tsx",
+      "partnerpage_handleaffiliateapplyclick",
+      "partnerpage_handlereferralclick"
+    ],
+    "26": [
+      "components_referralform_tsx",
+      "referralform_handleinputchange",
+      "referralform_handlesubmit"
+    ],
+    "27": [
+      "components_viralitymeter_tsx",
+      "viralitymeter_animate",
+      "viralitymeter_getcolor"
+    ],
+    "28": [
+      "aiadmindashboard_aiadmindashboard",
+      "components_admin_aiadmindashboard_tsx"
+    ],
+    "29": [
+      "components_admin_passwordmodal_tsx",
+      "passwordmodal_passwordmodal"
+    ],
+    "30": [
+      "aiknowledgebasegeneratorsection_handlesubmit",
+      "components_aiknowledgebasegeneratorsection_tsx"
+    ],
+    "31": [
+      "ailaunchpadsection_handlectaclick",
+      "components_ailaunchpadsection_tsx"
+    ],
+    "32": [
+      "aitoolspage_aitoolspage",
+      "components_aitoolspage_tsx"
+    ],
+    "33": [
+      "articlepage_geticonforplatform",
+      "components_articlepage_tsx"
+    ],
+    "34": [
+      "background_background",
+      "components_background_tsx"
+    ],
+    "35": [
+      "blogmarkdownrenderer_blogmarkdownrenderer",
+      "components_blogmarkdownrenderer_tsx"
+    ],
+    "36": [
+      "calendlymodal_calendlymodal",
+      "components_calendlymodal_tsx"
+    ],
+    "37": [
+      "components_cookieconsentbanner_tsx",
+      "cookieconsentbanner_cookieconsentbanner"
+    ],
+    "38": [
+      "components_customsolutionssection_tsx",
+      "customsolutionssection_customsolutionssection"
+    ],
+    "39": [
+      "components_dynamicloader_tsx",
+      "dynamicloader_dynamicloader"
+    ],
+    "40": [
+      "components_herosection_tsx",
+      "herosection_handlesubscribe"
+    ],
+    "41": [
+      "components_legalpage_tsx",
+      "legalpage_legalpage"
+    ],
+    "42": [
+      "components_markdownrenderer_tsx",
+      "markdownrenderer_markdownrenderer"
+    ],
+    "43": [
+      "components_modal_tsx",
+      "modal_modal"
+    ],
+    "44": [
+      "components_partnerlogo_tsx",
+      "partnerlogo_checktheme"
+    ],
+    "45": [
+      "components_preloader_tsx",
+      "preloader_preloader"
+    ],
+    "46": [
+      "components_pricingsection_tsx",
+      "pricingsection_animatednumber"
+    ],
+    "47": [
+      "components_resourcecentersection_tsx",
+      "resourcecentersection_resourcecard"
+    ],
+    "48": [
+      "components_servicessection_tsx",
+      "servicessection_rendervisualization"
+    ],
+    "49": [
+      "components_skeletonloader_tsx",
+      "skeletonloader_skeletonloader"
+    ],
+    "50": [
+      "components_toolsnavbar_tsx",
+      "toolsnavbar_toolsnavbar"
+    ],
+    "51": [
+      "components_trustedbysection_tsx",
+      "trustedbysection_animate"
+    ],
+    "52": [
+      "components_whatmakesusdifferentsection_tsx",
+      "whatmakesusdifferentsection_differentiatorcard"
+    ],
+    "53": [
+      "src_test_admin_ailinkmanagermodal_test_tsx"
+    ],
+    "54": [
+      "src_test_admin_blogadmindashboard_test_tsx"
+    ],
+    "55": [
+      "src_test_admin_blogeditormodal_test_tsx"
+    ],
+    "56": [
+      "src_test_admin_passwordmodal_test_tsx"
+    ],
+    "57": [
+      "src_test_admin_tableeditormodal_test_tsx"
+    ],
+    "58": [
+      "src_test_aiadcopygeneratorsection_test_tsx"
+    ],
+    "59": [
+      "src_test_aiagentgeneratorsection_test_tsx"
+    ],
+    "60": [
+      "src_test_aicontentsparksection_test_tsx"
+    ],
+    "61": [
+      "src_test_aiemailsubjectlinetestersection_test_tsx"
+    ],
+    "62": [
+      "src_test_aitoolspage_test_tsx"
+    ],
+    "63": [
+      "src_test_articlepage_test_tsx"
+    ],
+    "64": [
+      "src_test_blogmarkdownrenderer_test_tsx"
+    ],
+    "65": [
+      "src_test_blogpage_test_tsx"
+    ],
+    "66": [
+      "src_test_contactsection_test_tsx"
+    ],
+    "67": [
+      "src_test_customsolutionssection_test_tsx"
+    ],
+    "68": [
+      "src_test_footer_test_tsx"
+    ],
+    "69": [
+      "src_test_header_test_tsx"
+    ],
+    "70": [
+      "src_test_herosection_test_tsx"
+    ],
+    "71": [
+      "src_test_roicalculatorsection_test_tsx"
+    ],
+    "72": [
+      "src_test_servicessection_test_tsx"
+    ],
+    "73": [
+      "src_test_setup_ts"
+    ],
+    "74": [
+      "src_test_toolsnavbar_test_tsx"
+    ],
+    "75": [
+      "src_types_ts"
+    ],
+    "76": [
+      "components_admin_aiblogformatter_tsx"
+    ],
+    "77": [
+      "components_admin_linkreviewmodal_tsx"
+    ],
+    "78": [
+      "components_careerspage_tsx"
+    ],
+    "79": [
+      "components_howitworkssection_tsx"
+    ],
+    "80": [
+      "components_meetthefoundersection_tsx"
+    ],
+    "81": [
+      "components_partnerssection_tsx"
+    ],
+    "82": [
+      "components_projectvault_tsx"
+    ],
+    "83": [
+      "components_sitemap_tsx"
+    ],
+    "84": [
+      "components_styledtext_tsx"
+    ],
+    "85": [
+      "components_terminalconsole_tsx"
+    ],
+    "86": [
+      "components_testimonialssection_tsx"
+    ]
+  },
+  "cohesion": {
+    "0": 0.04,
+    "1": 0.12,
+    "2": 0.2,
+    "3": 0.22,
+    "4": 0.32,
+    "5": 0.32,
+    "6": 0.33,
+    "7": 0.33,
+    "8": 0.33,
+    "9": 0.4,
+    "10": 0.5,
+    "11": 0.5,
+    "12": 0.5,
+    "13": 0.5,
+    "14": 0.5,
+    "15": 0.5,
+    "16": 0.5,
+    "17": 0.67,
+    "18": 0.67,
+    "19": 0.67,
+    "20": 0.67,
+    "21": 0.67,
+    "22": 0.67,
+    "23": 0.67,
+    "24": 0.67,
+    "25": 0.67,
+    "26": 0.67,
+    "27": 0.67,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0
+  },
+  "gods": [
+    {
+      "id": "blogadmindashboard_handlegenerate",
+      "label": "handleGenerate()",
+      "degree": 3
+    },
+    {
+      "id": "blogeditormodal_handlegenerate",
+      "label": "handleGenerate()",
+      "degree": 3
+    },
+    {
+      "id": "aiagentgeneratorsection_handlesubmit",
+      "label": "handleSubmit()",
+      "degree": 3
+    },
+    {
+      "id": "ailinkmanagermodal_fetchexternalsuggestions",
+      "label": "fetchExternalSuggestions()",
+      "degree": 2
+    },
+    {
+      "id": "ailinkmanagermodal_fetchsuggestions",
+      "label": "fetchSuggestions()",
+      "degree": 2
+    },
+    {
+      "id": "blogadmindashboard_parsefrontmatter",
+      "label": "parseFrontmatter()",
+      "degree": 2
+    },
+    {
+      "id": "blogadmindashboard_cleanupaicontent",
+      "label": "cleanupAiContent()",
+      "degree": 2
+    },
+    {
+      "id": "blogadmindashboard_handleanalyze",
+      "label": "handleAnalyze()",
+      "degree": 2
+    },
+    {
+      "id": "blogadmindashboard_onanalysiscomplete",
+      "label": "onAnalysisComplete()",
+      "degree": 2
+    },
+    {
+      "id": "blogeditormodal_parsefrontmatter",
+      "label": "parseFrontmatter()",
+      "degree": 2
+    }
+  ],
+  "surprises": [],
+  "questions": [
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.04 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.12 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

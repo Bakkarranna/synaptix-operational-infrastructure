@@ -88,19 +88,34 @@ const HeroSection: React.FC<HeroSectionProps> = ({ navigate, openCalendlyModal }
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-gray-900 dark:bg-black"
     >
+      {/* Cinematic Abstract Background Video */}
+      <video
+        src="/hero.mp4"
+        poster="/hero-poster.webp"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0 mix-blend-luminosity"
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 bg-black/60 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#F9FAFB] dark:from-black via-transparent to-transparent z-0" />
+
       {/* Radial corner glows */}
       <div
-        className="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-15"
+        className="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-15 z-0"
         style={{ background: 'radial-gradient(circle, #FF5630 0%, transparent 70%)' }}
       />
       <div
-        className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full opacity-10"
+        className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full opacity-10 z-0"
         style={{ background: 'radial-gradient(circle, #FF5630 0%, transparent 70%)' }}
       />
 
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
           {/* LEFT COLUMN */}
